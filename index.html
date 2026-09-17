@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buns and Guns | Smash burgers in Pyla, Larnaca</title>
+<meta name="description" content="Family-run burger shop in Pyla, Larnaca. Smash and wagyu burgers, chicken fingers and truffle fries for about €10–15 per person. Open Tuesday to Sunday, 5:30–10 pm. Order delivery on Foody.">
+<link rel="icon" href="images/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --space: #17102B;
+    --space-2: #241A42;
+    --neon: #FF3040;
+    --neon-deep: #D91E2C;
+    --paper: #FFF6EC;
+    --cheese: #FFC23D;
+    --ink: #22162A;
+    --muted: #6B5A66;
+    --display: "Archivo Black", Arial, sans-serif;
+    --body: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --wrap: 1140px;
+    --glow: 0 0 6px rgba(255,48,64,.9), 0 0 18px rgba(255,48,64,.7), 0 0 42px rgba(255,48,64,.45);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--body); font-size: 1.0625rem; line-height: 1.55; color: var(--ink); background: var(--paper); }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--cheese); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(var(--wrap), 100% - 2.5rem); margin-inline: auto; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 900; line-height: 1; margin: 0; }
+  .dark { background: var(--space); color: var(--paper);
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1px 1px at 68% 14%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1.5px 1.5px at 84% 62%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 32% 78%, rgba(255,255,255,.5), transparent),
+      radial-gradient(600px 400px at 85% 10%, rgba(120,60,200,.28), transparent),
+      radial-gradient(500px 400px at 5% 95%, rgba(40,160,180,.16), transparent);
+  }
+  .checker { height: 18px; background: repeating-conic-gradient(var(--neon) 0 25%, var(--paper) 0 50%) 0 0 / 18px 18px; }
+
+  /* ---------- Header ---------- */
+  .top { position: sticky; top: 0; z-index: 20; background: rgba(23,16,43,.94); backdrop-filter: blur(8px); color: var(--paper); border-bottom: 1px solid rgba(255,48,64,.35); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 68px; }
+  .brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; }
+  .brand img { width: 52px; height: 50px; object-fit: cover; border-radius: 8px; }
+  .brand span { font-family: var(--display); font-weight: 900; font-size: 1.35rem; color: var(--paper); }
+  .nav { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; row-gap: .5rem; }
+  .nav a { text-decoration: none; font-weight: 600; }
+  .nav a:hover { color: var(--cheese); }
+  .nav .nav-order { background: var(--neon); color: #fff; padding: .55rem 1.1rem; border-radius: 999px; }
+  .nav .nav-order:hover { background: var(--neon-deep); color: #fff; }
+  .ig-link { display: inline-flex; align-items: center; gap: .45rem; }
+  .ig-link:hover { color: var(--cheese); }
+  .nav-ig svg { display: block; }
+  .lang-toggle { display: flex; align-items: center; border: 1.5px solid rgba(255,246,236,.4); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+  .lang-btn { font: 700 .82rem var(--body); color: rgba(255,246,236,.75); background: transparent; border: 0; padding: .4rem .7rem; cursor: pointer; line-height: 1; }
+  .lang-btn:hover { color: var(--paper); }
+  .lang-btn[aria-pressed="true"] { background: var(--neon); color: #fff; }
+  @media (max-width: 760px) { .nav .hide-sm { display: none; } .brand span { display: none; } }
+
+  /* ---------- Buttons ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; font-weight: 800; font-size: 1.05rem; text-decoration: none; padding: .95rem 1.6rem; border-radius: 999px; border: 2px solid transparent; transition: box-shadow .15s ease, background .15s ease; }
+  .btn-neon { background: var(--neon); color: #fff; box-shadow: 0 0 0 rgba(255,48,64,0); }
+  .btn-neon:hover { box-shadow: var(--glow); }
+  .btn-ghost { border-color: rgba(255,246,236,.5); color: var(--paper); }
+  .btn-ghost:hover { border-color: var(--paper); background: rgba(255,246,236,.08); }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; }
+  .hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; padding-block: clamp(3rem, 7vw, 5.5rem); }
+  .hero-mark { position: absolute; top: clamp(.5rem, 3vw, 1.25rem); width: clamp(64px, 9vw, 120px); height: auto; opacity: .85; pointer-events: none; z-index: 1;
+    filter: drop-shadow(0 0 4px rgba(255,48,64,.85)) drop-shadow(0 0 14px rgba(255,48,64,.6)) drop-shadow(0 0 30px rgba(255,48,64,.4));
+    animation: spinY 8s linear infinite; }
+  .hero-mark--right { right: clamp(1rem, 4vw, 3rem); }
+  .hero-mark--left { left: clamp(1rem, 4vw, 3rem); }
+  @keyframes spinY {
+    from { transform: perspective(500px) rotateY(0deg); }
+    to   { transform: perspective(500px) rotateY(360deg); }
+  }
+  .status { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; font-size: .98rem; border: 1px solid rgba(255,246,236,.3); padding: .35rem .95rem; border-radius: 999px; margin: 0 0 1.75rem; }
+  .dot { width: .65rem; height: .65rem; border-radius: 50%; background: #4ADE80; box-shadow: 0 0 10px #4ADE80; }
+  .status.closed .dot { background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+  .hero h1 { font-size: clamp(3.6rem, 10vw, 7.5rem); color: #FFE9EA; text-shadow: var(--glow); letter-spacing: .01em; animation: flicker 1.6s ease-out 1; }
+  .slogan { font-family: var(--display); font-weight: 900; font-size: clamp(1.6rem, 3.4vw, 2.3rem); color: var(--cheese); margin: 1rem 0 0; }
+  .lead { font-size: clamp(1.1rem, 1.8vw, 1.3rem); max-width: 36ch; margin: 1.25rem 0 2.25rem; color: rgba(255,246,236,.88); }
+  .actions { display: flex; flex-wrap: wrap; gap: .9rem; }
+  .hero-photo { position: relative; justify-self: center; width: min(100%, 400px); }
+  .hero-photo img { width: 100%; aspect-ratio: 382 / 510; object-fit: cover; border-radius: 22px; border: 3px solid var(--neon); box-shadow: var(--glow); }
+  @keyframes flicker {
+    0%, 12%, 16%, 30%, 34% { opacity: 1; }
+    14%, 32% { opacity: .25; }
+    0% { opacity: 0; }
+  }
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .hero-photo { width: min(100%, 340px); justify-self: start; }
+  }
+  @media (max-width: 700px) {
+    .hero-mark { width: clamp(48px, 14vw, 84px); top: .5rem; }
+    .hero-mark--right { right: .75rem; }
+    .hero-mark--left { left: .75rem; }
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.25rem 2rem; margin-bottom: 2.5rem; }
+  .section-head h2 { font-size: clamp(2.6rem, 6vw, 4.2rem); color: var(--neon-deep); }
+  .dark .section-head h2 { color: #FFE9EA; text-shadow: var(--glow); }
+  .section-head p { margin: 0; max-width: 44ch; }
+
+  /* ---------- Menu ---------- */
+  .favs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 3.5rem; }
+  .favs figure { margin: 0; }
+  .favs img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; }
+  .favs figure:first-child img { object-position: 50% 85%; }
+  .favs figcaption { font-weight: 800; margin-top: .6rem; }
+  @media (max-width: 700px) { .favs { grid-template-columns: 1fr 1fr; } .favs figure:first-child { grid-column: 1 / -1; } }
+
+  .tabs { display: inline-flex; max-width: 100%; overflow-x: auto; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; background: #fff; }
+  .tab { white-space: nowrap; font: 800 1rem var(--body); padding: .7rem 1.3rem; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
+  @media (max-width: 560px) {
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border-radius: 16px; }
+    .tab { padding: .7rem .5rem; white-space: normal; }
+  }
+  .tab[aria-selected="true"] { background: var(--neon); color: #fff; }
+  .menu-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem 4rem; }
+  .menu-panel[hidden] { display: none; }
+  .burger-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); column-gap: 3rem; }
+  .menu-group h3 { font-size: 1.9rem; padding-bottom: .5rem; border-bottom: 3px solid var(--neon); margin-bottom: .25rem; }
+  .item { padding: 1rem 0; border-bottom: 1px dashed rgba(34,22,42,.25); }
+  .item-row { display: flex; align-items: baseline; gap: .75rem; }
+  .item-name { font-weight: 800; font-size: 1.12rem; }
+  .item-leader { flex: 1; border-bottom: 2px dotted rgba(34,22,42,.3); transform: translateY(-.3rem); }
+  .item-price { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--neon-deep); }
+  .sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; margin-top: .7rem; }
+  .size { background: #fff; border: 1px solid rgba(34,22,42,.18); border-radius: 10px; padding: .4rem .5rem; text-align: center; line-height: 1.2; }
+  .size small { display: block; font-size: .78rem; color: var(--muted); }
+  .size b { color: var(--neon-deep); font-variant-numeric: tabular-nums; }
+  @media (max-width: 420px) { .sizes { grid-template-columns: repeat(2, 1fr); } }
+  .burger .item-desc { max-width: none; }
+  .item-meta { display: inline-block; margin-top: .4rem; font-size: .85rem; font-weight: 700; color: var(--ink); background: var(--cheese); padding: .15rem .55rem; border-radius: 999px; }
+  .item-desc { margin: .25rem 0 0; color: var(--muted); font-size: .98rem; max-width: 46ch; }
+
+  .toppings { margin-top: 4rem; background: #fff; border-radius: 22px; padding: clamp(1.5rem, 4vw, 2.5rem); border: 2px solid var(--ink); }
+  .toppings h3 { font-size: clamp(2rem, 4vw, 2.6rem); color: var(--neon-deep); }
+  .toppings > p { margin: .5rem 0 1.75rem; color: var(--muted); }
+  .picks { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .picks label, .note-label { display: block; font-weight: 800; font-size: 1rem; }
+  .picks select, #b-note { display: block; width: 100%; margin-top: .4rem; font: 500 1rem var(--body); color: var(--ink); background: var(--paper); border: 1.5px solid rgba(34,22,42,.3); border-radius: 12px; padding: .7rem .8rem; }
+  #b-note { resize: vertical; min-height: 5rem; }
+  .picks select:focus, #b-note:focus { outline: 3px solid var(--cheese); outline-offset: 1px; }
+  .top-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) { .top-cols, .picks { grid-template-columns: 1fr; } }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { font-weight: 800; margin-bottom: .6rem; padding: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chips button { font: 600 .98rem var(--body); color: var(--ink); background: var(--paper); border: 1.5px solid rgba(34,22,42,.25); border-radius: 999px; padding: .5rem .95rem; cursor: pointer; }
+  .chips button:hover { border-color: var(--neon); }
+  .chips button[aria-pressed="true"] { background: var(--neon); border-color: var(--neon); color: #fff; }
+  .chips button[aria-pressed="true"]::before { content: "✓ "; }
+  .chips button.house[aria-pressed="false"] { border-color: var(--neon); color: var(--neon-deep); }
+  .send { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-top: 1.25rem; }
+  .send .btn { border: 0; cursor: pointer; font-family: var(--body); }
+  .btn-wa { background: #1FA855; color: #fff; }
+  .btn-wa:hover { background: #178a45; }
+  .b-clear { font: 700 1rem var(--body); background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; padding: .5rem; }
+  .send-msg { margin: .9rem 0 0; font-weight: 600; min-height: 1.5em; }
+  .send-msg a { color: var(--neon-deep); }
+  .menu-note { margin-top: 2rem; font-size: .95rem; color: var(--muted); }
+
+  /* ---------- Delivery ---------- */
+  .delivery { background: var(--neon); color: #fff; }
+  .delivery .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  .delivery h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+  .delivery p { margin: .6rem 0 0; font-size: 1.15rem; }
+  .delivery .btn { background: var(--space); color: #fff; }
+  .delivery .btn:hover { background: #000; }
+
+  /* ---------- Inside ---------- */
+  .gallery-more { margin-top: 2rem; text-align: center; }
+  .gallery { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-rows: 260px 260px; gap: 1rem; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+  .gallery .g1 { grid-row: 1 / 3; }
+  .gallery .g4 { grid-column: 2 / 4; }
+  @media (max-width: 760px) {
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 320px 200px 200px; }
+    .gallery .g1 { grid-row: auto; grid-column: 1 / -1; }
+    .gallery .g4 { grid-column: 1 / -1; }
+  }
+
+  /* ---------- Visit ---------- */
+  .visit-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start; }
+  @media (max-width: 860px) { .visit-grid { grid-template-columns: 1fr; } }
+  .hours { width: 100%; border-collapse: collapse; font-size: 1.08rem; margin-bottom: 2rem; }
+  .hours td { padding: .6rem 0; border-bottom: 1px dashed rgba(34,22,42,.25); }
+  .hours td:last-child { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hours tr.today td { font-weight: 800; color: var(--neon-deep); }
+  .contact p { margin: 0 0 .7rem; }
+  .contact a { font-weight: 800; }
+  .map { border-radius: 22px; overflow: hidden; border: 2px solid var(--ink); aspect-ratio: 4 / 3.2; background: #fff; }
+  .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+  /* ---------- Reviews ---------- */
+  .btn-outline { border-color: var(--ink); color: var(--ink); }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+  .reviews { padding-block: clamp(2.5rem, 6vw, 4rem); text-align: center; border-top: 2px solid var(--ink); }
+  .reviews-rating { margin: 0 0 .4rem; font-weight: 700; color: var(--muted); }
+  .reviews-rating strong { color: var(--neon-deep); }
+  .reviews h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--neon-deep); margin: 0 0 1.5rem; }
+  .reviews-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+
+  /* ---------- Footer ---------- */
+  footer { padding-block: 2.5rem 6.5rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+  footer .brand span { display: inline; }
+  @media (min-width: 761px) { footer { padding-bottom: 2.5rem; } }
+
+  /* ---------- Mobile action bar ---------- */
+  .mobile-bar { display: none; }
+  @media (max-width: 760px) {
+    .mobile-bar { display: grid; grid-template-columns: 1.4fr 1fr; gap: .6rem; position: fixed; inset: auto 0 0 0; z-index: 30; padding: .6rem .75rem calc(.6rem + env(safe-area-inset-bottom)); background: var(--space); border-top: 1px solid rgba(255,48,64,.4); }
+    .mobile-bar a { text-align: center; text-decoration: none; font-weight: 800; padding: .8rem; border-radius: 999px; }
+    .m-order { background: var(--neon); color: #fff; }
+    .m-call { background: var(--paper); color: var(--ink); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero h1 { animation: none; }
+    .btn { transition: none; }
+    .hero-mark { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="images/logo.jpg" alt="Buns and Guns logo"><span>Buns and Guns</span></a>
+    <nav class="nav" aria-label="Main">
+      <a class="hide-sm" href="#menu" data-i18n="navMenu">Menu</a>
+      <a class="hide-sm" href="#inside" data-i18n="navInside">Inside</a>
+      <a class="hide-sm" href="#visit" data-i18n="navHours">Hours &amp; location</a>
+      <a class="hide-sm" href="#reviews" data-i18n="navReviews">Leave a review</a>
+      <div class="lang-toggle" role="group" data-i18n-aria-label="langToggleLabel" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="gr" aria-pressed="false">GR</button>
+      </div>
+      <a class="nav-ig ig-link" href="https://www.instagram.com/bunsandguns.cy" target="_blank" rel="noopener" data-i18n-aria-label="navIgLabel" aria-label="Buns and Guns on Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="nav-order" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody">Order on Foody</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero dark" aria-labelledby="hero-title">
+    <svg class="hero-mark hero-mark--left" viewBox="14 4 122 138" fill="none" aria-hidden="true" focusable="false">
+      <g stroke="var(--neon)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- fries: bases start behind the front rim, uneven lengths, splayed angles, overlapping, varied thickness -->
+        <path stroke-width="6.5" d="M50,92 L22,18" />
+        <path stroke-width="6" d="M60,88 L46,30" />
+        <path stroke-width="7.5" d="M68,94 L58,10" />
+        <path stroke-width="7" d="M80,90 L86,14" />
+        <path stroke-width="6" d="M88,88 L98,34" />
+        <path stroke-width="7.5" d="M94,94 L120,20" />
+        <path stroke-width="6.5" d="M74,96 L76,44" />
+      </g>
+      <g stroke="var(--neon)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <!-- carton: narrow base, flared top, dipped front rim -->
+        <path d="M48,135 L20,72 Q75,86 130,72 L102,135 Z" />
+        <!-- fold band -->
+        <path d="M32,100 L118,100" />
+      </g>
+    </svg>
+    <svg class="hero-mark hero-mark--right" viewBox="74 2 150 136" fill="none" aria-hidden="true" focusable="false">
+      <g stroke="var(--neon)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- top bun: domed -->
+        <path stroke-width="7" d="M93,53 C93,26 116,11 149,11 C182,11 205,26 205,53" />
+        <!-- patty: wavy line -->
+        <path stroke-width="7" d="M91,60 Q127,48 149,60 Q171,72 207,60" />
+        <!-- patty slab -->
+        <path stroke-width="7" d="M99,62 L199,62 Q209,62 209,72 L209,82 Q209,92 199,92 L99,92 Q89,92 89,82 L89,72 Q89,62 99,62" />
+        <!-- second wavy line -->
+        <path stroke-width="7" d="M87,100 Q118,90 149,100 Q180,110 211,100" />
+        <!-- base bun -->
+        <path stroke-width="7" d="M97,102 L201,102 Q211,102 211,112 L211,118 Q211,128 201,128 L97,128 Q87,128 87,118 L87,112 Q87,102 97,102" />
+      </g>
+      <g fill="var(--neon)">
+        <circle cx="114" cy="37" r="6" />
+        <circle cx="131" cy="34" r="5.5" />
+        <circle cx="109" cy="50" r="6" />
+        <circle cx="127" cy="48" r="5.5" />
+      </g>
+    </svg>
+    <div class="wrap">
+      <div>
+        <p class="status" id="status" role="status"><span class="dot"></span><span id="status-text" data-i18n="heroStatusDefault">Open Tuesday to Sunday, 5:30–10 pm</span></p>
+        <h1 id="hero-title">Buns and Guns</h1>
+        <p class="slogan" data-i18n="slogan">You wanna burger me?</p>
+        <p class="lead" data-i18n="lead">Smash and wagyu burgers, chicken fingers and truffle fries in Pyla, Larnaca. A full meal for about €10–15.</p>
+        <div class="actions">
+          <a class="btn btn-neon" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderDeliveryFoody">Order delivery on Foody</a>
+          <a class="btn btn-ghost" href="#menu" data-i18n="seeMenu">See the menu</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="images/hero.jpg" data-i18n-alt="heroPhotoAlt" alt="Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign" width="382" height="510">
+      </div>
+    </div>
+  </section>
+
+  <div class="checker" aria-hidden="true"></div>
+
+  <section id="menu" aria-labelledby="menu-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="menu-title" data-i18n="menuTitle">Menu</h2>
+        <div class="tabs" role="tablist" aria-label="Menu sections">
+          <button class="tab" role="tab" id="tab-burgers" aria-controls="panel-burgers" aria-selected="true" data-i18n="tabBurgers">Burgers</button>
+          <button class="tab" role="tab" id="tab-sides" aria-controls="panel-sides" aria-selected="false" tabindex="-1" data-i18n="tabSides">Sides</button>
+          <button class="tab" role="tab" id="tab-protein" aria-controls="panel-protein" aria-selected="false" tabindex="-1" data-i18n="tabProtein">Protein &amp; desserts</button>
+          <button class="tab" role="tab" id="tab-drinks" aria-controls="panel-drinks" aria-selected="false" tabindex="-1" data-i18n="tabDrinks">Drinks</button>
+        </div>
+      </div>
+
+      <div class="favs">
+        <figure><img src="images/dish-og.jpg" data-i18n-alt="favOgAlt" alt="Smash burger with cheese, red onion and pickles" loading="lazy"><figcaption>The OG</figcaption></figure>
+        <figure><img src="images/dish-chicken-fingers.jpg" data-i18n-alt="favChickenAlt" alt="Crispy chicken fingers with fries" loading="lazy"><figcaption data-i18n="favChickenCaption">Chicken fingers</figcaption></figure>
+        <figure><img src="images/dish-sweet-fries.jpg" data-i18n-alt="favSweetFriesAlt" alt="Sweet potato fries" loading="lazy"><figcaption data-i18n="favSweetFriesCaption">Sweet fries</figcaption></figure>
+      </div>
+
+      <div class="menu-panel" id="panel-burgers" role="tabpanel" aria-labelledby="tab-burgers"></div>
+      <div class="menu-panel" id="panel-sides" role="tabpanel" aria-labelledby="tab-sides" hidden></div>
+      <div class="menu-panel" id="panel-protein" role="tabpanel" aria-labelledby="tab-protein" hidden></div>
+      <div class="menu-panel" id="panel-drinks" role="tabpanel" aria-labelledby="tab-drinks" hidden></div>
+
+      <div class="toppings" id="build">
+        <h3 data-i18n="buildTitle">Build it your way</h3>
+        <p data-i18n="buildIntro">Pick your burger and extras, add a note, then send it with your order.</p>
+
+        <div class="picks">
+          <label><span data-i18n="labelBurger">Burger</span>
+            <select id="b-burger"><option value="" data-i18n="anyBurger">Any burger</option></select>
+          </label>
+          <label><span data-i18n="labelPatty">Patty</span>
+            <select id="b-size">
+              <option value="" data-i18n="choosePatty">Choose a patty</option>
+              <option data-i18n="pattySingle">Single smash 100g</option><option data-i18n="pattyDouble">Double smash 200g</option><option data-i18n="pattyClassic">Classic patty 200g</option><option data-i18n="pattyWagyu">Wagyu patty 200g</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="top-cols">
+          <fieldset>
+            <legend data-i18n="legendToppings">Toppings</legend>
+            <div class="chips" data-kind="toppings">
+              <button type="button" aria-pressed="false" data-i18n="topTomato">Tomato</button><button type="button" aria-pressed="false" data-i18n="topLettuce">Lettuce</button><button type="button" aria-pressed="false" data-i18n="topOnion">Onion</button><button type="button" aria-pressed="false" data-i18n="topCrispyOnion">Crispy onion</button><button type="button" aria-pressed="false" data-i18n="topPickles">Pickles</button><button type="button" aria-pressed="false" data-i18n="topBacon">Bacon</button><button type="button" aria-pressed="false" data-i18n="topJalapenos">Jalapeños</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend data-i18n="legendSauces">Sauces</legend>
+            <div class="chips" data-kind="sauces">
+              <button type="button" aria-pressed="false" class="house" data-i18n="sauceGun">Gun Sauce</button><button type="button" aria-pressed="false" data-i18n="sauceHoneyMustard">Honey mustard</button><button type="button" aria-pressed="false" data-i18n="sauceBbq">BBQ</button><button type="button" aria-pressed="false" data-i18n="sauceMayo">Mayonnaise</button><button type="button" aria-pressed="false" data-i18n="sauceKetchup">Ketchup</button><button type="button" aria-pressed="false" data-i18n="sauceMustard">Mustard</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <label class="note-label" for="b-note" data-i18n="labelSpecialRequests">Special requests</label>
+        <textarea id="b-note" rows="3" maxlength="300" data-i18n-placeholder="notePlaceholder" placeholder="For example: no sauce, no onion, well done, sauce on the side"></textarea>
+
+        <div class="send">
+          <button type="button" class="btn btn-wa" id="b-wa" data-i18n="sendWhatsapp">Send on WhatsApp</button>
+          <button type="button" class="b-clear" id="b-clear" data-i18n="clearBtn">Clear</button>
+        </div>
+        <p class="send-msg" id="b-msg" role="status"></p>
+      </div>
+
+      <p class="menu-note"><strong data-i18n="allergyWarning">Please tell our staff about any allergies.</strong> <span data-i18n="pricesNote">Prices in euros and may change.</span></p>
+    </div>
+  </section>
+
+  <section class="delivery" aria-labelledby="delivery-title">
+    <div class="wrap">
+      <div>
+        <h2 id="delivery-title" data-i18n="deliveryTitle">Hungry at home?</h2>
+        <p data-i18n="deliveryText">Get Buns and Guns delivered through Foody.</p>
+      </div>
+      <a class="btn" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody">Order on Foody</a>
+    </div>
+  </section>
+
+  <section id="inside" class="dark" aria-labelledby="inside-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="inside-title" data-i18n="insideTitle">Eat under the neon</h2>
+        <p data-i18n="insideText">Brick walls, red neon and an astronaut serving burgers across the galaxy. Grab a table and stay a while.</p>
+      </div>
+      <div class="gallery">
+        <img class="g1" src="images/gallery-1.jpg" data-i18n-alt="galleryAlt1" alt="Dining room with a mural of an astronaut holding a burger" loading="lazy">
+        <img class="g2" src="images/gallery-2.jpg" data-i18n-alt="galleryAlt2" alt="Tables under the red Buns and Guns neon logo" loading="lazy">
+        <img class="g3" src="images/gallery-3.jpg" data-i18n-alt="galleryAlt3" alt="Neon sign reading You wanna burger me above Buns and Guns t-shirts" loading="lazy">
+        <img class="g4" src="images/gallery-4.jpg" data-i18n-alt="galleryAlt4" alt="Wide view of the restaurant with red booth seating" loading="lazy">
+      </div>
+      <p class="gallery-more">
+        <a class="btn btn-ghost" href="https://www.instagram.com/bunsandguns.cy" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+          <span data-i18n="seeMoreInstagram">See more on Instagram</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section id="visit" aria-labelledby="visit-title">
+    <div class="wrap">
+      <div class="section-head"><h2 id="visit-title" data-i18n="visitTitle">Come by</h2></div>
+      <div class="visit-grid">
+        <div>
+          <table class="hours" data-i18n-aria-label="hoursAriaLabel" aria-label="Opening hours"><tbody id="hours-body"></tbody></table>
+          <div class="contact">
+            <p data-i18n="address">Pierias, Pyla, Larnaca 7080, Cyprus</p>
+            <p data-i18n="pricePerPerson">About €10–15 per person</p>
+            <p><span data-i18n="callUs">Call us:</span> <a href="tel:+35799403810">99 403810</a></p>
+            <p><a href="https://www.google.com/maps/search/?api=1&query=34.9972453,33.6854376" target="_blank" rel="noopener" data-i18n="getDirections">Get directions in Google Maps</a></p>
+          </div>
+        </div>
+        <div class="map">
+          <iframe data-i18n-title="mapTitle" title="Map showing Buns and Guns in Pyla" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://maps.google.com/maps?q=34.9972453,33.6854376(Buns+and+Guns)&z=16&output=embed"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" class="reviews" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <p class="reviews-rating"><strong>4.8 ★</strong> <span data-i18n="reviewsCount">from 311 reviews on Google</span></p>
+      <h2 id="reviews-title" data-i18n="reviewsTitle">Eaten here? Leave a review</h2>
+      <div class="reviews-links">
+        <a class="btn btn-outline" href="https://search.google.com/local/writereview?placeid=ChIJi1mdFgAv3hQRJ_eoJPYbcK0" target="_blank" rel="noopener" data-i18n="reviewGoogle">Review us on Google</a>
+        <a class="btn btn-outline" href="https://www.tripadvisor.com/UserReview-g1904143-d32859239-Buns_Guns_Pyla-Pyla_Larnaca_Larnaka_District.html" target="_blank" rel="noopener" data-i18n="reviewTripadvisor">Review us on TripAdvisor</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="dark">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="images/logo.jpg" alt=""><span>Buns and Guns</span></a>
+    <span><span data-i18n="footerAddress">Pierias, Pyla, Larnaca</span> &nbsp;|&nbsp; <a href="tel:+35799403810">99 403810</a></span>
+    <a class="ig-link" href="https://www.instagram.com/bunsandguns.cy" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+      Instagram
+    </a>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a class="m-order" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody">Order on Foody</a>
+  <a class="m-call" href="tel:+35799403810" data-i18n="callBtn">Call</a>
+</div>
+
+<script>
+  /* =========================================================
+     TRANSLATIONS
+     gr currently mirrors en as a placeholder — fill in real Greek later.
+     Always English regardless of language (not in this object):
+     the brand name "Buns and Guns", burger names (The OG, Cheeseburger,
+     Truffle, Whiskey Business, Mr. Hot Shot, Chicken Burger), and "Foody".
+     ========================================================= */
+  const TRANSLATIONS = {
+    en: {
+      langToggleLabel: "Language",
+      navMenu: "Menu", navInside: "Inside", navHours: "Hours & location", navReviews: "Leave a review",
+      navIgLabel: "Buns and Guns on Instagram", orderFoody: "Order on Foody",
+      heroStatusDefault: "Open Tuesday to Sunday, 5:30–10 pm",
+      slogan: "You wanna burger me?",
+      lead: "Smash and wagyu burgers, chicken fingers and truffle fries in Pyla, Larnaca. A full meal for about €10–15.",
+      orderDeliveryFoody: "Order delivery on Foody", seeMenu: "See the menu",
+      heroPhotoAlt: "Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign",
+      menuTitle: "Menu", tabBurgers: "Burgers", tabSides: "Sides", tabProtein: "Protein & desserts", tabDrinks: "Drinks",
+      favChickenCaption: "Chicken fingers", favSweetFriesCaption: "Sweet fries",
+      favOgAlt: "Smash burger with cheese, red onion and pickles",
+      favChickenAlt: "Crispy chicken fingers with fries", favSweetFriesAlt: "Sweet potato fries",
+      burgerGroupNote: "Choose single or double smashed, a classic patty or wagyu.",
+      descOg: "Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.",
+      descCheeseburger: "Brioche, ketchup, mustard, pickles, red onions and cheese.",
+      descTruffle: "Brioche, black truffle garlic mayo, caramelised onions, crispy onions, lettuce and cheese.",
+      descWhiskey: "Brioche, pineapple Jack Daniel's, tomato, red onion, crispy onion, lettuce, bacon and cheese.",
+      descHotShot: "Brioche, BJM sauce, buffalo sauce, tomato, lettuce, red onion, pickles, crispy onion, jalapeño and cheese.",
+      descChickenBurger: "Brioche, buttermilk fried chicken breast, honey mustard, lettuce, pickles.",
+      groupAddons: "Add-ons",
+      addExtraSmash: "Extra 100g smash patty", addExtraClassic: "Extra 200g classic patty",
+      addEgg: "Egg", addBacon: "Bacon", addCheese: "Cheese",
+      groupFries: "Fries", sideFries: "Fries", descFries: "Fresh, locally sourced French fries.",
+      sideSweetFries: "Sweet Fries", descSweetFries: "Fresh sweet potato fries.",
+      sideLoaded: "Loaded", descLoaded: "Cheddar cheese, bacon, crispy onions.",
+      sideTruffleFries: "Truffle Fries", descTruffleFries: "Truffle mayo, garlic and parmesan.",
+      groupMoreSides: "More sides",
+      sideAnimalStyle: "Animal Style", descAnimalStyle: "Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions.",
+      sideChickenFingers: "Chicken Fingers", descChickenFingersSide: "Buttermilk fried chicken strips, fries and sauce.",
+      groupProtein: "Protein",
+      proteinBurgerSalad: "Burger Salad",
+      descBurgerSalad: "Shredded lettuce, tomato, red onions, pickles, 2 smashed patties with cheese, Gun Sauce.",
+      metaBurgerSalad: "420 cal · 50g protein",
+      proteinBuffBurger: "Buff Burger",
+      descBuffBurger: "Protein sweet potato pancakes, 2 egg whites, 20g lean bacon, 300g 95% lean beef, 3 high-protein cheese slices, 30g Philadelphia, ketchup, mustard, lettuce, tomato, red onions and pickles.",
+      metaBuffBurger: "620 cal · 108g protein",
+      groupDesserts: "Desserts",
+      dessertSkilletCookie: "Skillet Cookie",
+      descSkilletCookie: "Triple chocolate brown butter cookie, baked to order, with vanilla ice cream.",
+      dessertFrenchToast: "French Toast",
+      descFrenchToast: "Japanese milk bread (shokupan) French toast with Nutella drizzle and vanilla ice cream.",
+      drinkSoft: "Soft drinks", drinkBottledSoft: "Bottled soft drinks", drinkJuice: "Juice", drinkWater: "Water",
+      groupSpecials: "Specials", drinkMilkshakes: "Milkshakes", drinkLemonades: "Stetes Lemonades", drinkDraft: "Draft Pivo / IPA",
+      sizeSingle: "Single 100g", sizeDouble: "Double 200g", sizeClassic: "Classic 200g", sizeWagyu: "Wagyu 200g",
+      buildTitle: "Build it your way",
+      buildIntro: "Pick your burger and extras, add a note, then send it with your order.",
+      labelBurger: "Burger", anyBurger: "Any burger", labelPatty: "Patty", choosePatty: "Choose a patty",
+      pattySingle: "Single smash 100g", pattyDouble: "Double smash 200g",
+      pattyClassic: "Classic patty 200g", pattyWagyu: "Wagyu patty 200g",
+      legendToppings: "Toppings",
+      topTomato: "Tomato", topLettuce: "Lettuce", topOnion: "Onion", topCrispyOnion: "Crispy onion",
+      topPickles: "Pickles", topBacon: "Bacon", topJalapenos: "Jalapeños",
+      legendSauces: "Sauces",
+      sauceGun: "Gun Sauce", sauceHoneyMustard: "Honey mustard", sauceBbq: "BBQ",
+      sauceMayo: "Mayonnaise", sauceKetchup: "Ketchup", sauceMustard: "Mustard",
+      labelSpecialRequests: "Special requests",
+      notePlaceholder: "For example: no sauce, no onion, well done, sauce on the side",
+      sendWhatsapp: "Send on WhatsApp", clearBtn: "Clear",
+      msgPickSomething: "Pick something or write a request first.", msgOpeningWhatsapp: "Opening WhatsApp.",
+      msgBurger: "Burger", msgPatty: "Patty", msgToppings: "Toppings", msgSauces: "Sauces", msgSpecialRequest: "Special request",
+      waGreeting: "Hi Buns and Guns!",
+      allergyWarning: "Please tell our staff about any allergies.", pricesNote: "Prices in euros and may change.",
+      deliveryTitle: "Hungry at home?", deliveryText: "Get Buns and Guns delivered through Foody.",
+      insideTitle: "Eat under the neon",
+      insideText: "Brick walls, red neon and an astronaut serving burgers across the galaxy. Grab a table and stay a while.",
+      galleryAlt1: "Dining room with a mural of an astronaut holding a burger",
+      galleryAlt2: "Tables under the red Buns and Guns neon logo",
+      galleryAlt3: "Neon sign reading You wanna burger me above Buns and Guns t-shirts",
+      galleryAlt4: "Wide view of the restaurant with red booth seating",
+      seeMoreInstagram: "See more on Instagram",
+      visitTitle: "Come by", hoursAriaLabel: "Opening hours",
+      todaySuffix: "(today)", hoursClosed: "Closed", hoursRange: "5:30 – 10 pm",
+      address: "Pierias, Pyla, Larnaca 7080, Cyprus", footerAddress: "Pierias, Pyla, Larnaca",
+      pricePerPerson: "About €10–15 per person", callUs: "Call us:", callBtn: "Call",
+      getDirections: "Get directions in Google Maps", mapTitle: "Map showing Buns and Guns in Pyla",
+      reviewsCount: "from 311 reviews on Google", reviewsTitle: "Eaten here? Leave a review",
+      reviewGoogle: "Review us on Google", reviewTripadvisor: "Review us on TripAdvisor",
+      days: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      tomorrow: "tomorrow",
+      statusOpenNow: "Open now until 10 pm", statusOpensToday: "Opens today at 5:30 pm",
+      statusClosedOpens: "Closed now. Opens {day} at 5:30 pm"
+    },
+    gr: {
+      langToggleLabel: "Γλώσσα",
+      navMenu: "Μενού", navInside: "Εσωτερικός χώρος", navHours: "Ώρες & τοποθεσία", navReviews: "Αφήστε μια κριτική",
+      navIgLabel: "Buns and Guns στο Instagram", orderFoody: "Παραγγελία στο Foody",
+      heroStatusDefault: "Ανοιχτά Τρίτη έως Κυριακή, 17:30–22:00",
+      slogan: "Θες να σε κάνω μπέργκερ;",
+      lead: "Smash και wagyu μπέργκερ, chicken fingers και truffle fries στην Πύλα, Λάρνακα. Ένα πλήρες γεύμα για περίπου €10–15.",
+      orderDeliveryFoody: "Παραγγελία delivery στο Foody", seeMenu: "Δείτε το μενού",
+      heroPhotoAlt: "Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign",
+      menuTitle: "Μενού", tabBurgers: "Μπέργκερ", tabSides: "Συνοδευτικά", tabProtein: "Πρωτεΐνη & επιδόρπια", tabDrinks: "Ποτά",
+      favChickenCaption: "Chicken fingers", favSweetFriesCaption: "Γλυκοπατάτες",
+      favOgAlt: "Smash burger with cheese, red onion and pickles",
+      favChickenAlt: "Crispy chicken fingers with fries", favSweetFriesAlt: "Sweet potato fries",
+      burgerGroupNote: "Επιλέξτε μονό ή διπλό smash, κλασικό μπιφτέκι ή wagyu.",
+      descOg: "Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.",
+      descCheeseburger: "Brioche, ketchup, mustard, pickles, red onions and cheese.",
+      descTruffle: "Brioche, black truffle garlic mayo, caramelised onions, crispy onions, lettuce and cheese.",
+      descWhiskey: "Brioche, pineapple Jack Daniel's, tomato, red onion, crispy onion, lettuce, bacon and cheese.",
+      descHotShot: "Brioche, BJM sauce, buffalo sauce, tomato, lettuce, red onion, pickles, crispy onion, jalapeño and cheese.",
+      descChickenBurger: "Brioche, buttermilk fried chicken breast, honey mustard, lettuce, pickles.",
+      groupAddons: "Πρόσθετα",
+      addExtraSmash: "Επιπλέον μπιφτέκι smash 100γρ", addExtraClassic: "Επιπλέον κλασικό μπιφτέκι 200γρ",
+      addEgg: "Αυγό", addBacon: "Μπέικον", addCheese: "Τυρί",
+      groupFries: "Πατάτες", sideFries: "Πατάτες", descFries: "Fresh, locally sourced French fries.",
+      sideSweetFries: "Γλυκοπατάτες", descSweetFries: "Fresh sweet potato fries.",
+      sideLoaded: "Φορτωμένες πατάτες", descLoaded: "Cheddar cheese, bacon, crispy onions.",
+      sideTruffleFries: "Πατάτες με τρούφα", descTruffleFries: "Truffle mayo, garlic and parmesan.",
+      groupMoreSides: "Περισσότερα συνοδευτικά",
+      sideAnimalStyle: "Animal Style", descAnimalStyle: "Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions.",
+      sideChickenFingers: "Chicken Fingers", descChickenFingersSide: "Buttermilk fried chicken strips, fries and sauce.",
+      groupProtein: "Πρωτεΐνη",
+      proteinBurgerSalad: "Burger Salad",
+      descBurgerSalad: "Shredded lettuce, tomato, red onions, pickles, 2 smashed patties with cheese, Gun Sauce.",
+      metaBurgerSalad: "420 cal · 50g protein",
+      proteinBuffBurger: "Buff Burger",
+      descBuffBurger: "Protein sweet potato pancakes, 2 egg whites, 20g lean bacon, 300g 95% lean beef, 3 high-protein cheese slices, 30g Philadelphia, ketchup, mustard, lettuce, tomato, red onions and pickles.",
+      metaBuffBurger: "620 cal · 108g protein",
+      groupDesserts: "Επιδόρπια",
+      dessertSkilletCookie: "Skillet Cookie",
+      descSkilletCookie: "Triple chocolate brown butter cookie, baked to order, with vanilla ice cream.",
+      dessertFrenchToast: "French Toast",
+      descFrenchToast: "Japanese milk bread (shokupan) French toast with Nutella drizzle and vanilla ice cream.",
+      drinkSoft: "Αναψυκτικά", drinkBottledSoft: "Εμφιαλωμένα αναψυκτικά", drinkJuice: "Χυμός", drinkWater: "Νερό",
+      groupSpecials: "Σπέσιαλ", drinkMilkshakes: "Μιλκσέικ", drinkLemonades: "Stetes Lemonades", drinkDraft: "Draft Pivo / IPA",
+      sizeSingle: "Μονό 100γρ", sizeDouble: "Διπλό 200γρ", sizeClassic: "Κλασικό 200γρ", sizeWagyu: "Wagyu 200γρ",
+      buildTitle: "Φτιάξ' το με τον τρόπο σου",
+      buildIntro: "Επιλέξτε το μπέργκερ και τα extra σας, προσθέστε ένα σημείωμα και στείλτε την παραγγελία σας.",
+      labelBurger: "Μπέργκερ", anyBurger: "Οποιοδήποτε μπέργκερ", labelPatty: "Μπιφτέκι", choosePatty: "Επιλέξτε μπιφτέκι",
+      pattySingle: "Μονό smash 100γρ", pattyDouble: "Διπλό smash 200γρ",
+      pattyClassic: "Κλασικό μπιφτέκι 200γρ", pattyWagyu: "Μπιφτέκι wagyu 200γρ",
+      legendToppings: "Επικαλύψεις",
+      topTomato: "Ντομάτα", topLettuce: "Μαρούλι", topOnion: "Κρεμμύδι", topCrispyOnion: "Τραγανό κρεμμύδι",
+      topPickles: "Αγγουράκια τουρσί", topBacon: "Μπέικον", topJalapenos: "Χαλαπένιο",
+      legendSauces: "Σάλτσες",
+      sauceGun: "Gun Sauce", sauceHoneyMustard: "Μουστάρδα μελιού", sauceBbq: "Μπάρμπεκιου",
+      sauceMayo: "Μαγιονέζα", sauceKetchup: "Κέτσαπ", sauceMustard: "Μουστάρδα",
+      labelSpecialRequests: "Ειδικά αιτήματα",
+      notePlaceholder: "Για παράδειγμα: χωρίς σάλτσα, χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι",
+      sendWhatsapp: "Αποστολή στο WhatsApp", clearBtn: "Καθαρισμός",
+      msgPickSomething: "Επιλέξτε κάτι ή γράψτε ένα αίτημα πρώτα.", msgOpeningWhatsapp: "Άνοιγμα WhatsApp.",
+      msgBurger: "Μπέργκερ", msgPatty: "Μπιφτέκι", msgToppings: "Επικαλύψεις", msgSauces: "Σάλτσες", msgSpecialRequest: "Ειδικό αίτημα",
+      waGreeting: "Γεια σας Buns and Guns!",
+      allergyWarning: "Παρακαλούμε ενημερώστε το προσωπικό μας για τυχόν αλλεργίες.", pricesNote: "Οι τιμές είναι σε ευρώ και ενδέχεται να αλλάξουν.",
+      deliveryTitle: "Πεινάτε στο σπίτι;", deliveryText: "Παραγγείλετε Buns and Guns με delivery μέσω Foody.",
+      insideTitle: "Φάτε κάτω από τα νέον",
+      insideText: "Τούβλινοι τοίχοι, κόκκινο νέον και ένας αστροναύτης που σερβίρει μπέργκερ σε όλο τον γαλαξία. Πιάστε ένα τραπέζι και μείνετε λίγο.",
+      galleryAlt1: "Dining room with a mural of an astronaut holding a burger",
+      galleryAlt2: "Tables under the red Buns and Guns neon logo",
+      galleryAlt3: "Neon sign reading You wanna burger me above Buns and Guns t-shirts",
+      galleryAlt4: "Wide view of the restaurant with red booth seating",
+      seeMoreInstagram: "Δείτε περισσότερα στο Instagram",
+      visitTitle: "Περάστε από εδώ", hoursAriaLabel: "Ώρες λειτουργίας",
+      todaySuffix: "(σήμερα)", hoursClosed: "Κλειστά", hoursRange: "17:30 – 22:00",
+      address: "Pierias, Pyla, Larnaca 7080, Cyprus", footerAddress: "Pierias, Pyla, Larnaca",
+      pricePerPerson: "About €10–15 per person", callUs: "Call us:", callBtn: "Κλήση",
+      getDirections: "Οδηγίες στο Google Maps", mapTitle: "Map showing Buns and Guns in Pyla",
+      reviewsCount: "from 311 reviews on Google", reviewsTitle: "Φάγατε εδώ; Αφήστε μια κριτική",
+      reviewGoogle: "Κριτική στο Google", reviewTripadvisor: "Κριτική στο TripAdvisor",
+      days: ["Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο"],
+      tomorrow: "αύριο",
+      statusOpenNow: "Ανοιχτά τώρα έως τις 22:00", statusOpensToday: "Ανοίγει σήμερα στις 17:30",
+      statusClosedOpens: "Κλειστά τώρα. Ανοίγει {day} στις 17:30"
+    }
+  };
+
+  let currentLang = (function () {
+    try { return localStorage.getItem("bg-lang") === "gr" ? "gr" : "en"; } catch (_) { return "en"; }
+  })();
+  const t = key => (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) ?? key;
+  const SIZE_KEYS = ["sizeSingle", "sizeDouble", "sizeClassic", "sizeWagyu"];
+
+  /* =========================================================
+     MENU DATA (from the Buns and Guns menu board)
+     Burgers: prices = [single smashed 100g, double smashed 200g, classic patty 200g, wagyu patty 200g]
+     Burger names stay literal (never translated); everything else is a translation key.
+     ========================================================= */
+  const MENU = {
+    burgers: [
+      { groupKey: "tabBurgers", wide: true, items: [
+        { name: "The OG", prices: [8.5, 10.5, 10.5, 16], descKey: "descOg" },
+        { name: "Cheeseburger", prices: [8.5, 10.5, 10.5, 16], descKey: "descCheeseburger" },
+        { name: "Truffle", prices: [9, 11, 11, 16.5], descKey: "descTruffle" },
+        { name: "Whiskey Business", prices: [9, 11, 11, 16.5], descKey: "descWhiskey" },
+        { name: "Mr. Hot Shot", prices: [8.5, 10.5, 10.5, 16], descKey: "descHotShot" },
+        { name: "Chicken Burger", price: 9, descKey: "descChickenBurger" }
+      ]},
+      { groupKey: "groupAddons", items: [
+        { nameKey: "addExtraSmash", price: 2 },
+        { nameKey: "addExtraClassic", price: 4 },
+        { nameKey: "addEgg", price: 1 },
+        { nameKey: "addBacon", price: 0.5 },
+        { nameKey: "addCheese", price: 1 }
+      ]}
+    ],
+    sides: [
+      { groupKey: "groupFries", items: [
+        { nameKey: "sideFries", price: 3.5, descKey: "descFries" },
+        { nameKey: "sideSweetFries", price: 4.5, descKey: "descSweetFries" },
+        { nameKey: "sideLoaded", price: 5.5, descKey: "descLoaded" },
+        { nameKey: "sideTruffleFries", price: 6.5, descKey: "descTruffleFries" }
+      ]},
+      { groupKey: "groupMoreSides", items: [
+        { nameKey: "sideAnimalStyle", price: 6.5, descKey: "descAnimalStyle" },
+        { nameKey: "sideChickenFingers", price: 9.5, descKey: "descChickenFingersSide" }
+      ]}
+    ],
+    protein: [
+      { groupKey: "groupProtein", items: [
+        { nameKey: "proteinBurgerSalad", price: 7.5, descKey: "descBurgerSalad", metaKey: "metaBurgerSalad" },
+        { nameKey: "proteinBuffBurger", price: 13.5, descKey: "descBuffBurger", metaKey: "metaBuffBurger" }
+      ]},
+      { groupKey: "groupDesserts", items: [
+        { nameKey: "dessertSkilletCookie", price: 6.5, descKey: "descSkilletCookie" },
+        { nameKey: "dessertFrenchToast", price: 7, descKey: "descFrenchToast" }
+      ]}
+    ],
+    drinks: [
+      { groupKey: "tabDrinks", items: [
+        { nameKey: "drinkSoft", price: 1.5 },
+        { nameKey: "drinkBottledSoft", price: 2 },
+        { nameKey: "drinkJuice", price: 1.5 },
+        { nameKey: "drinkWater", price: 1 }
+      ]},
+      { groupKey: "groupSpecials", items: [
+        { nameKey: "drinkMilkshakes", price: 4 },
+        { nameKey: "drinkLemonades", price: 3 },
+        { nameKey: "drinkDraft", price: [5.5, 6.5] }
+      ]}
+    ]
+  };
+
+  const euro = n => "€" + Number(n).toFixed(2);
+  const fmt = p => Array.isArray(p) ? p.map(euro).join(" / ") : euro(p);
+
+  function renderMenu(panelId, groups) {
+    document.getElementById(panelId).innerHTML = groups.map(g => `
+      <div class="menu-group"${g.wide ? ' style="grid-column: 1 / -1"' : ""}>
+        <h3>${t(g.groupKey)}</h3>
+        ${g.wide ? `<p class="item-desc" style="margin:.6rem 0 .25rem">${t("burgerGroupNote")}</p>` : ""}
+        <div class="${g.wide ? "burger-grid" : ""}">
+        ${g.items.map(i => `
+          <div class="item${i.prices ? " burger" : ""}">
+            <div class="item-row">
+              <span class="item-name">${i.name || t(i.nameKey)}</span>
+              ${i.prices ? "" : `<span class="item-leader" aria-hidden="true"></span><span class="item-price">${fmt(i.price)}</span>`}
+            </div>
+            ${i.descKey ? `<p class="item-desc">${t(i.descKey)}</p>` : ""}
+            ${i.metaKey ? `<span class="item-meta">${t(i.metaKey)}</span>` : ""}
+            ${i.prices ? `<div class="sizes">${i.prices.map((p, k) => `<div class="size"><small>${t(SIZE_KEYS[k])}</small><b>${euro(p)}</b></div>`).join("")}</div>` : ""}
+          </div>`).join("")}
+        </div>
+      </div>`).join("");
+  }
+
+  /* ---------- Menu tabs ---------- */
+  const tabs = [...document.querySelectorAll(".tab")];
+  function selectTab(tab) {
+    tabs.forEach(tb => {
+      const on = tb === tab;
+      tb.setAttribute("aria-selected", on);
+      tb.tabIndex = on ? 0 : -1;
+      document.getElementById(tb.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener("click", () => selectTab(tab));
+    tab.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const next = tabs[(idx + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+        selectTab(next); next.focus();
+      }
+    });
+  });
+
+
+  /* ---------- Build it your way ---------- */
+  const WHATSAPP = "35799403810";   // Confirm with the owner this number is on WhatsApp
+  const bBurger = document.getElementById("b-burger");
+  const bSize = document.getElementById("b-size");
+  const bNote = document.getElementById("b-note");
+  const bMsg = document.getElementById("b-msg");
+
+  MENU.burgers[0].items.forEach(i => bBurger.add(new Option(i.name, i.name)));
+  bBurger.addEventListener("change", () => {
+    const item = MENU.burgers[0].items.find(i => i.name === bBurger.value);
+    bSize.disabled = !!(item && !item.prices);
+    if (bSize.disabled) bSize.value = "";
+  });
+
+  document.querySelectorAll(".chips button").forEach(btn =>
+    btn.addEventListener("click", () => btn.setAttribute("aria-pressed", btn.getAttribute("aria-pressed") !== "true")));
+
+  const picked = kind => [...document.querySelectorAll(`.chips[data-kind="${kind}"] button[aria-pressed="true"]`)].map(b => b.textContent.trim());
+
+  function buildMessage() {
+    const lines = [];
+    if (bBurger.value) lines.push(`${t("msgBurger")}: ${bBurger.value}${bSize.value ? " (" + bSize.value + ")" : ""}`);
+    else if (bSize.value) lines.push(`${t("msgPatty")}: ${bSize.value}`);
+    if (picked("toppings").length) lines.push(`${t("msgToppings")}: ${picked("toppings").join(", ")}`);
+    if (picked("sauces").length) lines.push(`${t("msgSauces")}: ${picked("sauces").join(", ")}`);
+    if (bNote.value.trim()) lines.push(`${t("msgSpecialRequest")}: ${bNote.value.trim()}`);
+    return lines.join("\n");
+  }
+
+  function emptyCheck() {
+    const m = buildMessage();
+    if (!m) { bMsg.textContent = t("msgPickSomething"); return null; }
+    return m;
+  }
+
+  document.getElementById("b-wa").addEventListener("click", () => {
+    const m = emptyCheck(); if (!m) return;
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t("waGreeting") + "\n" + m)}`, "_blank", "noopener");
+    bMsg.textContent = t("msgOpeningWhatsapp");
+  });
+
+  document.getElementById("b-clear").addEventListener("click", () => {
+    document.querySelectorAll(".chips button").forEach(b => b.setAttribute("aria-pressed", "false"));
+    bBurger.value = ""; bSize.value = ""; bSize.disabled = false; bNote.value = ""; bMsg.textContent = "";
+  });
+
+  /* ---------- Opening hours (Cyprus time) ---------- */
+  const OPEN = { open: 17.5, close: 22 };   // 5:30 pm – 10 pm
+  const CLOSED_DAYS = [1];                  // Monday
+  const ORDER = [2,3,4,5,6,0,1];            // Tuesday first
+
+  const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Nicosia" }));
+  const today = now.getDay();
+  const hourNow = now.getHours() + now.getMinutes() / 60;
+
+  function renderHours() {
+    const days = t("days");
+    document.getElementById("hours-body").innerHTML = ORDER.map(d => `
+      <tr class="${d === today ? "today" : ""}">
+        <td>${days[d]}${d === today ? " " + t("todaySuffix") : ""}</td>
+        <td>${CLOSED_DAYS.includes(d) ? t("hoursClosed") : t("hoursRange")}</td>
+      </tr>`).join("");
+  }
+
+  function updateStatus() {
+    const statusEl = document.getElementById("status");
+    const statusText = document.getElementById("status-text");
+    statusEl.classList.remove("closed");
+    const openToday = !CLOSED_DAYS.includes(today);
+    if (openToday && hourNow >= OPEN.open && hourNow < OPEN.close) {
+      statusText.textContent = t("statusOpenNow");
+    } else if (openToday && hourNow < OPEN.open) {
+      statusText.textContent = t("statusOpensToday");
+      statusEl.classList.add("closed");
+    } else {
+      let next = (today + 1) % 7;
+      while (CLOSED_DAYS.includes(next)) next = (next + 1) % 7;
+      const dayLabel = next === (today + 1) % 7 ? t("tomorrow") : t("days")[next];
+      statusText.textContent = t("statusClosedOpens").replace("{day}", dayLabel);
+      statusEl.classList.add("closed");
+    }
+  }
+
+  /* ---------- Language toggle ---------- */
+  function applyTranslations() {
+    document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.getAttribute("data-i18n")); });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.getAttribute("data-i18n-placeholder")); });
+    document.querySelectorAll("[data-i18n-alt]").forEach(el => { el.alt = t(el.getAttribute("data-i18n-alt")); });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach(el => { el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria-label"))); });
+    document.querySelectorAll("[data-i18n-title]").forEach(el => { el.setAttribute("title", t(el.getAttribute("data-i18n-title"))); });
+    Object.keys(MENU).forEach(k => renderMenu("panel-" + k, MENU[k]));
+    renderHours();
+    updateStatus();
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    try { localStorage.setItem("bg-lang", lang); } catch (_) {}
+    document.documentElement.lang = lang === "gr" ? "el" : "en";
+    document.querySelectorAll(".lang-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    applyTranslations();
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+  setLang(currentLang);
+</script>
+</body>
+</html>
