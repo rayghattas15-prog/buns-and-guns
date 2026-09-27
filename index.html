@@ -929,19 +929,22 @@ function priceHTML(it){
   const v=Array.isArray(it.price)?eur(it.price[0])+"–"+it.price[1].toFixed(2):eur(it.price);
   return `<span class="pv">${v}</span>`;
 }
+/* sheet rows carry their own Greek (name_gr, …); built-in rows go through GR keys */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+const txt=(gr,k,en)=>esc(lang==="gr"&&gr?gr:tr(k,en));
 function render(animate){
   $('sizewrap').classList.toggle('off',tab!=="burgers");
   let n=0;
   $('menuBox').innerHTML=MENU[tab].map(g=>
-    `<div class="group"><p class="gname">${tr(g.gk,g.group)}<sup>${String(g.items.length).padStart(2,"0")}</sup></p><div class="mlist">`+
+    `<div class="group"><p class="gname">${txt(g.group_gr,g.gk,g.group)}<sup>${String(g.items.length).padStart(2,"0")}</sup></p><div class="mlist">`+
     g.items.map(it=>{
       const pic=PIC[it.name];
       return `<div class="mrow${g.flat?" flat":""}${pic?"":" nopic"}" style="--i:${n++}">
         ${pic?`<button class="thumb" type="button" data-src="${pic}" aria-label="Open photograph"><img src="${pic}" alt="" loading="lazy"></button>`:""}
         <div>
-          <h3>${tr(it.nk,it.name)}</h3>
-          ${it.desc?`<p class="desc">${it.desc}</p>`:""}
-          ${it.meta?`<span class="meta">${tr(it.mk,it.meta)}</span>`:""}
+          <h3>${txt(it.name_gr,it.nk,it.name)}</h3>
+          ${it.desc||it.desc_gr?`<p class="desc">${txt(it.desc_gr,null,it.desc||it.desc_gr)}</p>`:""}
+          ${it.meta?`<span class="meta">${txt(null,it.mk,it.meta)}</span>`:""}
         </div>
         <div class="mprice">${priceHTML(it)}</div>
       </div>`}).join("")+`</div></div>`
@@ -969,6 +972,129 @@ $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   switchTab(b.dataset.f);
 });
 render(false);
+
+/* ═══ menu from Google Sheets ═══
+   Paste the sheet's File → Share → Publish to web → CSV link here. Empty = built-in MENU only.
+   The built-in MENU above renders first; the sheet replaces it only if it arrives and parses.
+   Problems are reported in the console with their sheet row numbers. */
+const SHEET_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQuzsdxy8cdBjB0yvF6qVca2WF87qJQGVILHnjG5Axb6oSrU1lmGl43YVUpoju9awFV5VWag_dIVOkj/pub?gid=1429582165&single=true&output=csv";
+const TABS=["burgers","sides","protein","drinks"];
+const SECTION={},BUILTIN={};
+TABS.forEach(t=>MENU[t].forEach(g=>{
+  SECTION[g.group.toLowerCase()]={tab:t,gk:g.gk};
+  g.items.forEach(it=>{BUILTIN[it.name.toLowerCase()]=it});
+}));
+
+function parseCSV(s){
+  const rows=[];let row=[],f="",q=false;
+  s=s.replace(/^﻿/,"");
+  for(let i=0;i<s.length;i++){
+    const c=s[i];
+    if(q){if(c!=='"')f+=c;else if(s[i+1]==='"'){f+='"';i++}else q=false}
+    else if(c==='"')q=true;
+    else if(c===','){row.push(f);f=""}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&s[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=""}
+    else f+=c;
+  }
+  if(f||row.length){row.push(f);rows.push(row)}
+  return rows;
+}
+/* "8.50", "8,50", "€8.50", "8.50 euro" → 8.5; anything without a sane number → null */
+function money(s){
+  const m=String(s).match(/\d+(?:[.,]\d{1,2})?/);
+  const v=m?parseFloat(m[0].replace(",",".")):NaN;
+  return v>0&&v<1000?v:null;
+}
+/* price cell: one price, or a range "5.50 - 6.50" */
+function priceCell(s){
+  const p=String(s).split(/\s*[-–—]\s*|\s+to\s+/i).map(money).filter(v=>v!=null);
+  return p.length>=2?[p[0],p[1]]:p.length?p[0]:null;
+}
+/* sizes cell: the four patty prices, "8.50 / 10.50 / 10.50 / 16" (also ; | or spaces) */
+function sizeList(s){
+  s=String(s).trim();if(!s)return [];
+  let parts=s.split(/[\/;|]/);
+  if(parts.length<2)parts=s.split(/,\s+|\s+/);
+  if(parts.length<2&&(s.match(/,/g)||[]).length===3)parts=s.split(",");
+  return parts.map(money).filter(v=>v!=null);
+}
+
+function sheetMenu(text,quiet){
+  const rows=parseCSV(text).map(r=>r.map(c=>c.trim()));
+  const head=(rows.shift()||[]).map(h=>h.toLowerCase().replace(/[\s-]+/g,"_"));
+  const C={};
+  ["section","section_gr","tab","name_en","name_gr","description_en","description_gr","price","sizes"].forEach(k=>C[k]=head.indexOf(k));
+  if(C.section<0||C.name_en<0||(C.price<0&&C.sizes<0))
+    throw Error("missing a required column — needs section, name_en and price (or sizes). Found: "+head.join(", "));
+  const get=(r,k)=>C[k]<0?"":(r[C[k]]||"");
+  const out={};TABS.forEach(t=>out[t]=[]);
+  let cur=null,lastTab="burgers";
+  rows.forEach((r,i)=>{
+    const row=i+2,warn=m=>{if(!quiet)console.warn(`[menu sheet] row ${row}: ${m}`)};
+    if(!r.some(c=>c))return;
+    const name=get(r,"name_en")||get(r,"name_gr");
+    if(!name)return warn("no name, skipped");
+    const secName=get(r,"section")||(cur&&cur.group);   /* blank section = same as the row above */
+    if(!secName)return warn("no section, skipped");
+    const known=SECTION[secName.toLowerCase()],tabCell=get(r,"tab").toLowerCase();
+    const t=(tabCell&&TABS.find(k=>tabCell.includes(k)))||(known&&known.tab)||lastTab;
+    lastTab=t;
+    let g=out[t].find(x=>x.group.toLowerCase()===secName.toLowerCase());
+    if(!g){g={group:secName,group_gr:get(r,"section_gr"),gk:known&&known.gk,items:[]};out[t].push(g)}
+    cur=g;
+    /* matching built-in item keeps its photo, calorie line and Greek name */
+    const base=BUILTIN[name.toLowerCase()]||{};
+    const it={name,name_gr:get(r,"name_gr"),nk:base.nk,desc:get(r,"description_en"),desc_gr:get(r,"description_gr"),meta:base.meta,mk:base.mk};
+    const sz=sizeList(get(r,"sizes")),pr=priceCell(get(r,"price"));
+    if(get(r,"sizes")&&sz.length!==4)warn(`sizes needs 4 prices (single / double / classic / wagyu), got "${get(r,"sizes")}"`);
+    if(sz.length===4)it.prices=sz;
+    else if(pr!=null)it.price=pr;
+    else return warn(`no usable price in "${get(r,"price")}", skipped`);
+    g.items.push(it);
+  });
+  let total=0;
+  TABS.forEach(t=>{
+    out[t]=out[t].filter(g=>g.items.length);
+    out[t].forEach(g=>{g.flat=!g.items.some(it=>it.desc||it.desc_gr);total+=g.items.length});
+  });
+  if(!total)throw Error("no usable rows");
+  return out;
+}
+
+/* a tab the sheet leaves empty always falls back to the built-in one, never to an older sheet */
+const BUILT_MENU={...MENU};
+function applySheet(m,quiet){
+  TABS.forEach(t=>{
+    MENU[t]=m[t].length?m[t]:BUILT_MENU[t];
+    if(!m[t].length&&!quiet)console.warn(`[menu sheet] nothing for the ${t} tab — keeping the built-in one`);
+  });
+  render(false);
+}
+
+/* the last sheet that parsed is kept in this browser and drawn before the first paint,
+   so returning visitors see sheet prices straight away; it is tied to SHEET_URL */
+const CACHE_KEY="bg-menu-sheet";
+let cachedCSV=null;
+if(SHEET_URL)try{
+  const c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");
+  if(c&&c.url===SHEET_URL&&typeof c.csv==="string"){applySheet(sheetMenu(c.csv,true),true);cachedCSV=c.csv}
+}catch(_){try{localStorage.removeItem(CACHE_KEY)}catch(_){}}
+
+async function loadSheet(){
+  if(!SHEET_URL)return;
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),8000);
+  try{
+    const res=await fetch(SHEET_URL,{signal:ctl.signal});
+    if(!res.ok)throw Error("HTTP "+res.status);
+    const text=await res.text();
+    if(/^\s*</.test(text))throw Error("got a web page, not CSV — publish the sheet as CSV");
+    if(text===cachedCSV)return;                    /* unchanged: nothing to redraw */
+    applySheet(sheetMenu(text));
+    try{localStorage.setItem(CACHE_KEY,JSON.stringify({url:SHEET_URL,csv:text}))}catch(_){}
+  }catch(e){console.warn(`[menu sheet] using the ${cachedCSV!=null?"cached sheet":"built-in menu"}:`,e.name==="AbortError"?"timed out":e.message)}
+  finally{clearTimeout(timer)}
+}
+loadSheet();
 
 /* ═══ faq ═══ */
 function renderFaq(){
