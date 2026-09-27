@@ -621,11 +621,11 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
         <div class="rv">
           <p class="kicker"><span data-i18n="sigKicker">The signature</span></p>
           <h2>The <em>OG</em>.</h2>
-          <p class="lede">Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.</p>
+          <p class="lede" data-fact="desc:The OG">Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.</p>
         </div>
         <div class="pts">
           <div class="pti rv"><span class="n">01</span><div><h4>Gun Sauce</h4><p data-i18n="sigGunText">The house sauce. It is also on the Burger Salad and the Animal Style.</p></div></div>
-          <div class="pti rv" style="--d:.08s"><span class="n">02</span><div><h4 data-i18n="sigWays">Four ways to order it</h4><p data-i18n="sigWaysText">Single 100 g, double 200 g, classic 200 g or wagyu 200 g — from €8.50 to €16.</p></div></div>
+          <div class="pti rv" style="--d:.08s"><span class="n">02</span><div><h4 data-i18n="sigWays">Four ways to order it</h4><p data-i18n="sigWaysText">Single 100 g, double 200 g, classic 200 g or wagyu 200 g — from <span data-fact="ogMin">€8.50</span> to <span data-fact="ogMax">€16</span>.</p></div></div>
           <div class="pti rv" style="--d:.16s"><span class="n">03</span><div><h4 data-i18n="sigLoad">Load it up</h4><p data-i18n="sigLoadText">Extra smash or classic patty, egg, bacon or cheese from the add-ons.</p></div></div>
         </div>
         <div class="cta rv"><button class="btn" type="button" data-go="menu"><span data-i18n="seeMenu">See the menu</span><span class="ar" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button></div>
@@ -635,11 +635,11 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
     <div class="duo">
       <button class="dish" type="button" data-src="images/dish-sweet-fries.jpg" aria-label="Open photograph" data-t3d="rise" data-side="-1" data-hover>
         <figure class="frame"><div class="par" data-par=".04"><img src="images/dish-sweet-fries.jpg" alt="Sweet potato fries" loading="lazy"></div></figure>
-        <div class="cap"><b data-i18n="sideSweetFries">Sweet Fries</b><span>€4.50</span></div>
+        <div class="cap"><b data-i18n="sideSweetFries">Sweet Fries</b><span data-fact="price:Sweet Fries">€4.50</span></div>
       </button>
       <button class="dish" type="button" data-src="images/dish-chicken-fingers.jpg" aria-label="Open photograph" data-t3d="rise" data-side="1" data-hover>
         <figure class="frame"><div class="par" data-par=".04"><img src="images/dish-chicken-fingers.jpg" alt="Buttermilk fried chicken strips with fries" loading="lazy"></div></figure>
-        <div class="cap"><b data-i18n="nameChickenFingers">Chicken Fingers</b><span>€9.50</span></div>
+        <div class="cap"><b data-i18n="nameChickenFingers">Chicken Fingers</b><span data-fact="price:Chicken Fingers">€9.50</span></div>
       </button>
     </div>
   </div>
@@ -850,7 +850,7 @@ const FAQ=[
 /* ═══ Greek — live-site strings plus the v4/v5 additions, unchanged ═══ */
 const GR={"langToggleLabel":"Γλώσσα","navMenu":"Μενού","navIgLabel":"Buns and Guns στο Instagram","orderFoody":"Παραγγελία στο Foody","lead":"Smash και wagyu μπέργκερ, chicken fingers και truffle fries στην Πύλα, Λάρνακα. Ένα πλήρες γεύμα για περίπου €10–15.","orderDeliveryFoody":"Παραγγελία delivery στο Foody","seeMenu":"Δείτε το μενού","menuTitle":"Μενού","tabBurgers":"Μπέργκερ","tabSides":"Συνοδευτικά","tabProtein":"Πρωτεΐνη & επιδόρπια","tabDrinks":"Ποτά","labelPatty":"Μπιφτέκι","pricesNote":"Οι τιμές είναι σε ευρώ και ενδέχεται να αλλάξουν.","allergyWarning":"Παρακαλούμε ενημερώστε το προσωπικό μας για τυχόν αλλεργίες.","insideTitle":"Φάτε κάτω από τα νέον","insideText":"Τούβλινοι τοίχοι, κόκκινο νέον και ένας αστροναύτης που σερβίρει μπέργκερ σε όλο τον γαλαξία. Πιάστε ένα τραπέζι και μείνετε λίγο.","reviewGoogle":"Κριτική στο Google","reviewTripadvisor":"Κριτική στο TripAdvisor","getDirections":"Οδηγίες στο Google Maps","callBtn":"Κλήση","groupAddons":"Πρόσθετα","addExtraSmash":"Επιπλέον μπιφτέκι smash 100γρ","addExtraClassic":"Επιπλέον κλασικό μπιφτέκι 200γρ","addEgg":"Αυγό","addBacon":"Μπέικον","addCheese":"Τυρί","groupFries":"Πατάτες","sideFries":"Πατάτες","sideSweetFries":"Γλυκοπατάτες","sideLoaded":"Φορτωμένες πατάτες","sideTruffleFries":"Πατάτες με τρούφα","groupMoreSides":"Περισσότερα συνοδευτικά","groupProtein":"Πρωτεΐνη","groupDesserts":"Επιδόρπια","drinkSoft":"Αναψυκτικά","drinkBottledSoft":"Εμφιαλωμένα αναψυκτικά","drinkJuice":"Χυμός","drinkWater":"Νερό","groupSpecials":"Σπέσιαλ","drinkMilkshakes":"Μιλκσέικ","drinkLemonades":"Stetes Lemonades","drinkDraft":"Draft Pivo / IPA","sizeSingle":"Μονό 100γρ","sizeDouble":"Διπλό 200γρ","sizeClassic":"Κλασικό 200γρ","sizeWagyu":"Wagyu 200γρ","hoursClosed":"Κλειστά","hoursRange":"17:30 – 22:00","days":["Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο"],"tomorrow":"αύριο","statusOpenNow":"Ανοιχτά τώρα έως τις 22:00","statusOpensToday":"Ανοίγει σήμερα στις 17:30","statusClosedOpens":"Κλειστά τώρα. Ανοίγει {day} στις 17:30"};
 /* Greek written for v4/v5 — not owner-supplied: have a native speaker check it. */
-Object.assign(GR,{"lblAddress":"Διεύθυνση","lblPhone":"Τηλέφωνο","lblSpend":"Μέσο κόστος","lblDelivery":"Delivery","lblClosed":"Κλειστά","lblRated":"Βαθμολογία","ratedGoogle":"4.8 ★ στο Google","faqKicker":"Καλό να ξέρετε","faqTitle":"Πριν παραγγείλετε.","revCount":"Από 311 κριτικές στο Google.","revAsk":"Φάγατε εδώ;","revAskText":"Αφήστε μια κριτική εκεί που θα τη διαβάσει το επόμενο τραπέζι. Παίρνει μόνο ένα λεπτό.","sigKicker":"Η σπεσιαλιτέ μας","sigGunText":"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Animal Style.","sigWays":"Τέσσερις τρόποι να το παραγγείλετε","sigWaysText":"Μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ — από €8.50 έως €16.","sigLoad":"Φόρτωσέ το","sigLoadText":"Επιπλέον smash ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.","statSizes":"Μεγέθη μπιφτεκιού","statProtein":"Πρωτεΐνη στο Buff Burger","statReviews":"Από 311 κριτικές στο Google","statDays":"Βράδια την εβδομάδα, Τρίτη έως Κυριακή","ticker":"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ · SMASH ΚΑΙ WAGYU ΜΠΕΡΓΚΕΡ · GUN SAUCE · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · PIERIAS, PYLA · "});
+Object.assign(GR,{"lblAddress":"Διεύθυνση","lblPhone":"Τηλέφωνο","lblSpend":"Μέσο κόστος","lblDelivery":"Delivery","lblClosed":"Κλειστά","lblRated":"Βαθμολογία","ratedGoogle":"4.8 ★ στο Google","faqKicker":"Καλό να ξέρετε","faqTitle":"Πριν παραγγείλετε.","revCount":"Από 311 κριτικές στο Google.","revAsk":"Φάγατε εδώ;","revAskText":"Αφήστε μια κριτική εκεί που θα τη διαβάσει το επόμενο τραπέζι. Παίρνει μόνο ένα λεπτό.","sigKicker":"Η σπεσιαλιτέ μας","sigGunText":"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Animal Style.","sigWays":"Τέσσερις τρόποι να το παραγγείλετε","sigWaysText":"Μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ — από <span data-fact='ogMin'>€8.50</span> έως <span data-fact='ogMax'>€16</span>.","sigLoad":"Φόρτωσέ το","sigLoadText":"Επιπλέον smash ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.","statSizes":"Μεγέθη μπιφτεκιού","statProtein":"Πρωτεΐνη στο Buff Burger","statReviews":"Από 311 κριτικές στο Google","statDays":"Βράδια την εβδομάδα, Τρίτη έως Κυριακή","ticker":"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ · SMASH ΚΑΙ WAGYU ΜΠΕΡΓΚΕΡ · GUN SAUCE · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · PIERIAS, PYLA · "});
 Object.assign(GR,{"nameCheeseburger":"Τσίζμπεργκερ","nameChickenBurger":"Μπέργκερ κοτόπουλο","nameChickenFingers":"Φιλετάκια κοτόπουλου","nameBurgerSalad":"Σαλάτα μπέργκερ","nameSkilletCookie":"Μπισκότο στο τηγανάκι","nameFrenchToast":"Αυγόφετες","metaBurgerSalad":"420 θερμίδες · 50γρ πρωτεΐνη","metaBuffBurger":"620 θερμίδες · 108γρ πρωτεΐνη","findUs":"Βρείτε μας","visitLede":"Πιάστε ένα τραπέζι κάτω από τα νέον ή παραγγείλετε delivery μέσω Foody.","perPerson":"Περίπου €10–15 το άτομο","copyAddress":"Αντιγραφή διεύθυνσης","share":"Κοινοποίηση","toastAddress":"Η διεύθυνση αντιγράφηκε","toastLink":"Ο σύνδεσμος αντιγράφηκε","toastCopyFailed":"Η αντιγραφή απέτυχε"});
 Object.assign(GR,{"curView":"Προβολή","lbClose":"Κλείσιμο","lbPrev":"Προηγούμενη φωτογραφία","lbNext":"Επόμενη φωτογραφία"});
 Object.assign(GR,{"order":"Παραγγελία","navSignature":"Σπεσιαλιτέ","navRoom":"Ο χώρος","navReviews":"Κριτικές","mondays":"Δευτέρα","menuKicker":"Ο κατάλογος","menuTitle2":"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.","menuLede":"Κάθε μπέργκερ χτίζεται σε ένα από τέσσερα μπιφτέκια — μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ. Διαλέξτε ένα και όλες οι τιμές προσαρμόζονται.","roomKicker":"Ο χώρος","footLine":"Θες να σε κάνω μπέργκερ;","footVisit":"Επισκεφθείτε μας","footOrder":"Παραγγελία","footHours":"Τρίτη έως Κυριακή · 17:30 – 22:00"});
@@ -951,6 +951,32 @@ function render(animate){
   ).join("");
   $('menuBox').classList.toggle('enter',!!animate&&!reduce);
   requestAnimationFrame(()=>placeInd($('sizebar'),current($('sizebar'))));
+  syncFacts();
+}
+
+/* prices and descriptions quoted outside the board ([data-fact]) are read from MENU,
+   so they follow the sheet; runs after every render, which also covers a language switch */
+const findItem=name=>{
+  for(const t in MENU)for(const g of MENU[t])for(const it of g.items)if(it.name.toLowerCase()===name.toLowerCase())return it;
+  return null;
+};
+const whole=n=>"€"+(n%1?n.toFixed(2):n);   /* €16, €8.50 — the style of the prose */
+function syncFacts(){
+  /* "four ways to order it" is about The OG; without it, span every patty-priced burger */
+  const og=findItem("The OG");
+  const ps=og&&og.prices?og.prices:MENU.burgers.flatMap(g=>g.items).flatMap(it=>it.prices||[]);
+  document.querySelectorAll('[data-fact]').forEach(el=>{
+    const [key,name]=el.dataset.fact.split(":");
+    if(key==="ogMin"&&ps.length)el.textContent=whole(Math.min(...ps));
+    else if(key==="ogMax"&&ps.length)el.textContent=whole(Math.max(...ps));
+    else if(key==="price"){
+      const it=findItem(name);   /* dropped from the menu: show no price rather than an old one */
+      el.textContent=!it?"":it.prices?eur(Math.min(...it.prices)):Array.isArray(it.price)?eur(it.price[0])+"–"+it.price[1].toFixed(2):eur(it.price);
+    }else if(key==="desc"){
+      const it=findItem(name);
+      if(it&&(it.desc||it.desc_gr))el.textContent=lang==="gr"&&it.desc_gr?it.desc_gr:it.desc||it.desc_gr;
+    }
+  });
 }
 function switchTab(t){
   if(t===tab)return;
