@@ -275,7 +275,7 @@ header.hide{transform:translateY(-100%)}
 /* ── build it your way (restored from the first site, in v6 dress) ── */
 .build{margin-top:clamp(40px,5vw,64px);padding:clamp(24px,3.4vw,44px);border-radius:var(--r);border:1px solid var(--line);background:var(--bg-2)}
 .build h3{font-size:clamp(26px,2.4vw,34px);letter-spacing:-.035em}
-.build>p{margin:10px 0 28px;color:var(--mu);font-size:15.5px;line-height:1.65;max-width:56ch}
+.build-head p{margin:10px 0 28px;color:var(--mu);font-size:15.5px;line-height:1.65;max-width:56ch}
 .picks{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
 .picks label,.note-label{display:block;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--di)}
 .picks select,#b-note{display:block;width:100%;margin-top:10px;font:500 15px var(--ui);color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:13px 14px;transition:border-color .3s var(--e)}
@@ -535,9 +535,145 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
   .marq .tr{animation:none}
   .hero-mark{animation:none}
 }
+
+/* ═════════════════════════════════════════════════════════════
+   GetLayers visual layer
+   hearth-008 behind the hero · clinker-008 behind the footer band ·
+   loader-loopstack in front of everything until the gate · brewns as
+   reference for the hero reveal, the order ticket and the header.
+   Skin only: the site's own fonts, its #FF2D3F, its tokens.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── loader-loopstack ── the numbers are the asset's: 1.2s glyph travel,
+      0.09s step, cubic-bezier(.05,.9,.1,1), 105% + 20px blur, solid by 25% */
+#ld{position:fixed;inset:0;z-index:120;background:var(--bg);transition:opacity .3s cubic-bezier(.16,1,.3,1)}
+#ld.out{opacity:0;pointer-events:none}
+html.ld-lock{overflow:hidden}
+.ld-wrap{position:absolute;left:0;right:0;bottom:20px;padding:0 20px;display:flex;justify-content:center}
+.ld-mark{margin:0 -.03em 0 0;width:100%;text-align:center;white-space:nowrap;pointer-events:none;
+  font-family:var(--v4disp);font-weight:900;font-size:calc((100vw - 40px) / 10.5);letter-spacing:-.03em;line-height:.8;
+  color:var(--red);opacity:.95;
+  /* the neon halo is drawn over the whole word, after the glyph masks, so no mask cuts it */
+  filter:drop-shadow(0 0 6px rgba(255,45,63,.85)) drop-shadow(0 0 22px rgba(255,45,63,.5))}
+.ld-mark .lw{display:inline-block;vertical-align:bottom;line-height:.8;overflow:hidden}
+.ld-mark .li{display:inline-block;opacity:0;transform:translateX(-105%);filter:blur(20px);
+  animation:ld-letter 1.2s cubic-bezier(.05,.9,.1,1) forwards}
+@keyframes ld-letter{0%{opacity:0;transform:translateX(-105%);filter:blur(20px)}25%{opacity:1}100%{opacity:.95;transform:translateX(0);filter:blur(0)}}
+
+/* ── the gate: above-the-fold content is mounted, sitting at its from-value,
+      and plays in through the loader's exit (brewns' hero numbers) ── */
+@keyframes gl-rise{from{opacity:0;translate:0 var(--gy0,12px)}to{opacity:1;translate:none}}
+@keyframes gl-fade{from{opacity:0}to{opacity:1}}
+@keyframes gl-settle{from{translate:0 28px;scale:1.04}to{translate:none;scale:none}}
+html.ld:not(.gl-ready) :is(#hd,#top .pill,#top>.wrap p,#top .cta,.herometa,.hero-mark,.scrollcue,.marq){opacity:0}
+html.ld:not(.gl-ready) #top h1 span i,html.ld:not(.gl-ready) #heroShot{animation-play-state:paused}
+html.ld #top h1 span i{transform:translateY(110%);animation:rise .9s cubic-bezier(.33,1,.68,1) forwards}
+html.ld #top h1 span:nth-child(2) i{animation-delay:.09s}
+html.ld #heroShot{animation:gl-settle 1.4s cubic-bezier(.33,1,.68,1) .05s both}
+html.ld.gl-ready #hd{--gy0:-12px;animation:gl-rise .9s var(--e) .12s both}
+html.ld.gl-ready #top .pill{--gy0:10px;animation:gl-rise .9s var(--e) both}
+html.ld.gl-ready #top>.wrap p{--gy0:16px;animation:gl-rise .65s cubic-bezier(.25,1,.5,1) .26s both}
+html.ld.gl-ready #top .cta{animation:gl-rise .9s var(--e) .52s both}
+html.ld.gl-ready .herometa{animation:gl-rise .9s var(--e) .62s both}
+html.ld.gl-ready .hero-mark{animation:spinY 8s linear infinite,gl-fade 1s var(--e) .7s both}
+html.ld.gl-ready :is(.scrollcue,.marq){animation:gl-fade 1s var(--e) .9s both}
+
+/* ── hearth-008 behind the hero ── one fragment shader, the only one above the fold.
+      The blurred-photo glow stays as the fallback when WebGL2 is not there. */
+.gl-hearth{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%}
+html.gl-hearth-on .heroglow{display:none}
+html.gl-hearth-on #top.hero:before{background:
+  linear-gradient(90deg,rgba(11,10,12,.78) 0%,rgba(11,10,12,.5) 48%,rgba(11,10,12,.12) 100%),
+  linear-gradient(180deg,rgba(11,10,12,.6) 0%,rgba(11,10,12,0) 26%,rgba(11,10,12,0) 82%,var(--bg) 100%)}
+@media(max-width:980px){
+  html.gl-hearth-on #top.hero:before{background:linear-gradient(180deg,rgba(11,10,12,.74) 0%,rgba(11,10,12,.58) 55%,rgba(11,10,12,.3) 80%,var(--bg) 100%)}
+}
+
+/* ── clinker-008 behind the footer band ── its contract: behind display type, not
+      paragraphs — so the fire burns under the big line and goes dark under the columns */
+footer{isolation:isolate;overflow:hidden}
+.gl-clinker{position:absolute;inset:0;z-index:-2;display:block;width:100%;height:100%;opacity:0;transition:opacity 1.1s ease}
+html.gl-clinker-on .gl-clinker{opacity:1}
+footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,var(--bg) 0,rgba(11,10,12,.3) clamp(70px,9vw,130px),rgba(11,10,12,.3) 100%)}
+/* the columns sit on the dark: a scrim hung from the columns themselves, so it follows them at any height */
+.fcols{position:relative}
+.fcols:before{content:"";position:absolute;left:-50vw;right:-50vw;top:-56px;bottom:-400px;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,10,12,0) 0,rgba(11,10,12,.93) 56px,var(--bg) 120px)}
+
+/* ── header over the page's surfaces (brewns' data-header-theme) ── */
+header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(255,45,63,.22)}
+@media(max-width:760px){header.foot{visibility:hidden;pointer-events:none}}
+
+/* ── the order ticket (brewns' printed receipt, in this site's type) ── */
+.build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);grid-template-areas:"head ticket" "form ticket" "send ticket";column-gap:clamp(28px,4vw,56px);align-items:start}
+.build-head{grid-area:head}.build-form{grid-area:form}.build-send{grid-area:send}
+.ticket{grid-area:ticket;position:sticky;top:110px;margin-bottom:10px;padding:22px 20px 20px;background:var(--tx);color:var(--bg);
+  font-family:var(--ui);font-size:12px;line-height:1.55;letter-spacing:.06em;text-transform:uppercase;font-variant-numeric:tabular-nums;
+  box-shadow:0 30px 60px -30px #000,0 0 50px -24px rgba(255,45,63,.55)}
+/* torn edge: a run of downward teeth, as the brewns slip ends */
+.ticket:after{content:"";position:absolute;left:0;right:0;top:100%;height:8px;
+  background:conic-gradient(from -45deg at 50% 100%,transparent 90deg,var(--tx) 0) 0 0/12px 8px repeat-x;transform:scaleY(-1)}
+.t-brand{margin:0;text-align:center;font-family:var(--v4disp);font-weight:900;font-size:15px;letter-spacing:.14em}
+.t-stamp{margin:6px 0 0;text-align:center;font-size:10.5px;color:rgba(11,10,12,.55)}
+/* dotted rule, drawn with a gradient so it stays crisp at any size */
+.t-rule{height:1px;margin:14px 0;background:repeating-linear-gradient(90deg,var(--bg) 0 3px,transparent 3px 7px)}
+.t-lines{display:grid;gap:9px;min-height:64px}
+.tl{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}
+.tl span{color:rgba(11,10,12,.55)}
+.tl b{font-weight:600;text-align:right;text-transform:none;letter-spacing:.01em;word-break:break-word}
+.t-empty{margin:0;color:rgba(11,10,12,.5);text-transform:none;letter-spacing:.01em}
+.t-foot{margin:0;text-align:center;font-size:10.5px;color:rgba(11,10,12,.55)}
+/* a new or changed line prints in, in the jerks of a thermal head */
+.tl.pr{animation:t-print .42s steps(7,end) both}
+@keyframes t-print{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+/* and the whole slip feeds out of its slot when the block arrives */
+.build.rv .ticket{clip-path:inset(-60px -60px 100% -60px)}
+.build.rv.in .ticket{animation:t-feed 1.1s steps(14,end) .35s both}
+@keyframes t-feed{from{clip-path:inset(-60px -60px 100% -60px)}to{clip-path:inset(-60px)}}
+@media(max-width:960px){
+  .build{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "form" "ticket" "send"}
+  .ticket{position:relative;top:auto;margin:30px 0 22px;max-width:380px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #ld{display:none}
+  .build.rv .ticket,.build.rv.in .ticket{clip-path:none;animation:none}
+  .tl.pr{animation:none}
+}
 </style>
 </head>
 <body>
+
+<!-- GetLayers · loader-loopstack: the wordmark sweeps in glyph by glyph along the bottom
+     edge; the last glyph's landing is the gate, and the hero rises in through the exit.
+     Hard cap: gone 2.6s after navigation start, whatever the phone is doing. -->
+<div id="ld" aria-hidden="true"><div class="ld-wrap"><p class="ld-mark">BUNS AND GUNS</p></div></div>
+<script>
+(function(){
+  var d=document.documentElement,ld=document.getElementById('ld');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ld.remove();return}
+  d.classList.add('ld','ld-lock');
+  var m=ld.querySelector('.ld-mark'),t=m.textContent,last=null;
+  m.textContent='';
+  for(var i=0;i<t.length;i++){
+    var w=document.createElement('span'),n=document.createElement('span');
+    w.className='lw';n.className='li';
+    n.textContent=t[i]===' '?' ':t[i];
+    n.style.animationDelay=(i*.09)+'s';           /* SWEEP_STEP — the asset's own number */
+    w.appendChild(n);m.appendChild(w);last=n;
+  }
+  var done=false;
+  function gate(){
+    if(done)return;done=true;
+    d.classList.add('gl-ready');ld.classList.add('out');   /* flip at the START of the exit */
+    document.dispatchEvent(new Event('gl:ready'));
+    setTimeout(function(){d.classList.remove('ld-lock');ld.remove()},300);
+  }
+  last.addEventListener('animationend',gate);
+  setTimeout(gate,Math.max(0,2300-performance.now()));     /* 2.3s + 0.3s exit = 2.6s cap */
+})();
+</script>
 
 <div id="prog"></div>
 <div class="glowfield" aria-hidden="true"></div>
@@ -573,7 +709,8 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 
 <main>
 <!-- ══ hero (as v4) ══ -->
-<div class="hero" id="top">
+<div class="hero" id="top" data-header-theme="fire">
+  <canvas class="gl-hearth" aria-hidden="true"></canvas>
   <div class="heroglow" aria-hidden="true"></div>
     <svg class="hero-mark hero-mark--left" viewBox="14 4 122 138" fill="none" aria-hidden="true" focusable="false">
       <g stroke="var(--red)" stroke-linecap="round" stroke-linejoin="round">
@@ -679,9 +816,12 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
     <div id="menuBox" class="rv"></div>
 
     <div class="build rv" id="build">
-      <h3 data-i18n="buildTitle">Build it your way</h3>
-      <p data-i18n="buildIntro">Pick your burger and extras, add a note, then send it with your order.</p>
+      <div class="build-head">
+        <h3 data-i18n="buildTitle">Build it your way</h3>
+        <p data-i18n="buildIntro">Pick your burger and extras, add a note, then send it with your order.</p>
+      </div>
 
+      <div class="build-form">
       <div class="picks">
         <label><span data-i18n="labelBurger">Burger</span>
           <select id="b-burger"><option value="" data-i18n="anyBurger">Any burger</option></select>
@@ -711,12 +851,25 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 
       <label class="note-label" for="b-note" data-i18n="labelSpecialRequests">Special requests</label>
       <textarea id="b-note" rows="3" maxlength="300" data-i18n-ph="notePlaceholder" placeholder="For example: no sauce, no onion, well done, sauce on the side"></textarea>
-
-      <div class="send">
-        <button type="button" class="btn" id="b-wa" data-i18n="sendWhatsapp">Send on WhatsApp</button>
-        <button type="button" class="btn ghost" id="b-clear" data-i18n="clearBtn">Clear</button>
       </div>
-      <p class="send-msg" id="b-msg" role="status"></p>
+
+      <!-- the slip: what Send on WhatsApp will send, printed as it is built (visual only) -->
+      <div class="ticket" id="ticket" aria-hidden="true">
+        <p class="t-brand">Buns &amp; Guns</p>
+        <p class="t-stamp" id="ticketStamp"></p>
+        <div class="t-rule"></div>
+        <div class="t-lines" id="ticketLines"></div>
+        <div class="t-rule"></div>
+        <p class="t-foot">Pierias, Pyla · 99 403810</p>
+      </div>
+
+      <div class="build-send">
+        <div class="send">
+          <button type="button" class="btn" id="b-wa" data-i18n="sendWhatsapp">Send on WhatsApp</button>
+          <button type="button" class="btn ghost" id="b-clear" data-i18n="clearBtn">Clear</button>
+        </div>
+        <p class="send-msg" id="b-msg" role="status"></p>
+      </div>
     </div>
 
     <div class="menufoot rv">
@@ -847,7 +1000,8 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 </section>
 </main>
 
-<footer>
+<footer data-header-theme="fire">
+  <canvas class="gl-clinker" aria-hidden="true"></canvas>
   <div class="wrap">
     <p class="fline rv" data-i18n="footLine">You wanna burger me?</p>
     <div class="fcols">
@@ -1493,6 +1647,7 @@ function go(id){
 }
 function startLenis(){
   if(reduce||!window.Lenis||lenis)return;
+  if(document.documentElement.classList.contains('ld-lock')){setTimeout(startLenis,150);return}   /* scroll waits for the loader */
   lenis=new Lenis({lerp:.085,smoothWheel:true,wheelMultiplier:1});
   (function raf(t){lenis.raf(t);requestAnimationFrame(raf)})(performance.now());
 }
@@ -1675,13 +1830,445 @@ topSpy.observe($('top'));
 $('yr').textContent=new Date().getFullYear();
 {const h=document.querySelector('#top h1'),last=h.querySelector('span:last-child i');
  const free=()=>h.classList.add('risen');
- if(reduce)free();else{last.addEventListener('animationend',free,{once:true});setTimeout(free,1800)}}
+ /* behind the loader the lines are still waiting, so the fallback clock starts at the gate */
+ const arm=()=>setTimeout(free,1800),root=document.documentElement;
+ if(reduce)free();else{last.addEventListener('animationend',free,{once:true});
+   root.classList.contains('ld')&&!root.classList.contains('gl-ready')?document.addEventListener('gl:ready',arm,{once:true}):arm()}}
 addEventListener('resize',placeAll);
 (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{
   placeAll();mHalf=0;
   requestAnimationFrame(()=>document.body.classList.add('ready'));
 });
 setTimeout(()=>document.body.classList.add('ready'),1500);
+</script>
+<script>
+/* ═══ GetLayers gradients ═══════════════════════════════════════════════
+   hearth  · roll hearth-008  → behind the hero          (https://www.getlayers.ai/?layer=hearth)
+   clinker · roll clinker-008 → behind the footer band   (https://www.getlayers.ai/?layer=clinker)
+   Each FRAG below is the asset's shader exactly as GetLayers ships it. Colour comes
+   ONLY from CONFIG: the roll's values are merged over the source CONFIG, then the five
+   palette keys are tinted to this site's own tokens (--bg, --card, --red-2, --red, the
+   #FF7A86 light red). Never recolour in the shader.
+   The loop is the portable source's loop: clamped clock, two-pole pointer, paused
+   off-screen and in a hidden tab. Added here: canvas-relative sizing, half resolution
+   and ~30 fps on phones, one still frame under prefers-reduced-motion, lazy start. */
+const GL_TINT={bgColor:"#0B0A0C",colorA:"#17131A",colorB:"#E3202F",colorC:"#FF2D3F",colorD:"#FF7A86"};
+const GL_HEARTH={
+  FRAG:`#version 300 es
+precision highp float;
+out vec4 fragColor;
+
+uniform vec2  iResolution;
+uniform float iTime;
+uniform vec2  iMouse;          // aspect-corrected units, same space as uv — trails the cursor
+uniform vec2  iMouseVel;       // lead minus body: where the pointer is heading, and how hard
+
+uniform vec3  uBg, uColorA, uColorB, uColorC, uColorD;
+uniform float uScale, uSpeed, uRise, uFlicker, uBedHeight, uCoal;
+uniform float uRoughness, uLacunarity, uContrast, uMidpoint, uSink, uGlow;
+uniform float uGrain, uDither, uVignette, uPointerRadius, uPointerStrength, uPointerLift;
+uniform float uWake, uParallax;
+
+#define OCTAVES 4
+
+float hash1(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
+
+vec2 hash2(vec2 p) {
+  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+  return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+}
+
+float snoise(vec2 p) {
+  const float K1 = 0.366025404, K2 = 0.211324865;
+  vec2 i = floor(p + (p.x + p.y) * K1);
+  vec2 a = p - i + (i.x + i.y) * K2;
+  float m = step(a.y, a.x);
+  vec2 o = vec2(m, 1.0 - m);
+  vec2 b = a - o + K2;
+  vec2 c = a - 1.0 + 2.0 * K2;
+  vec3 h = max(0.5 - vec3(dot(a, a), dot(b, b), dot(c, c)), 0.0);
+  vec3 n = h * h * h * h * vec3(dot(a, hash2(i)), dot(b, hash2(i + o)), dot(c, hash2(i + 1.0)));
+  return dot(n, vec3(70.0));
+}
+
+float fbm(vec2 p) {
+  float v = 0.0, amp = 0.5;
+  for (int i = 0; i < OCTAVES; i++) {
+    v += amp * snoise(p);
+    p *= uLacunarity;
+    amp *= uRoughness;
+  }
+  return v;
+}
+
+vec3 ramp4(float t) {
+  vec3 c = mix(uColorA, uColorB, smoothstep(0.00, 0.36, t));
+  c = mix(c, uColorC, smoothstep(0.32, 0.70, t));
+  c = mix(c, uColorD, smoothstep(0.66, 1.00, t));
+  return c;
+}
+
+// triangular-PDF dither — the only reliable cure for 8-bit gradient banding
+float triDither(vec2 fc) {
+  float a = fract(sin(dot(fc, vec2(12.9898, 78.233))) * 43758.5453);
+  float b = fract(sin(dot(fc + 17.0, vec2(12.9898, 78.233))) * 43758.5453);
+  return (a + b - 1.0) / 255.0;
+}
+
+
+// ---- house grain. ONE look across the collection: an integer hash (no sin() streaks),
+// triangular so it reads as film rather than static, weighted into the midtones so it
+// never crusts a black or a white. Static by default; uGrainAnim re-seeds it 24×/s.
+uniform float uGrainAnim;
+float houseGrain(vec2 fc) {
+  uvec2 q = uvec2(fc) * uvec2(1597334677u, 3812015801u)
+          + uint(floor(iTime * 24.0 * uGrainAnim)) * 2654435769u;
+  uint n = q.x ^ q.y; n = n * 1664525u + 1013904223u; n ^= n >> 16u; n *= 2246822519u; n ^= n >> 13u;
+  float a = float(n & 0xffffu) / 65535.0;
+  n *= 3266489917u; n ^= n >> 16u;
+  float b = float(n & 0xffffu) / 65535.0;
+  return a + b - 1.0;
+}
+void main() {
+  vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution) / iResolution.y;
+  float t = iTime * uSpeed;
+
+  vec2 d = uv - iMouse;
+  float near = exp(-dot(d, d) / max(1e-4, uPointerRadius * uPointerRadius));
+
+  vec2 p = (uv - iMouse * uParallax) * uScale;
+
+  /* Fanning a fire does two things and both are here: the heat leans the way the air
+     went, and it brightens where the air arrived. The lean is weighted by height so
+     the coals stay put and only the heat above them bends. */
+  float lift = smoothstep(-0.6, 0.7, uv.y);
+  p.x -= iMouseVel.x * uWake * lift;
+
+  float bed = exp(-pow(max(0.0, uv.y + 0.32), 2.0) * (3.4 / max(0.05, uBedHeight)));
+  float coals = fbm(p * 2.3 + vec2(0.0, -t * 0.12)) * 0.5 + 0.5;
+  float heat = fbm(vec2(p.x * 1.4, p.y * 0.8 - t * uRise)) * 0.5 + 0.5;
+  float lick = fbm(vec2(p.x * 3.1 + heat * 0.6, p.y * 1.6 - t * uRise * 1.9)) * 0.5 + 0.5;
+
+  /* Heat rises and thins. The bed holds the frame's only bright values and everything
+     above it is a fraction of them, so the top of the frame stays properly dark instead
+     of the whole picture cooking to white. */
+  float f = bed * (uCoal * coals + 0.30) * 0.85 + heat * 0.26 * lift + lick * uFlicker * 0.20 * lift;
+  f = clamp(f + near * uPointerLift * bed, 0.0, 1.0);
+  f *= smoothstep(0.95, -0.30, uv.y) * 0.92 + 0.08;
+  f = clamp((f - uMidpoint) * uContrast + 0.5, 0.0, 1.0);
+
+  vec3 col = ramp4(f);
+  col += uColorD * uGlow * pow(f, 4.0);
+  col = mix(uBg, col, smoothstep(0.0, max(0.01, uSink), f) * 0.9 + 0.1);
+  col *= 1.0 - uVignette * dot(uv, uv);
+  { float hgL = clamp(dot(col, vec3(0.299, 0.587, 0.114)), 0.0, 1.0);
+    col += houseGrain(gl_FragCoord.xy) * uGrain * mix(1.0, 4.0 * hgL * (1.0 - hgL), 0.6); }
+  col += triDither(gl_FragCoord.xy) * uDither;
+  fragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}`,
+  /* hearth-008, then the tint */
+  CONFIG:Object.assign({
+    bgColor:"#000000",colorA:"#2b6eff",colorB:"#e0399a",colorC:"#ff6b2e",colorD:"#ffd93f",
+    scale:1.8,speed:0.33,rise:0.45,flicker:0.55,bedHeight:0.8,coal:0.6,roughness:0.6,lacunarity:2.35,
+    contrast:1.1,midpoint:0.48,sink:0.22,glow:0.5,
+    grain:0.16,grainAnim:1,dither:1.2,vignette:0.18,
+    cursor:1,pointerRadius:0.8,pointerStrength:0.1,pointerLift:0.07,wake:2.4,parallax:0.002,
+    maxDpr:1
+  },GL_TINT)
+};
+const GL_CLINKER={
+  FRAG:`#version 300 es
+precision highp float;
+out vec4 fragColor;
+
+uniform vec2  iResolution;
+uniform float iTime;
+uniform vec2  iMouse;          // aspect-corrected units, same space as uv
+
+uniform vec3  uBg, uColorA, uColorB, uColorC, uColorD;
+uniform float uScale, uSpeed, uCellDrift, uWarp, uWarpScale, uRoughness, uLacunarity;
+uniform float uCrackWidth, uCrackGain, uEmber;
+uniform float uHeatScale, uHeatAmount, uBreathe;
+uniform float uContrast, uMidpoint, uSink, uGlow;
+uniform float uGrain, uDither, uVignette;
+uniform float uPointerRadius, uPointerStrength, uPointerHeat, uParallax;
+
+#define OCTAVES 4
+
+vec2 hash2(vec2 p) {
+  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+  return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+}
+
+vec2 hash22(vec2 p) {
+  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+  return fract(sin(p) * 43758.5453123);
+}
+
+float snoise(vec2 p) {
+  const float K1 = 0.366025404, K2 = 0.211324865;
+  vec2 i = floor(p + (p.x + p.y) * K1);
+  vec2 a = p - i + (i.x + i.y) * K2;
+  float m = step(a.y, a.x);
+  vec2 o = vec2(m, 1.0 - m);
+  vec2 b = a - o + K2;
+  vec2 c = a - 1.0 + 2.0 * K2;
+  vec3 h = max(0.5 - vec3(dot(a, a), dot(b, b), dot(c, c)), 0.0);
+  vec3 n = h * h * h * h * vec3(dot(a, hash2(i)), dot(b, hash2(i + o)), dot(c, hash2(i + 1.0)));
+  return dot(n, vec3(70.0));
+}
+
+float fbm(vec2 p) {
+  float v = 0.0, amp = 0.5;
+  for (int i = 0; i < OCTAVES; i++) {
+    v += amp * snoise(p);
+    p *= uLacunarity;
+    amp *= uRoughness;
+  }
+  return v;
+}
+
+/* F2 - F1 over a cell lattice: zero along the seam between two neighbours, rising into
+   the middle of every cell. That difference IS the crack — no edge detection needed. */
+float seam(vec2 p, float t) {
+  vec2 n = floor(p), f = fract(p);
+  float d1 = 8.0, d2 = 8.0;
+  for (int j = -1; j <= 1; j++) {
+    for (int i = -1; i <= 1; i++) {
+      vec2 g = vec2(float(i), float(j));
+      vec2 h = hash22(n + g);
+      vec2 o = 0.5 + 0.5 * sin(t * uCellDrift + 6.2831853 * h);
+      vec2 r = g + o - f;
+      float d = dot(r, r);
+      if (d < d1) { d2 = d1; d1 = d; }
+      else if (d < d2) { d2 = d; }
+    }
+  }
+  return sqrt(d2) - sqrt(d1);
+}
+
+vec3 ramp4(float t) {
+  vec3 c = mix(uColorA, uColorB, smoothstep(0.00, 0.36, t));
+  c = mix(c, uColorC, smoothstep(0.32, 0.70, t));
+  c = mix(c, uColorD, smoothstep(0.66, 1.00, t));
+  return c;
+}
+
+// triangular-PDF dither — the only reliable cure for 8-bit gradient banding
+float triDither(vec2 fc) {
+  float a = fract(sin(dot(fc, vec2(12.9898, 78.233))) * 43758.5453);
+  float b = fract(sin(dot(fc + 17.0, vec2(12.9898, 78.233))) * 43758.5453);
+  return (a + b - 1.0) / 255.0;
+}
+
+
+// ---- house grain. ONE look across the collection: an integer hash (no sin() streaks),
+// triangular so it reads as film rather than static, weighted into the midtones so it
+// never crusts a black or a white. Static by default; uGrainAnim re-seeds it 24×/s.
+uniform float uGrainAnim;
+float houseGrain(vec2 fc) {
+  uvec2 q = uvec2(fc) * uvec2(1597334677u, 3812015801u)
+          + uint(floor(iTime * 24.0 * uGrainAnim)) * 2654435769u;
+  uint n = q.x ^ q.y; n = n * 1664525u + 1013904223u; n ^= n >> 16u; n *= 2246822519u; n ^= n >> 13u;
+  float a = float(n & 0xffffu) / 65535.0;
+  n *= 3266489917u; n ^= n >> 16u;
+  float b = float(n & 0xffffu) / 65535.0;
+  return a + b - 1.0;
+}
+void main() {
+  vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution) / iResolution.y;
+  float t = iTime * uSpeed;
+
+  // POINTER — a hand fanning the coals: the crust shifts a little, and the fire under it
+  // comes up where the draught goes. Because the pointer is lerped, the heat arrives a
+  // beat after the cursor and dies away behind it.
+  vec2 d = uv - iMouse;
+  float near = exp(-dot(d, d) / max(1e-4, uPointerRadius * uPointerRadius));
+  vec2 p = (uv + d * near * uPointerStrength - iMouse * uParallax) * uScale;
+
+  // the crust is not a tidy lattice — bend it before it is broken
+  vec2 wv = vec2(fbm(p * uWarpScale + vec2(0.0, t * 0.09)),
+                 fbm(p * uWarpScale + vec2(2.8, 6.1) - t * 0.07));
+  vec2 cp = p + uWarp * wv;
+
+  float crack = seam(cp, t);
+  float line = 1.0 - smoothstep(0.0, max(0.02, uCrackWidth), crack);
+
+  // some of the bed is hotter than the rest, and it breathes
+  float heat = fbm(p * uHeatScale + vec2(-t * 0.05, t * 0.04)) * 0.5 + 0.5;
+  heat = 1.0 - uHeatAmount + uHeatAmount * heat;
+  heat *= 1.0 + uBreathe * sin(t * 0.37 + cp.x * 0.4);
+  heat += near * uPointerHeat;
+
+  float f = clamp(line * uCrackGain * heat + uEmber * heat * (0.4 + 0.6 * (1.0 - line)), 0.0, 1.0);
+  float shade = clamp((f - uMidpoint) * uContrast + 0.5, 0.0, 1.0);
+
+  vec3 col = ramp4(shade);
+  col += uColorD * uGlow * pow(shade, 5.0);
+  col = mix(uBg, col, smoothstep(0.0, max(0.01, uSink), shade) * 0.90 + 0.10);
+
+  col *= 1.0 - uVignette * dot(uv, uv);
+  { float hgL = clamp(dot(col, vec3(0.299, 0.587, 0.114)), 0.0, 1.0);
+    col += houseGrain(gl_FragCoord.xy) * uGrain * mix(1.0, 4.0 * hgL * (1.0 - hgL), 0.6); }
+  col += triDither(gl_FragCoord.xy) * uDither;
+
+  fragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}`,
+  /* clinker-008, then the tint */
+  CONFIG:Object.assign({
+    bgColor:"#060302",colorA:"#160b06",colorB:"#6b2409",colorC:"#dc7a1e",colorD:"#ffe4a6",
+    scale:1.8,speed:0.33,cellDrift:0.34,warp:0.45,warpScale:0.55,roughness:0.52,lacunarity:2.05,
+    crackWidth:0.14,crackGain:0.55,ember:0.18,heatScale:0.42,heatAmount:0.82,breathe:0.18,
+    contrast:1.08,midpoint:0.52,sink:0.22,glow:0.12,
+    grain:0,grainAnim:0,dither:1.25,vignette:0.26,
+    cursor:1,pointerRadius:0.62,pointerStrength:0.14,pointerHeat:0.3,parallax:0.003,
+    maxDpr:1
+  },GL_TINT)
+};
+
+function glGradient(canvas,asset,onReady){
+  const CONFIG=asset.CONFIG;
+  const gl=canvas.getContext('webgl2',{alpha:false,antialias:false,depth:false,stencil:false,powerPreference:'low-power'});
+  if(!gl)return null;
+  const VERT=`#version 300 es
+void main() {
+  vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2);
+  gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+}`;
+  const compile=(type,src)=>{const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(sh));return sh};
+  const program=gl.createProgram();
+  gl.attachShader(program,compile(gl.VERTEX_SHADER,VERT));
+  gl.attachShader(program,compile(gl.FRAGMENT_SHADER,asset.FRAG));
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
+  gl.useProgram(program);
+  gl.bindVertexArray(gl.createVertexArray());
+  const LOC={},loc=n=>n in LOC?LOC[n]:(LOC[n]=gl.getUniformLocation(program,n));
+  const u1f=(n,v)=>gl.uniform1f(loc(n),v),u2f=(n,x,y)=>gl.uniform2f(loc(n),x,y);
+  const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
+
+  /* CONFIG → uniforms, by the sources' own naming: bgColor → uBg, every other key → u + Key.
+     Keys with no uniform (cursor, maxDpr) resolve to null and are ignored by GL. */
+  for(const k in CONFIG){
+    const u=k==="bgColor"?"uBg":"u"+k[0].toUpperCase()+k.slice(1);
+    if(typeof CONFIG[k]==="string"){const c=hex(CONFIG[k]);gl.uniform3f(loc(u),c[0],c[1],c[2])}
+    else u1f(u,CONFIG[k]);
+  }
+
+  const phone=matchMedia('(pointer:coarse)').matches||innerWidth<760;
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let res=phone?.5:1;     /* soft fields — half resolution is invisible on a phone */
+  function resize(){
+    const dpr=Math.min(devicePixelRatio||1,CONFIG.maxDpr)*res;
+    const w=Math.max(1,Math.round(canvas.clientWidth*dpr)),h=Math.max(1,Math.round(canvas.clientHeight*dpr));
+    if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
+    gl.viewport(0,0,w,h);u2f('iResolution',w,h);
+  }
+  resize();
+
+  const mouse={x:0,y:0,ax:0,ay:0,tx:0,ty:0};
+  const aim=e=>{
+    const r=canvas.getBoundingClientRect();if(!r.height)return;
+    mouse.tx=((e.clientX-r.left)/r.width-.5)*(r.width/r.height);
+    mouse.ty=.5-(e.clientY-r.top)/r.height;
+  };
+
+  let visible=true,clock=still?12:0,prevT=performance.now(),lastDraw=0,raf=0;
+  const draw=()=>{u1f('iTime',clock);u2f('iMouse',mouse.x,mouse.y);u2f('iMouseVel',mouse.ax-mouse.x,mouse.ay-mouse.y);gl.drawArrays(gl.TRIANGLES,0,3)};
+  function frame(now){
+    raf=requestAnimationFrame(frame);
+    if(!visible||document.hidden){prevT=now;return}
+    if(phone&&now-lastDraw<31)return;          /* ~30 fps on phones */
+    lastDraw=now;
+    const raw=now-prevT;prevT=now;
+    const ms=raw>50?50:raw<4.167?4.167:raw,s=ms>36.7?2.2:ms*.06;
+    clock+=ms*.001;
+    const kLead=.105*s,kBody=.043*s;
+    mouse.ax+=(mouse.tx-mouse.ax)*kLead;mouse.ay+=(mouse.ty-mouse.ay)*kLead;
+    mouse.x+=(mouse.ax-mouse.x)*kBody;mouse.y+=(mouse.ay-mouse.y)*kBody;
+    if(!CONFIG.cursor){mouse.tx=0;mouse.ty=0}
+    draw();
+    /* a device that cannot hold the field steps down instead of stuttering: a slow
+       average over 40 drawn frames halves the resolution once; still slow, the loop
+       stops and the last frame stays as a still */
+    if(tier<2&&raw<250){acc+=raw;if(++n===40){   /* ≥250ms is a throttled window, not a slow GPU */
+      if(acc/40>45){if(tier===0){res*=.5;resize()}else{cancelAnimationFrame(raf)}tier++}else tier=2;
+      n=0;acc=0;
+    }}
+  }
+  let tier=0,n=0,acc=0;
+
+  let sized=0;
+  new ResizeObserver(()=>{if(sized++){resize();if(still)draw()}}).observe(canvas);
+  draw();                                       /* one frame before anything shows */
+  onReady&&onReady();
+  if(still)return gl;                           /* reduced motion: that frame is the gradient */
+  if(!phone){addEventListener('pointermove',aim,{passive:true});addEventListener('pointerdown',aim,{passive:true})}
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting},{threshold:0}).observe(canvas);
+  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);canvas.remove()});
+  raf=requestAnimationFrame(frame);
+  return gl;
+}
+
+/* hearth: the hero is above the fold, so it starts on the frame after first paint.
+   clinker: built only when the footer comes within a screen of the viewport. */
+(()=>{
+  const root=document.documentElement;
+  const start=(sel,asset,cls)=>{
+    const c=document.querySelector(sel);if(!c)return;
+    try{glGradient(c,asset,()=>root.classList.add(cls))}catch(e){console.warn('[getlayers]',e.message);c.remove()}
+  };
+  requestAnimationFrame(()=>start('.gl-hearth',GL_HEARTH,'gl-hearth-on'));
+  const foot=document.querySelector('.gl-clinker');
+  if(foot)new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect();start('.gl-clinker',GL_CLINKER,'gl-clinker-on')}},{rootMargin:'100% 0px'}).observe(foot);
+})();
+
+/* ═══ header over the page's surfaces (after brewns' data-header-theme probe) ═══
+   Sections name the surface they paint; the header reads whichever one sits under its
+   centre line and wears it. On a phone it steps aside over the footer band, as brewns does. */
+(()=>{
+  const PROBE=39,phone=matchMedia('(max-width:760px)');
+  const secs=[...document.querySelectorAll('[data-header-theme]')],foot=document.querySelector('footer');
+  setInterval(()=>{
+    let th="dark";
+    for(const s of secs){const r=s.getBoundingClientRect();if(r.top<=PROBE&&r.bottom>PROBE){th=s.dataset.headerTheme;break}}
+    if(hd.dataset.theme!==th)hd.dataset.theme=th;
+    hd.classList.toggle('foot',phone.matches&&foot.getBoundingClientRect().top<=PROBE);
+  },100);
+})();
+
+/* ═══ the order ticket (after brewns' printed receipt) ═══
+   A paper slip that prints what "Send on WhatsApp" will send. Built from the same
+   state and the same words as the message; it adds nothing to the order itself. */
+(()=>{
+  const box=$('ticket');if(!box)return;
+  const lines=$('ticketLines'),stamp=$('ticketStamp');
+  let prev={};
+  const fmt=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Nicosia",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
+  function draw(){
+    const patty=bSize.value?bSize.options[bSize.selectedIndex].text:"";
+    const rows=[
+      ["b",tr("msgBurger","Burger"),bBurger.value?bBurger.options[bBurger.selectedIndex].text:""],
+      ["p",tr("msgPatty","Patty"),patty],
+      ["t",tr("msgToppings","Toppings"),picked("toppings").join(", ")],
+      ["s",tr("msgSauces","Sauces"),picked("sauces").join(", ")],
+      ["n",tr("msgSpecialRequest","Special request"),bNote.value.trim()]
+    ].filter(r=>r[2]);
+    const next={};
+    lines.innerHTML=rows.length?rows.map(([k,l,v])=>{
+      next[k]=v;
+      return `<div class="tl${prev[k]!==v?" pr":""}"><span>${esc(l)}</span><b>${esc(v)}</b></div>`;
+    }).join(""):`<p class="t-empty">${esc(tr("msgPickSomething","Pick something or write a request first."))}</p>`;
+    prev=next;
+    stamp.textContent=fmt.format(new Date()).replace(",","  ·");
+  }
+  const later=()=>requestAnimationFrame(draw);
+  $('build').addEventListener('click',later);
+  $('build').addEventListener('change',later);
+  $('build').addEventListener('input',later);
+  $('lang').addEventListener('click',later);
+  draw();
+})();
 </script>
 </body>
 </html>

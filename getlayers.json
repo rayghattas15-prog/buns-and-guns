@@ -1,0 +1,63 @@
+{
+  "project": "buns-and-guns",
+  "mode": "enhance-project",
+  "target": "other",
+  "stack": "single static index.html, no build step, no backend",
+  "style": {
+    "id": null,
+    "note": "No GetLayers Style committed: the site keeps its own type (Unbounded, Manrope, Inter Tight, Inter, Noto Serif Display) and its neon red on dark. Every asset is tinted through CONFIG to the site's own tokens instead."
+  },
+  "tint": {
+    "bgColor": "#0B0A0C",
+    "colorA": "#17131A",
+    "colorB": "#E3202F",
+    "colorC": "#FF2D3F",
+    "colorD": "#FF7A86",
+    "source": "index.html :root (--bg, --card, --red-2, --red) and the .meta light red"
+  },
+  "assets": [
+    {
+      "id": "hearth",
+      "variant": "hearth-008",
+      "type": "gradient",
+      "preview": "https://www.getlayers.ai/?layer=hearth",
+      "placed": "#top hero, canvas.gl-hearth, full-bleed behind the copy, the photo and the neon marks",
+      "how": "roll merged over source CONFIG, then palette keys tinted; shader verbatim",
+      "media": "none (pure fragment shader)"
+    },
+    {
+      "id": "clinker",
+      "variant": "clinker-008",
+      "type": "gradient",
+      "preview": "https://www.getlayers.ai/?layer=clinker",
+      "placed": "footer band, canvas.gl-clinker, behind the 'You wanna burger me?' display line; scrim under the columns",
+      "how": "roll merged over source CONFIG, then palette keys tinted; shader verbatim; built lazily near the footer",
+      "media": "none (pure fragment shader)"
+    },
+    {
+      "id": "loader-loopstack",
+      "type": "section",
+      "role": "loader",
+      "preview": "https://www.getlayers.ai/?layer=loader-loopstack",
+      "placed": "#ld overlay at the top of <body>; wordmark 'BUNS AND GUNS' (13 glyphs, last lands 2.28s)",
+      "how": "timings verbatim (1.2s glyph, 0.09s step, cubic-bezier(.05,.9,.1,1), 105% + 20px blur); gate on last glyph or 2.3s fallback, 0.3s exit, gone by 2.6s",
+      "media": "none"
+    },
+    {
+      "id": "brewns",
+      "type": "template",
+      "use": "reference only, read with getlayers_source; nothing installed or copied",
+      "preview": "https://www.getlayers.ai/?layer=brewns",
+      "borrowed": [
+        "hero reveal numbers (hero-copy.tsx): line clip 110% -> 0 at 90ms stagger, 900ms easeOutCubic; lede 650ms easeOutQuart at 260ms; CTA at 520ms; header drops 12px at 120ms",
+        "order receipt (order-receipt.tsx): paper slip, dotted gradient rules, torn-edge teeth, fed out in steps -> #ticket in the builder",
+        "header over surfaces (site-header.tsx, header-theme.ts): data-header-theme probe at the header's centre line; hides over the footer on phones"
+      ]
+    }
+  ],
+  "rules": {
+    "aboveTheFold": "one gradient only (hearth); blurred-photo .heroglow kept as the no-WebGL2 fallback",
+    "reducedMotion": "no loader; each gradient draws one still frame and never loops; hero marks stop spinning",
+    "phones": "gradients at half resolution and ~30 fps; adaptive step-down, then freeze, if frames stay over 45ms"
+  }
+}
