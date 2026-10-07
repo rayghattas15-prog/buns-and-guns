@@ -181,6 +181,14 @@ header.hide{transform:translateY(-100%)}
 .scrollcue:after{content:"";position:absolute;left:50%;top:7px;translate:-50% 0;width:3px;height:7px;border-radius:2px;background:var(--tx);animation:cue 1.9s var(--v4e) infinite}
 @keyframes cue{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(13px)}}
 
+/* the two neon marks from the first site, drawn as they were, lit in the v6 red */
+.hero-mark{position:absolute;top:calc(var(--hd) + clamp(8px,2vw,22px));z-index:2;width:clamp(56px,5.5vw,84px);height:auto;opacity:.85;pointer-events:none;
+  filter:drop-shadow(0 0 4px rgba(255,45,63,.85)) drop-shadow(0 0 14px rgba(255,45,63,.6)) drop-shadow(0 0 30px rgba(255,45,63,.4));
+  animation:spinY 8s linear infinite}
+.hero-mark--left{left:clamp(12px,1.2vw,20px)}
+.hero-mark--right{right:clamp(12px,1.2vw,20px)}
+@keyframes spinY{from{transform:perspective(500px) rotateY(0deg)}to{transform:perspective(500px) rotateY(360deg)}}
+
 /* footer brand (unchanged from v6) */
 .brand{display:flex;align-items:center;gap:12px;text-align:left}
 .brand img{width:38px;height:38px;border-radius:11px;object-fit:cover}
@@ -263,6 +271,32 @@ header.hide{transform:translateY(-100%)}
 .menufoot{display:flex;justify-content:space-between;align-items:center;gap:22px;flex-wrap:wrap;margin-top:clamp(40px,5vw,64px);padding:26px 28px;border-radius:var(--r);border:1px solid var(--line);
   background:radial-gradient(520px circle at var(--gx,50%) var(--gy,-60%),rgba(255,255,255,.05),transparent 60%),var(--bg-2)}
 .menufoot p{margin:0;font-size:14px;color:var(--mu);max-width:64ch}
+
+/* ── build it your way (restored from the first site, in v6 dress) ── */
+.build{margin-top:clamp(40px,5vw,64px);padding:clamp(24px,3.4vw,44px);border-radius:var(--r);border:1px solid var(--line);background:var(--bg-2)}
+.build h3{font-size:clamp(26px,2.4vw,34px);letter-spacing:-.035em}
+.build>p{margin:10px 0 28px;color:var(--mu);font-size:15.5px;line-height:1.65;max-width:56ch}
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
+.picks label,.note-label{display:block;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--di)}
+.picks select,#b-note{display:block;width:100%;margin-top:10px;font:500 15px var(--ui);color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:13px 14px;transition:border-color .3s var(--e)}
+.picks select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;
+  background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23A2919C' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") right 15px center/12px 8px no-repeat}
+.picks select:disabled{opacity:.45;cursor:not-allowed}
+.picks select:hover,#b-note:hover{border-color:var(--line-2)}
+.picks select:focus-visible,#b-note:focus-visible{outline:1.5px solid var(--red);outline-offset:2px;border-color:transparent}
+#b-note{resize:vertical;min-height:96px;line-height:1.55}
+#b-note::placeholder{color:var(--di)}
+.top-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px 36px;margin-bottom:26px}
+.build fieldset{border:0;margin:0;padding:0;min-width:0}
+.build legend{padding:0;margin-bottom:12px;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--di)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{height:38px;padding:0 15px;border-radius:999px;font-size:13.5px;font-weight:500;color:var(--mu);box-shadow:inset 0 0 0 1px var(--line);transition:color .35s var(--e),background .35s var(--e),box-shadow .35s var(--e)}
+.chips button:hover{color:var(--tx);box-shadow:inset 0 0 0 1px var(--line-2)}
+.chips button[aria-pressed="true"]{background:var(--red);color:#fff;box-shadow:none}
+.chips button[aria-pressed="true"]:before{content:"✓ "}
+.chips button.house[aria-pressed="false"]{color:#FF7A86;box-shadow:inset 0 0 0 1px rgba(255,45,63,.45)}
+.send{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:22px}
+.send-msg{margin:14px 0 0;min-height:1.5em;font-size:14px;color:var(--mu)}
 
 /* ── signature ───────────────────────────────── */
 .sig{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,7vw,120px);align-items:center}
@@ -483,6 +517,8 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
   .lb .nv{top:auto;bottom:16px;margin:0}
   .lb .cnt{bottom:30px}
   .thumb{width:56px;height:56px;border-radius:12px}
+  .picks,.top-cols{grid-template-columns:1fr}
+  .hero-mark{width:clamp(44px,13vw,64px)}
 }
 @media(max-width:420px){
   .fcols{grid-template-columns:1fr}
@@ -497,6 +533,7 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
   .frame{clip-path:inset(0 0 0 0 round var(--r))!important}
   .frame img{transform:none!important}
   .marq .tr{animation:none}
+  .hero-mark{animation:none}
 }
 </style>
 </head>
@@ -538,6 +575,44 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 <!-- ══ hero (as v4) ══ -->
 <div class="hero" id="top">
   <div class="heroglow" aria-hidden="true"></div>
+    <svg class="hero-mark hero-mark--left" viewBox="14 4 122 138" fill="none" aria-hidden="true" focusable="false">
+      <g stroke="var(--red)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- fries: bases start behind the front rim, uneven lengths, splayed angles, overlapping, varied thickness -->
+        <path stroke-width="6.5" d="M50,92 L22,18" />
+        <path stroke-width="6" d="M60,88 L46,30" />
+        <path stroke-width="7.5" d="M68,94 L58,10" />
+        <path stroke-width="7" d="M80,90 L86,14" />
+        <path stroke-width="6" d="M88,88 L98,34" />
+        <path stroke-width="7.5" d="M94,94 L120,20" />
+        <path stroke-width="6.5" d="M74,96 L76,44" />
+      </g>
+      <g stroke="var(--red)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <!-- carton: narrow base, flared top, dipped front rim -->
+        <path d="M48,135 L20,72 Q75,86 130,72 L102,135 Z" />
+        <!-- fold band -->
+        <path d="M32,100 L118,100" />
+      </g>
+    </svg>
+    <svg class="hero-mark hero-mark--right" viewBox="74 2 150 136" fill="none" aria-hidden="true" focusable="false">
+      <g stroke="var(--red)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- top bun: domed -->
+        <path stroke-width="7" d="M93,53 C93,26 116,11 149,11 C182,11 205,26 205,53" />
+        <!-- patty: wavy line -->
+        <path stroke-width="7" d="M91,60 Q127,48 149,60 Q171,72 207,60" />
+        <!-- patty slab -->
+        <path stroke-width="7" d="M99,62 L199,62 Q209,62 209,72 L209,82 Q209,92 199,92 L99,92 Q89,92 89,82 L89,72 Q89,62 99,62" />
+        <!-- second wavy line -->
+        <path stroke-width="7" d="M87,100 Q118,90 149,100 Q180,110 211,100" />
+        <!-- base bun -->
+        <path stroke-width="7" d="M97,102 L201,102 Q211,102 211,112 L211,118 Q211,128 201,128 L97,128 Q87,128 87,118 L87,112 Q87,102 97,102" />
+      </g>
+      <g fill="var(--red)">
+        <circle cx="114" cy="37" r="6" />
+        <circle cx="131" cy="34" r="5.5" />
+        <circle cx="109" cy="50" r="6" />
+        <circle cx="127" cy="48" r="5.5" />
+      </g>
+    </svg>
   <div class="wrap herogrid">
     <div>
       <div class="pill" id="status"><span class="dot"></span><span id="statusText">Tuesday to Sunday · 5:30–10 pm</span></div>
@@ -602,6 +677,47 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
     </div>
 
     <div id="menuBox" class="rv"></div>
+
+    <div class="build rv" id="build">
+      <h3 data-i18n="buildTitle">Build it your way</h3>
+      <p data-i18n="buildIntro">Pick your burger and extras, add a note, then send it with your order.</p>
+
+      <div class="picks">
+        <label><span data-i18n="labelBurger">Burger</span>
+          <select id="b-burger"><option value="" data-i18n="anyBurger">Any burger</option></select>
+        </label>
+        <label><span data-i18n="labelPatty">Patty</span>
+          <select id="b-size">
+            <option value="" data-i18n="choosePatty">Choose a patty</option>
+            <option data-i18n="pattySingle">Single smash 100g</option><option data-i18n="pattyDouble">Double smash 200g</option><option data-i18n="pattyClassic">Classic patty 200g</option><option data-i18n="pattyWagyu">Wagyu patty 200g</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="top-cols">
+        <fieldset>
+          <legend data-i18n="legendToppings">Toppings</legend>
+          <div class="chips" data-kind="toppings">
+            <button type="button" aria-pressed="false" data-i18n="topTomato">Tomato</button><button type="button" aria-pressed="false" data-i18n="topLettuce">Lettuce</button><button type="button" aria-pressed="false" data-i18n="topOnion">Onion</button><button type="button" aria-pressed="false" data-i18n="topCrispyOnion">Crispy onion</button><button type="button" aria-pressed="false" data-i18n="topPickles">Pickles</button><button type="button" aria-pressed="false" data-i18n="topBacon">Bacon</button><button type="button" aria-pressed="false" data-i18n="topJalapenos">Jalapeños</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend data-i18n="legendSauces">Sauces</legend>
+          <div class="chips" data-kind="sauces">
+            <button type="button" aria-pressed="false" class="house" data-i18n="sauceGun">Gun Sauce</button><button type="button" aria-pressed="false" data-i18n="sauceHoneyMustard">Honey mustard</button><button type="button" aria-pressed="false" data-i18n="sauceBbq">BBQ</button><button type="button" aria-pressed="false" data-i18n="sauceMayo">Mayonnaise</button><button type="button" aria-pressed="false" data-i18n="sauceKetchup">Ketchup</button><button type="button" aria-pressed="false" data-i18n="sauceMustard">Mustard</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <label class="note-label" for="b-note" data-i18n="labelSpecialRequests">Special requests</label>
+      <textarea id="b-note" rows="3" maxlength="300" data-i18n-ph="notePlaceholder" placeholder="For example: no sauce, no onion, well done, sauce on the side"></textarea>
+
+      <div class="send">
+        <button type="button" class="btn" id="b-wa" data-i18n="sendWhatsapp">Send on WhatsApp</button>
+        <button type="button" class="btn ghost" id="b-clear" data-i18n="clearBtn">Clear</button>
+      </div>
+      <p class="send-msg" id="b-msg" role="status"></p>
+    </div>
 
     <div class="menufoot rv">
       <p><span data-i18n="pricesNote">Prices in euros and may change.</span> <span data-i18n="allergyWarning">Please tell our staff about any allergies.</span></p>
@@ -787,6 +903,14 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script>
+/* ═══ config ═══
+   ⚠ SWAP BEFORE GOING LIVE: +357 99 403810 is NOT on WhatsApp.
+   Put the shop's WhatsApp number here — digits only, country code first, no + or spaces
+   (e.g. "35799123456"). Until then "Send on WhatsApp" opens a chat with a number that has no WhatsApp. */
+const CONFIG={
+  whatsapp:"35799403810"   /* ⚠ PLACEHOLDER — not a WhatsApp number */
+};
+
 /* ═══ data — carried over from v4 / v5, unchanged ═══ */
 const SIZES=["Single 100g","Double 200g","Classic 200g","Wagyu 200g"];
 const SK=["sizeSingle","sizeDouble","sizeClassic","sizeWagyu"];
@@ -852,6 +976,8 @@ const GR={"langToggleLabel":"Γλώσσα","navMenu":"Μενού","navIgLabel":"
 /* Greek written for v4/v5 — not owner-supplied: have a native speaker check it. */
 Object.assign(GR,{"lblAddress":"Διεύθυνση","lblPhone":"Τηλέφωνο","lblSpend":"Μέσο κόστος","lblDelivery":"Delivery","lblClosed":"Κλειστά","lblRated":"Βαθμολογία","ratedGoogle":"4.8 ★ στο Google","faqKicker":"Καλό να ξέρετε","faqTitle":"Πριν παραγγείλετε.","revCount":"Από 311 κριτικές στο Google.","revAsk":"Φάγατε εδώ;","revAskText":"Αφήστε μια κριτική εκεί που θα τη διαβάσει το επόμενο τραπέζι. Παίρνει μόνο ένα λεπτό.","sigKicker":"Η σπεσιαλιτέ μας","sigGunText":"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Animal Style.","sigWays":"Τέσσερις τρόποι να το παραγγείλετε","sigWaysText":"Μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ — από <span data-fact='ogMin'>€8.50</span> έως <span data-fact='ogMax'>€16</span>.","sigLoad":"Φόρτωσέ το","sigLoadText":"Επιπλέον smash ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.","statSizes":"Μεγέθη μπιφτεκιού","statProtein":"Πρωτεΐνη στο Buff Burger","statReviews":"Από 311 κριτικές στο Google","statDays":"Βράδια την εβδομάδα, Τρίτη έως Κυριακή","ticker":"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ · SMASH ΚΑΙ WAGYU ΜΠΕΡΓΚΕΡ · GUN SAUCE · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · PIERIAS, PYLA · "});
 Object.assign(GR,{"nameCheeseburger":"Τσίζμπεργκερ","nameChickenBurger":"Μπέργκερ κοτόπουλο","nameChickenFingers":"Φιλετάκια κοτόπουλου","nameBurgerSalad":"Σαλάτα μπέργκερ","nameSkilletCookie":"Μπισκότο στο τηγανάκι","nameFrenchToast":"Αυγόφετες","metaBurgerSalad":"420 θερμίδες · 50γρ πρωτεΐνη","metaBuffBurger":"620 θερμίδες · 108γρ πρωτεΐνη","findUs":"Βρείτε μας","visitLede":"Πιάστε ένα τραπέζι κάτω από τα νέον ή παραγγείλετε delivery μέσω Foody.","perPerson":"Περίπου €10–15 το άτομο","copyAddress":"Αντιγραφή διεύθυνσης","share":"Κοινοποίηση","toastAddress":"Η διεύθυνση αντιγράφηκε","toastLink":"Ο σύνδεσμος αντιγράφηκε","toastCopyFailed":"Η αντιγραφή απέτυχε"});
+/* build-it-your-way strings, as they were on the first site (e509849) */
+Object.assign(GR,{"buildTitle":"Φτιάξ' το με τον τρόπο σου","buildIntro":"Επιλέξτε το μπέργκερ και τα extra σας, προσθέστε ένα σημείωμα και στείλτε την παραγγελία σας.","labelBurger":"Μπέργκερ","anyBurger":"Οποιοδήποτε μπέργκερ","choosePatty":"Επιλέξτε μπιφτέκι","pattySingle":"Μονό smash 100γρ","pattyDouble":"Διπλό smash 200γρ","pattyClassic":"Κλασικό μπιφτέκι 200γρ","pattyWagyu":"Μπιφτέκι wagyu 200γρ","legendToppings":"Επικαλύψεις","topTomato":"Ντομάτα","topLettuce":"Μαρούλι","topOnion":"Κρεμμύδι","topCrispyOnion":"Τραγανό κρεμμύδι","topPickles":"Αγγουράκια τουρσί","topBacon":"Μπέικον","topJalapenos":"Χαλαπένιο","legendSauces":"Σάλτσες","sauceGun":"Gun Sauce","sauceHoneyMustard":"Μουστάρδα μελιού","sauceBbq":"Μπάρμπεκιου","sauceMayo":"Μαγιονέζα","sauceKetchup":"Κέτσαπ","sauceMustard":"Μουστάρδα","labelSpecialRequests":"Ειδικά αιτήματα","notePlaceholder":"Για παράδειγμα: χωρίς σάλτσα, χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι","sendWhatsapp":"Αποστολή στο WhatsApp","clearBtn":"Καθαρισμός","msgPickSomething":"Επιλέξτε κάτι ή γράψτε ένα αίτημα πρώτα.","msgOpeningWhatsapp":"Άνοιγμα WhatsApp.","msgBurger":"Μπέργκερ","msgPatty":"Μπιφτέκι","msgToppings":"Επικαλύψεις","msgSauces":"Σάλτσες","msgSpecialRequest":"Ειδικό αίτημα","waGreeting":"Γεια σας Buns and Guns!"});
 Object.assign(GR,{"curView":"Προβολή","lbClose":"Κλείσιμο","lbPrev":"Προηγούμενη φωτογραφία","lbNext":"Επόμενη φωτογραφία"});
 Object.assign(GR,{"order":"Παραγγελία","navSignature":"Σπεσιαλιτέ","navRoom":"Ο χώρος","navReviews":"Κριτικές","mondays":"Δευτέρα","menuKicker":"Ο κατάλογος","menuTitle2":"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.","menuLede":"Κάθε μπέργκερ χτίζεται σε ένα από τέσσερα μπιφτέκια — μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ. Διαλέξτε ένα και όλες οι τιμές προσαρμόζονται.","roomKicker":"Ο χώρος","footLine":"Θες να σε κάνω μπέργκερ;","footVisit":"Επισκεφθείτε μας","footOrder":"Παραγγελία","footHours":"Τρίτη έως Κυριακή · 17:30 – 22:00"});
 const FAQ_GR=[["Κάνετε delivery;","Ναι, μέσω Foody — τα κουμπιά παραγγελίας σε αυτή τη σελίδα σας πηγαίνουν κατευθείαν εκεί."],["Ποια είναι η διαφορά ανάμεσα στα μπιφτέκια;","Το μονό είναι ένα smash μπιφτέκι 100γρ και το διπλό είναι δύο (200γρ). Το κλασικό είναι ένα κλασικό μπιφτέκι 200γρ και το wagyu ένα μπιφτέκι wagyu 200γρ."],["Τι γίνεται με τις αλλεργίες;","Παρακαλούμε ενημερώστε το προσωπικό μας για τυχόν αλλεργίες όταν παραγγέλνετε."],["Υπάρχουν επιλογές με πολλή πρωτεΐνη;","Η σαλάτα μπέργκερ και το Buff Burger — πενήντα και εκατόν οκτώ γραμμάρια πρωτεΐνης αντίστοιχα."],["Πότε είστε κλειστά;","Τις Δευτέρες. Κατά τα άλλα, Τρίτη έως Κυριακή, από τις 17:30 έως τις 22:00."]];
@@ -999,6 +1125,49 @@ $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{
 });
 render(false);
 
+/* ═══ build it your way → WhatsApp (restored from the first site) ═══
+   Burgers are read from the board's Burgers group, so the list follows the sheet. */
+const bBurger=$('b-burger'),bSize=$('b-size'),bNote=$('b-note'),bMsg=$('b-msg');
+const burgerList=()=>(MENU.burgers.find(g=>g.gk==="tabBurgers")||MENU.burgers[0]||{items:[]}).items;
+function fillBurgers(){
+  const keep=bBurger.value;
+  while(bBurger.options.length>1)bBurger.remove(1);
+  burgerList().forEach(it=>bBurger.add(new Option(lang==="gr"&&it.name_gr?it.name_gr:tr(it.nk,it.name),it.name)));
+  bBurger.value=burgerList().some(it=>it.name===keep)?keep:"";
+  syncPatty();
+}
+function syncPatty(){
+  const item=burgerList().find(i=>i.name===bBurger.value);
+  bSize.disabled=!!(item&&!item.prices);
+  if(bSize.disabled)bSize.value="";
+}
+bBurger.addEventListener('change',syncPatty);
+fillBurgers();
+
+document.querySelectorAll('.chips button').forEach(b=>
+  b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=="true")));
+const picked=kind=>[...document.querySelectorAll(`.chips[data-kind="${kind}"] button[aria-pressed="true"]`)].map(b=>b.textContent.trim());
+
+function buildMessage(){
+  const lines=[],patty=bSize.value?bSize.options[bSize.selectedIndex].text:"";
+  if(bBurger.value)lines.push(`${tr("msgBurger","Burger")}: ${bBurger.value}${patty?" ("+patty+")":""}`);
+  else if(patty)lines.push(`${tr("msgPatty","Patty")}: ${patty}`);
+  if(picked("toppings").length)lines.push(`${tr("msgToppings","Toppings")}: ${picked("toppings").join(", ")}`);
+  if(picked("sauces").length)lines.push(`${tr("msgSauces","Sauces")}: ${picked("sauces").join(", ")}`);
+  if(bNote.value.trim())lines.push(`${tr("msgSpecialRequest","Special request")}: ${bNote.value.trim()}`);
+  return lines.join("\n");
+}
+$('b-wa').addEventListener('click',()=>{
+  const m=buildMessage();
+  if(!m){bMsg.textContent=tr("msgPickSomething","Pick something or write a request first.");return}
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(tr("waGreeting","Hi Buns and Guns!")+"\n"+m)}`,"_blank","noopener");
+  bMsg.textContent=tr("msgOpeningWhatsapp","Opening WhatsApp.");
+});
+$('b-clear').addEventListener('click',()=>{
+  document.querySelectorAll('.chips button').forEach(b=>b.setAttribute('aria-pressed',"false"));
+  bBurger.value="";bSize.value="";bSize.disabled=false;bNote.value="";bMsg.textContent="";
+});
+
 /* ═══ menu from Google Sheets ═══
    Paste the sheet's File → Share → Publish to web → CSV link here. Empty = built-in MENU only.
    The built-in MENU above renders first; the sheet replaces it only if it arrives and parses.
@@ -1095,6 +1264,7 @@ function applySheet(m,quiet){
     if(!m[t].length&&!quiet)console.warn(`[menu sheet] nothing for the ${t} tab — keeping the built-in one`);
   });
   render(false);
+  fillBurgers();
 }
 
 /* the last sheet that parsed is kept in this browser and drawn before the first paint,
@@ -1304,8 +1474,11 @@ function setLang(l){
   document.querySelectorAll('[data-i18n-aria]').forEach(el=>{
     el._enA??=el.getAttribute('aria-label');el.setAttribute('aria-label',tr(el.dataset.i18nAria,el._enA));
   });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    el._enP??=el.placeholder;el.placeholder=tr(el.dataset.i18nPh,el._enP);
+  });
   $('sizebar').querySelectorAll('button').forEach((b,i)=>b.textContent=tr(SK[i],SIZES[i]));
-  render(false);hours();renderFaq();ticker();splitHeads();
+  render(false);fillBurgers();bMsg.textContent="";hours();renderFaq();ticker();splitHeads();
   requestAnimationFrame(placeAll);
 }
 document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
