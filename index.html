@@ -598,8 +598,25 @@ footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:non
 .fcols:before{content:"";position:absolute;left:-50vw;right:-50vw;top:-56px;bottom:-400px;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(11,10,12,0) 0,rgba(11,10,12,.93) 56px,var(--bg) 120px)}
 
-/* ── header over the page's surfaces (brewns' data-header-theme) ── */
-header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(255,45,63,.22)}
+/* ── section rhythm: near-black and a warm off-white taken from the sign's brick and
+      cream (#F2E6DA). A light section re-points the colour tokens, so everything inside
+      it recolours without its own rules; the header borrows the same set when it sits
+      over one (brewns' data-header-theme). Neon glows are dropped on the light ground. ── */
+.surf-light,header[data-theme="light"]{
+  --bg:#F2E6DA;--bg-2:#EADCCC;--card:#E4D3C1;
+  --tx:#1A1210;--mu:#5C4C45;--di:#76655C;
+  --line:rgba(26,18,16,.14);--line-2:rgba(26,18,16,.26);
+  --gl:none}
+.surf-light{background:var(--bg);color:var(--tx);z-index:1}
+.surf-light .q button:hover{color:var(--red)}
+.surf-light .meta{color:#B8121F;border-color:rgba(184,18,31,.3)}
+.surf-light .chips button.house[aria-pressed="false"]{color:#B8121F;box-shadow:inset 0 0 0 1px rgba(184,18,31,.4)}
+.surf-light ::selection{background:var(--tx);color:var(--bg)}
+header{transition:transform .7s var(--e),background .5s var(--v4e),border-color .5s,backdrop-filter .5s,color .4s}
+header[data-theme="light"]{color:var(--tx)}
+header.solid[data-theme="light"]{background:rgba(242,230,218,.84);border-color:var(--line)}
+header[data-theme="light"] :is(.lang,.icobtn){background:rgba(255,255,255,.45)}
+header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 @media(max-width:760px){header.foot{visibility:hidden;pointer-events:none}}
 
 /* ── the order ticket (brewns' printed receipt, in this site's type) ── */
@@ -706,7 +723,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 
 <main>
 <!-- ══ hero (as v4) ══ -->
-<div class="hero" id="top" data-header-theme="fire">
+<div class="hero" id="top" data-header-theme="dark">
   <div class="wrap herogrid">
     <div class="herocopy">
       <div class="pill" id="status"><span class="dot"></span><span id="statusText">Tuesday to Sunday · 5:30–10 pm</span></div>
@@ -748,7 +765,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </div>
 
 <!-- ══ menu ══ -->
-<section id="menu" class="hair">
+<section id="menu" class="surf-light" data-header-theme="light">
   <div class="wrap">
     <div class="head">
       <div class="rv">
@@ -839,7 +856,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </section>
 
 <!-- ══ signature ══ -->
-<section id="signature" class="hair">
+<section id="signature" data-header-theme="dark">
   <div class="wrap">
     <div class="sig">
       <figure class="frame sigimg" data-t3d="swivel" data-hover>
@@ -874,7 +891,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </section>
 
 <!-- ══ the room ══ -->
-<section id="shop" class="hair">
+<section id="shop" class="surf-light" data-header-theme="light">
   <div class="wrap">
     <div class="head">
       <div class="rv">
@@ -893,7 +910,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </section>
 
 <!-- ══ reviews ══ -->
-<section id="words" class="hair">
+<section id="words" data-header-theme="dark">
   <div class="wrap">
     <div class="rev">
       <div class="rv">
@@ -917,7 +934,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </section>
 
 <!-- ══ faq ══ -->
-<section id="faq" class="hair">
+<section id="faq" class="surf-light" data-header-theme="light">
   <div class="wrap faqgrid">
     <div class="rv">
       <p class="kicker"><span data-i18n="faqKicker">Good to know</span></p>
@@ -928,7 +945,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </section>
 
 <!-- ══ visit ══ -->
-<section id="visit" class="hair">
+<section id="visit" data-header-theme="dark">
   <div class="wrap">
     <div class="head">
       <div class="rv">
@@ -959,7 +976,7 @@ header.solid[data-theme="fire"]{background:rgba(26,7,10,.66);border-color:rgba(2
 </section>
 </main>
 
-<footer data-header-theme="fire">
+<footer data-header-theme="dark">
   <canvas class="gl-clinker" aria-hidden="true"></canvas>
   <div class="wrap">
     <p class="fline rv" data-i18n="footLine">You wanna burger me?</p>
@@ -2065,7 +2082,7 @@ void main() {
   if(foot)new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect();start('.gl-clinker',GL_CLINKER,'gl-clinker-on')}},{rootMargin:'100% 0px'}).observe(foot);
 })();
 
-/* ═══ header over the page's surfaces (after brewns' data-header-theme probe) ═══
+/* ═══ header over the page's dark and light surfaces (after brewns' data-header-theme probe) ═══
    Sections name the surface they paint; the header reads whichever one sits under its
    centre line and wears it. On a phone it steps aside over the footer band, as brewns does. */
 (()=>{
