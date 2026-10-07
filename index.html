@@ -271,6 +271,36 @@ header.hide{transform:translateY(-100%)}
   background:radial-gradient(520px circle at var(--gx,50%) var(--gy,-60%),rgba(255,255,255,.05),transparent 60%),var(--bg-2)}
 .menufoot p{margin:0;font-size:14px;color:var(--mu);max-width:64ch}
 
+/* ── menu cards (after brewns' menu card): a group with photographs sets its cards in a
+      column no wider than the photos can hold sharply, with its type rows beside them ── */
+.group.has-cards{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);column-gap:clamp(28px,4vw,64px);align-items:start}
+.group.has-cards .gname{grid-column:1/-1}
+.group.has-cards .mlist{grid-template-columns:minmax(0,1fr)}
+.mcards{display:grid;gap:18px;padding-top:18px}
+.mcard{perspective:900px;opacity:0;translate:0 28px;transition:opacity .9s var(--e) calc(var(--o,0)*90ms),translate .9s var(--e) calc(var(--o,0)*90ms)}
+.mcard.in{opacity:1;translate:none}
+.mc-in{display:flex;flex-direction:column;gap:12px;padding:14px;border:1px solid var(--line-2);background:var(--bg);transition:border-color .4s var(--e)}
+.mcard:hover .mc-in{border-color:var(--tx)}
+.mc-idx{margin:0;font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--di);font-variant-numeric:tabular-nums;transition:color .4s var(--e)}
+.mcard:hover .mc-idx{color:var(--tx)}
+.mc-pic{display:block;width:100%;aspect-ratio:4/3;overflow:hidden;cursor:zoom-in;background:var(--card)}
+/* the photo layer is taller than its window by the lag, so the lag never shows an edge */
+.mc-lag{display:block;width:100%;height:calc(100% + 18px);margin-top:-18px}
+.mc-lag img{width:100%;height:100%;object-fit:cover}
+.mc-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+.mcard h3{font-size:clamp(20px,1.6vw,24px);clip-path:inset(0 100% -30% 0);transition:clip-path 1.1s var(--e) calc(var(--o,0)*90ms + .3s)}
+.mcard.in h3{clip-path:inset(0 0 -30% 0)}
+.mcard .mprice{flex:none}
+.mcard .desc{margin:0;font-size:14.5px;line-height:1.6;color:var(--mu)}
+.mcard .meta{margin-top:0;align-self:flex-start}
+@media(max-width:960px){
+  .group.has-cards{grid-template-columns:minmax(0,1fr)}
+  .mcards{max-width:440px;padding-top:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .mcard,.mcard h3{opacity:1!important;translate:none!important;clip-path:none!important}
+}
+
 /* ── build it your way (restored from the first site, in v6 dress) ── */
 .build{margin-top:clamp(40px,5vw,64px);padding:clamp(24px,3.4vw,44px);border-radius:var(--r);border:1px solid var(--line);background:var(--bg-2)}
 .build h3{font-size:clamp(26px,2.4vw,34px);letter-spacing:-.035em}
@@ -1045,6 +1075,8 @@ const CONFIG={
 const SIZES=["Single 100g","Double 200g","Classic 200g","Wagyu 200g"];
 const SK=["sizeSingle","sizeDouble","sizeClassic","sizeWagyu"];
 const PIC={"The OG":"images/dish-og.webp","Sweet Fries":"images/dish-sweet-fries.webp","Chicken Fingers":"images/dish-chicken-fingers.webp"};
+/* each photograph's own size and where its subject sits — properties of the shot, not design */
+const PIC_META={"The OG":[340,510,"50% 74%"],"Sweet Fries":[680,382,"50% 55%"],"Chicken Fingers":[680,382,"50% 55%"]};
 const MENU={
  burgers:[
   {group:"Burgers",gk:"tabBurgers",items:[
@@ -1188,26 +1220,58 @@ function priceHTML(it){
 /* sheet rows carry their own Greek (name_gr, …); built-in rows go through GR keys */
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
 const txt=(gr,k,en)=>esc(lang==="gr"&&gr?gr:tr(k,en));
+/* ═══ menu cards (after brewns' menu card) ═══
+   An item with a real photograph is a bordered card: its index, the photo, name and price.
+   The card rises in on a stagger as it enters the viewport; the photo inside lags a beat
+   behind the card while it travels in; on a fine pointer the card leans toward the hand.
+   Items without a photograph stay type rows. State is rebuilt on every render. */
+let CARDS=[];
+const cardIO=new IntersectionObserver(es=>{
+  let k=0;
+  es.forEach(x=>{if(!x.isIntersecting)return;x.target.style.setProperty('--o',k++);x.target.classList.add('in');cardIO.unobserve(x.target)});
+},{threshold:.18});
+function bindCards(){
+  CARDS=[...$('menuBox').querySelectorAll('.mcard')].map(el=>({el,inner:el.querySelector('.mc-in'),lagEl:el.querySelector('.mc-lag'),lag:16,tx:0,ty:0,x:0,y:0}));
+  CARDS.forEach(c=>{
+    if(reduce){c.el.classList.add('in');return}
+    cardIO.observe(c.el);
+    if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+    c.el.addEventListener('pointermove',e=>{const r=c.el.getBoundingClientRect();c.tx=Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1));c.ty=Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))});
+    c.el.addEventListener('pointerleave',()=>{c.tx=c.ty=0});
+  });
+}
+function cardHTML(it,idx){
+  const pic=PIC[it.name],[w,hgt,pos]=PIC_META[it.name]||[680,382,"50% 50%"],name=txt(it.name_gr,it.nk,it.name);
+  return `<article class="mcard"><div class="mc-in">
+    <p class="mc-idx">${String(idx+1).padStart(2,"0")}</p>
+    <button class="mc-pic" type="button" data-src="${pic}" aria-label="Open photograph"><span class="mc-lag"><img src="${pic}" alt="${name}" width="${w}" height="${hgt}" style="object-position:${pos}" loading="lazy" decoding="async"></span></button>
+    <div class="mc-head"><h3>${name}</h3><div class="mprice">${priceHTML(it)}</div></div>
+    ${it.desc||it.desc_gr?`<p class="desc">${txt(it.desc_gr,null,it.desc||it.desc_gr)}</p>`:""}
+    ${it.meta?`<span class="meta">${txt(null,it.mk,it.meta)}</span>`:""}
+  </div></article>`;
+}
 function render(animate){
   $('sizewrap').classList.toggle('off',tab!=="burgers");
   let n=0;
-  $('menuBox').innerHTML=MENU[tab].map(g=>
-    `<div class="group"><p class="gname">${txt(g.group_gr,g.gk,g.group)}<sup>${String(g.items.length).padStart(2,"0")}</sup></p><div class="mlist">`+
-    g.items.map(it=>{
-      const pic=PIC[it.name];
-      return `<div class="mrow${g.flat?" flat":""}${pic?"":" nopic"}" style="--i:${n++}">
-        ${pic?`<button class="thumb" type="button" data-src="${pic}" aria-label="Open photograph"><img src="${pic}" alt="" loading="lazy"></button>`:""}
+  $('menuBox').innerHTML=MENU[tab].map(g=>{
+    const cards=g.items.filter(it=>PIC[it.name]),rows=g.items.filter(it=>!PIC[it.name]);
+    return `<div class="group${cards.length?" has-cards":""}"><p class="gname">${txt(g.group_gr,g.gk,g.group)}<sup>${String(g.items.length).padStart(2,"0")}</sup></p>`+
+    (cards.length?`<div class="mcards">${cards.map(it=>cardHTML(it,g.items.indexOf(it))).join("")}</div>`:"")+
+    `<div class="mlist">`+
+    rows.map(it=>{
+      return `<div class="mrow${g.flat?" flat":""} nopic" style="--i:${n++}">
         <div>
           <h3>${txt(it.name_gr,it.nk,it.name)}</h3>
           ${it.desc||it.desc_gr?`<p class="desc">${txt(it.desc_gr,null,it.desc||it.desc_gr)}</p>`:""}
           ${it.meta?`<span class="meta">${txt(null,it.mk,it.meta)}</span>`:""}
         </div>
         <div class="mprice">${priceHTML(it)}</div>
-      </div>`}).join("")+`</div></div>`
-  ).join("");
+      </div>`}).join("")+`</div></div>`;
+  }).join("");
   $('menuBox').classList.toggle('enter',!!animate&&!reduce);
   requestAnimationFrame(()=>placeInd($('sizebar'),current($('sizebar'))));
   syncFacts();
+  bindCards();
 }
 
 /* prices and descriptions quoted outside the board ([data-fact]) are read from MENU,
@@ -1758,6 +1822,20 @@ let lastY=scrollY,lastT=performance.now();
         s=`perspective(1400px) translate3d(0,${(q*80).toFixed(1)}px,0) rotateX(${(q*18-o.y*5).toFixed(2)}deg) rotateY(${(o.side*q*9+o.x*6).toFixed(2)}deg) scale(${(1-q*.08).toFixed(4)})`;
       }
       setT(o.el,s);
+    }
+
+    /* menu cards: the photo eases from 16px behind to rest as the card climbs to mid-screen
+       (on a slower follow than the card, so they part and close up); the card leans on a
+       damped follow toward the pointer, a few degrees at most */
+    const kc=1-Math.pow(1-.06,dt);
+    for(const c of CARDS){
+      const r=c.el.getBoundingClientRect();
+      if(r.bottom<-50||r.top>vh+50)continue;
+      const want=16*clamp((r.top+r.height/2-vh/2)/(vh/2),0,1);
+      c.lag+=(want-c.lag)*kc;
+      c.lagEl.style.transform=`translate3d(0,${c.lag.toFixed(2)}px,0)`;
+      c.x+=(c.tx-c.x)*k;c.y+=(c.ty-c.y)*k;
+      if(Math.abs(c.x)+Math.abs(c.y)>.001||c.inner._t)setT(c.inner,`rotateY(${(c.x*5).toFixed(2)}deg) rotateX(${(-c.y*5).toFixed(2)}deg)`);
     }
 
     /* marquee runs with the scroll: faster as you scroll, reverses when you scroll up */
