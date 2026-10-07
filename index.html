@@ -643,19 +643,27 @@ header[data-theme="light"] :is(.lang,.icobtn){background:rgba(255,255,255,.45)}
 header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 @media(max-width:760px){header.foot{visibility:hidden;pointer-events:none}}
 
-/* ── the order ticket (brewns' printed receipt, in this site's type) ── */
+/* ── the builder on the light surface: the menu card's square bordered edge, a ground
+      a shade above the section, inputs lighter still ── */
+.surf-light .build{border-radius:0;border-color:var(--line-2);background:#F7EFE6}
+.surf-light .picks select,.surf-light #b-note{background-color:#FCF8F3;border-color:var(--line-2);border-radius:0}
+.surf-light .chips button{background:#FCF8F3}
+.surf-light .chips button[aria-pressed="true"]{background:var(--red)}
+
+/* ── the order ticket (brewns' printed receipt, in this site's type): white paper and
+      dark ink on any surface, so it reads as a slip rather than a panel ── */
 .build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);grid-template-areas:"head ticket" "form ticket" "send ticket";column-gap:clamp(28px,4vw,56px);align-items:start}
 .build-head{grid-area:head}.build-form{grid-area:form}.build-send{grid-area:send}
-.ticket{grid-area:ticket;position:sticky;top:110px;margin-bottom:10px;padding:22px 20px 20px;background:var(--tx);color:var(--bg);
+.ticket{--paper:#FFFCF7;--ink:#17110F;grid-area:ticket;position:sticky;top:110px;margin-bottom:10px;padding:22px 20px 20px;background:var(--paper);color:var(--ink);
   font-family:var(--ui);font-size:12px;line-height:1.55;letter-spacing:.06em;text-transform:uppercase;font-variant-numeric:tabular-nums;
-  box-shadow:0 30px 60px -30px #000,0 0 50px -24px rgba(255,45,63,.55)}
+  box-shadow:0 1px 0 rgba(23,17,15,.06),0 28px 52px -28px rgba(70,34,24,.5)}
 /* torn edge: a run of downward teeth, as the brewns slip ends */
 .ticket:after{content:"";position:absolute;left:0;right:0;top:100%;height:8px;
-  background:conic-gradient(from -45deg at 50% 100%,transparent 90deg,var(--tx) 0) 0 0/12px 8px repeat-x;transform:scaleY(-1)}
+  background:conic-gradient(from -45deg at 50% 100%,transparent 90deg,var(--paper) 0) 0 0/12px 8px repeat-x;transform:scaleY(-1)}
 .t-brand{margin:0;text-align:center;font-family:var(--v4disp);font-weight:900;font-size:15px;letter-spacing:.14em}
 .t-stamp{margin:6px 0 0;text-align:center;font-size:10.5px;color:rgba(11,10,12,.55)}
 /* dotted rule, drawn with a gradient so it stays crisp at any size */
-.t-rule{height:1px;margin:14px 0;background:repeating-linear-gradient(90deg,var(--bg) 0 3px,transparent 3px 7px)}
+.t-rule{height:1px;margin:14px 0;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 7px)}
 .t-lines{display:grid;gap:9px;min-height:64px}
 .tl{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}
 .tl span{color:rgba(11,10,12,.55)}
