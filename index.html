@@ -1895,16 +1895,15 @@ addEventListener('resize',placeAll);
 setTimeout(()=>document.body.classList.add('ready'),1500);
 </script>
 <script>
-/* ═══ GetLayers gradients ═══════════════════════════════════════════════
-   hearth  · roll hearth-008  → behind the hero          (https://www.getlayers.ai/?layer=hearth)
+/* ═══ GetLayers gradient ════════════════════════════════════════════════
    clinker · roll clinker-008 → behind the footer band   (https://www.getlayers.ai/?layer=clinker)
-   Each FRAG below is the asset's shader exactly as GetLayers ships it. Colour comes
+   The FRAG below is the asset's shader exactly as GetLayers ships it. Colour comes
    ONLY from CONFIG: the roll's values are merged over the source CONFIG, then the five
    palette keys are tinted to this site's own tokens (--bg, --card, --red-2, --red, the
    #FF7A86 light red). Never recolour in the shader.
    The loop is the portable source's loop: clamped clock, two-pole pointer, paused
-   off-screen and in a hidden tab. Added here: canvas-relative sizing, half resolution
-   and ~30 fps on phones, one still frame under prefers-reduced-motion, lazy start. */
+   off-screen and in a hidden tab. Added here: canvas-relative sizing at the screen's
+   density, ~30 fps on phones, one still frame under prefers-reduced-motion, lazy start. */
 const GL_TINT={bgColor:"#0B0A0C",colorA:"#17131A",colorB:"#E3202F",colorC:"#FF2D3F",colorD:"#FF7A86"};
 const GL_CLINKER={
   FRAG:`#version 300 es
@@ -2052,7 +2051,7 @@ void main() {
     contrast:1.08,midpoint:0.52,sink:0.22,glow:0.12,
     grain:0,grainAnim:0,dither:1.25,vignette:0.26,
     cursor:1,pointerRadius:0.62,pointerStrength:0.14,pointerHeat:0.3,parallax:0.003,
-    maxDpr:1
+    maxDpr:2     /* perf knob only: up to 2 device px per CSS px, so phones get a sharp field */
   },GL_TINT)
 };
 
@@ -2087,7 +2086,7 @@ void main() {
 
   const phone=matchMedia('(pointer:coarse)').matches||innerWidth<760;
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let res=phone?.5:1;     /* soft fields — half resolution is invisible on a phone */
+  let res=1;              /* full resolution: the footer field is drawn at the screen's own density */
   function resize(){
     const dpr=Math.min(devicePixelRatio||1,CONFIG.maxDpr)*res;
     const w=Math.max(1,Math.round(canvas.clientWidth*dpr)),h=Math.max(1,Math.round(canvas.clientHeight*dpr));
@@ -2140,8 +2139,7 @@ void main() {
   return gl;
 }
 
-/* hearth: the hero is above the fold, so it starts on the frame after first paint.
-   clinker: built only when the footer comes within a screen of the viewport. */
+/* clinker: built only when the footer comes within a screen of the viewport. */
 (()=>{
   const root=document.documentElement;
   const start=(sel,asset,cls)=>{
