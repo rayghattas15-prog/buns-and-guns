@@ -575,28 +575,22 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 }
 
 /* ═════════════════════════════════════════════════════════════
-   GetLayers visual layer
-   hearth-008 behind the hero · clinker-008 behind the footer band ·
-   loader-loopstack in front of everything until the gate · brewns as
-   reference for the hero reveal, the order ticket and the header.
-   Skin only: the site's own fonts, its #FF2D3F, its tokens.
+   GetLayers layer, round 2 — brewns as the reference: its loader exit,
+   hero reveal, section rhythm, menu card and order receipt; clinker-008
+   behind the footer band. The site's own fonts, its #FF2D3F, its tokens.
    ═════════════════════════════════════════════════════════════ */
 
-/* ── loader-loopstack ── the numbers are the asset's: 1.2s glyph travel,
-      0.09s step, cubic-bezier(.05,.9,.1,1), 105% + 20px blur, solid by 25% */
-#ld{position:fixed;inset:0;z-index:120;background:var(--bg);transition:opacity .3s cubic-bezier(.16,1,.3,1)}
-#ld.out{opacity:0;pointer-events:none}
+/* ── loader: a burger stacks itself in plain red strokes — bottom bun, patty, cheese,
+      top bun — then the panel lifts off the page (brewns' preloader leaves the same way:
+      the panel goes, the first screen is already moving underneath). Once per session. ── */
+#ld{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:var(--bg);color:var(--red);
+  transition:transform .6s cubic-bezier(.7,0,.2,1)}
+#ld.out{transform:translateY(-100%);pointer-events:none}
 html.ld-lock{overflow:hidden}
-.ld-wrap{position:absolute;left:0;right:0;bottom:20px;padding:0 20px;display:flex;justify-content:center}
-.ld-mark{margin:0 -.03em 0 0;width:100%;text-align:center;white-space:nowrap;pointer-events:none;
-  font-family:var(--v4disp);font-weight:900;font-size:calc((100vw - 40px) / 10.5);letter-spacing:-.03em;line-height:.8;
-  color:var(--red);opacity:.95;
-  /* the neon halo is drawn over the whole word, after the glyph masks, so no mask cuts it */
-  filter:drop-shadow(0 0 6px rgba(255,45,63,.85)) drop-shadow(0 0 22px rgba(255,45,63,.5))}
-.ld-mark .lw{display:inline-block;vertical-align:bottom;line-height:.8;overflow:hidden}
-.ld-mark .li{display:inline-block;opacity:0;transform:translateX(-105%);filter:blur(20px);
-  animation:ld-letter 1.2s cubic-bezier(.05,.9,.1,1) forwards}
-@keyframes ld-letter{0%{opacity:0;transform:translateX(-105%);filter:blur(20px)}25%{opacity:1}100%{opacity:.95;transform:translateX(0);filter:blur(0)}}
+.ld-burger{width:min(46vw,190px);height:auto;overflow:visible}
+.ld-burger .ly{opacity:0;transform:translateY(-46px);animation:ld-drop .5s cubic-bezier(.3,1.35,.5,1) forwards}
+.ld-burger .ly2{animation-delay:.26s}.ld-burger .ly3{animation-delay:.52s}.ld-burger .ly4{animation-delay:.78s}
+@keyframes ld-drop{0%{opacity:0;transform:translateY(-46px)}40%{opacity:1}100%{opacity:1;transform:none}}
 
 /* ── the gate: above-the-fold content is mounted, sitting at its from-value,
       and plays in through the loader's exit (brewns' hero numbers) ── */
@@ -689,33 +683,31 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 </head>
 <body>
 
-<!-- GetLayers · loader-loopstack: the wordmark sweeps in glyph by glyph along the bottom
-     edge; the last glyph's landing is the gate, and the hero rises in through the exit.
-     Hard cap: gone 2.6s after navigation start, whatever the phone is doing. -->
-<div id="ld" aria-hidden="true"><div class="ld-wrap"><p class="ld-mark">BUNS AND GUNS</p></div></div>
+<!-- loader: a burger stacks itself layer by layer in red strokes, then the panel lifts away.
+     Once per browser session; never under reduced motion; gone 2.3s after navigation start. -->
+<div id="ld" aria-hidden="true">
+  <svg class="ld-burger" viewBox="0 0 120 100" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+    <g class="ly ly1"><path d="M20 82 H100 Q104 82 104 86 V88 Q104 94 98 94 H22 Q16 94 16 88 V86 Q16 82 20 82 Z"/></g>
+    <g class="ly ly2"><rect x="14" y="64" width="92" height="13" rx="6.5"/></g>
+    <g class="ly ly3"><path d="M12 57 H108 M30 57 L37 65 L44 57 M72 57 L79 66 L86 57"/></g>
+    <g class="ly ly4"><path d="M16 50 C16 25 37 10 60 10 C83 10 104 25 104 50 Z"/><path d="M44 28 l4 -2 M62 22 l4 1 M76 32 l3 -3 M54 38 l4 0" stroke-width="3"/></g>
+  </svg>
+</div>
 <script>
 (function(){
-  var d=document.documentElement,ld=document.getElementById('ld');
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ld.remove();return}
+  var d=document.documentElement,ld=document.getElementById('ld'),seen=false;
+  try{seen=sessionStorage.getItem('bg-ld')==="1";sessionStorage.setItem('bg-ld',"1")}catch(e){}
+  if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){ld.remove();return}
   d.classList.add('ld','ld-lock');
-  var m=ld.querySelector('.ld-mark'),t=m.textContent,last=null;
-  m.textContent='';
-  for(var i=0;i<t.length;i++){
-    var w=document.createElement('span'),n=document.createElement('span');
-    w.className='lw';n.className='li';
-    n.textContent=t[i]===' '?' ':t[i];
-    n.style.animationDelay=(i*.09)+'s';           /* SWEEP_STEP — the asset's own number */
-    w.appendChild(n);m.appendChild(w);last=n;
-  }
   var done=false;
   function gate(){
     if(done)return;done=true;
-    d.classList.add('gl-ready');ld.classList.add('out');   /* flip at the START of the exit */
+    d.classList.add('gl-ready');ld.classList.add('out');   /* the page starts moving as the panel lifts */
     document.dispatchEvent(new Event('gl:ready'));
-    setTimeout(function(){d.classList.remove('ld-lock');ld.remove()},300);
+    setTimeout(function(){d.classList.remove('ld-lock');ld.remove()},600);
   }
-  last.addEventListener('animationend',gate);
-  setTimeout(gate,Math.max(0,2300-performance.now()));     /* 2.3s + 0.3s exit = 2.6s cap */
+  ld.querySelector('.ly4').addEventListener('animationend',function(){setTimeout(gate,150)});
+  setTimeout(gate,Math.max(0,1700-performance.now()));       /* 1.7s + 0.6s lift = the 2.3s cap */
 })();
 </script>
 
