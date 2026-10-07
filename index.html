@@ -24,7 +24,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@500;700;900&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Display:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+<!-- fonts load without blocking the first paint: preloaded, applied on load, text shows in the fallback until then (display=swap) -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&display=swap"></noscript>
 <style>
 /* ─────────────────────────────────────────────────────────────
    Buns & Guns · v6
@@ -1012,7 +1015,7 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
     <p class="fline rv" data-i18n="footLine">You wanna burger me?</p>
     <div class="fcols">
       <div class="fcol">
-        <div class="brand" style="pointer-events:none"><img src="images/logo-96.webp" width="42" height="41" alt=""><span><b>Buns &amp; Guns</b><i>Pyla · Larnaca</i></span></div>
+        <div class="brand" style="pointer-events:none"><img src="images/logo-96.webp" width="42" height="41" alt="" loading="lazy" decoding="async"><span><b>Buns &amp; Guns</b><i>Pyla · Larnaca</i></span></div>
       </div>
       <div class="fcol">
         <h5 data-i18n="footVisit">Visit</h5>
