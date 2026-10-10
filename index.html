@@ -25,9 +25,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- fonts load without blocking the first paint: preloaded, applied on load, text shows in the fallback until then (display=swap) -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&family=Sofia+Sans+Extra+Condensed:wght@800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&family=Sofia+Sans+Extra+Condensed:wght@800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&family=Sofia+Sans+Extra+Condensed:wght@800&display=swap"></noscript>
 <style>
 /* ─────────────────────────────────────────────────────────────
    Buns & Guns · v6
@@ -151,7 +151,7 @@ header.hide{transform:translateY(-100%)}
 
 /* ── hero (as v4) ────────────────────────────── */
 /* ── hero: the neon-sign photograph is the subject, on a plain dark ground with one soft red glow behind it ── */
-#top.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;z-index:2;background:var(--bg);padding:clamp(104px,14vh,140px) 0 clamp(72px,10vh,110px);font-family:var(--v4body)}
+#top.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;z-index:2;background:transparent;padding:clamp(104px,14vh,140px) 0 clamp(72px,10vh,110px);font-family:var(--v4body)}
 #top .wrap{position:relative;z-index:3}
 .herogrid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(28px,4vw,64px);align-items:center}
 /* copy and photograph share one grid row: the copy lies over the photo's left edge,
@@ -521,7 +521,7 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
   .heroframe{height:auto;width:100%;aspect-ratio:1/1.08}
   .heroframe img{object-position:50% 12%}
   .heroframe img{transform:scale(1.08);will-change:transform}
-  .heroframe:after{background:linear-gradient(180deg,transparent 46%,rgba(11,10,12,.55) 74%,var(--bg) 100%)}
+  .heroframe:after{background:linear-gradient(180deg,transparent 46%,rgba(255,243,232,.55) 74%,var(--bg) 100%)}
   .herocopy{display:flex;flex-direction:column;align-items:flex-start}
   #top h1{order:1;margin:-1.02em 0 0;padding-left:2px}
   #top .pill{order:2;margin-top:24px}
@@ -616,29 +616,26 @@ html.ld.gl-ready :is(.scrollcue,.marq){animation:gl-fade 1s var(--e) .9s both}
 /* ── clinker-008 behind the footer band ── its contract: behind display type, not
       paragraphs — so the fire burns under the big line and goes dark under the columns */
 footer{isolation:isolate;overflow:hidden}
-.gl-clinker{position:absolute;inset:0;z-index:-2;display:block;width:100%;height:100%;opacity:0;transition:opacity 1.1s ease}
-html.gl-clinker-on .gl-clinker{opacity:1}
+/* the whole page's background: the Relay-style stream — filaments and sparks winding down the page, drawn in as you scroll */
+.gl-stream{position:fixed;left:0;top:0;width:100%;height:100lvh;z-index:0;display:block;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity .6s ease}
+html.gl-stream-on .gl-stream{opacity:1}
+/* writing sits on its own dark panel: every section after the hero is a glass slab, the veins run in the gaps and margins around it */
+main>section:not(#top){isolation:isolate}
+/* a machine that can't keep the stream smooth swaps the frosted glass for a plain darker slab (set by the stream) */
+html.lowfx main>section:not(#top):before{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(11,10,12,.66)}
+main>section:not(#top):before{content:"";position:absolute;z-index:-1;left:50%;top:44px;bottom:44px;width:min(1300px,calc(100vw - 20px));translate:-50% 0;
+  border-radius:clamp(20px,2.4vw,34px);background:rgba(11,10,12,.38);border:1px solid rgba(255,243,232,.09);
+  -webkit-backdrop-filter:blur(16px) saturate(1.15);backdrop-filter:blur(16px) saturate(1.15);
+  box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
+#top p,#top .herometa{text-shadow:0 1px 18px rgba(8,7,10,.85)}
 footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:linear-gradient(180deg,var(--bg) 0,rgba(11,10,12,.3) clamp(70px,9vw,130px),rgba(11,10,12,.3) 100%)}
+  background:linear-gradient(180deg,rgba(11,10,12,0) 0,rgba(11,10,12,.3) clamp(70px,9vw,130px),rgba(11,10,12,.3) 100%)}
 /* the columns sit on the dark: a scrim hung from the columns themselves, so it follows them at any height */
 .fcols{position:relative}
 .fcols:before{content:"";position:absolute;left:-50vw;right:-50vw;top:-56px;bottom:-400px;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(11,10,12,0) 0,rgba(11,10,12,.93) 56px,var(--bg) 120px)}
 
-/* ── section rhythm: near-black and a warm off-white taken from the sign's brick and
-      cream (#F2E6DA). A light section re-points the colour tokens, so everything inside
-      it recolours without its own rules; the header borrows the same set when it sits
-      over one (brewns' data-header-theme). Neon glows are dropped on the light ground. ── */
-.surf-light,header[data-theme="light"]{
-  --bg:#F2E6DA;--bg-2:#EADCCC;--card:#E4D3C1;
-  --tx:#1A1210;--mu:#5C4C45;--di:#76655C;
-  --line:rgba(26,18,16,.14);--line-2:rgba(26,18,16,.26);
-  --gl:none}
-.surf-light{background:var(--bg);color:var(--tx);z-index:1}
-.surf-light .q button:hover{color:var(--red)}
-.surf-light .meta{color:#B8121F;border-color:rgba(184,18,31,.3)}
-.surf-light .chips button.house[aria-pressed="false"]{color:#B8121F;box-shadow:inset 0 0 0 1px rgba(184,18,31,.4)}
-.surf-light ::selection{background:var(--tx);color:var(--bg)}
+/* ── every section now sits on the dark; the red veins run behind all of them ── */
 header{transition:transform .7s var(--e),background .5s var(--v4e),border-color .5s,backdrop-filter .5s,color .4s}
 header[data-theme="light"]{color:var(--tx)}
 header.solid[data-theme="light"]{background:rgba(242,230,218,.84);border-color:var(--line)}
@@ -646,33 +643,26 @@ header[data-theme="light"] :is(.lang,.icobtn){background:rgba(255,255,255,.45)}
 header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 @media(max-width:760px){header.foot{visibility:hidden;pointer-events:none}}
 
-/* ── the builder on the light surface: the menu card's square bordered edge, a ground
-      a shade above the section, inputs lighter still ── */
-.surf-light .build{border-radius:0;border-color:var(--line-2);background:#F7EFE6}
-.surf-light .picks select,.surf-light #b-note{background-color:#FCF8F3;border-color:var(--line-2);border-radius:0}
-.surf-light .chips button{background:#FCF8F3}
-.surf-light .chips button[aria-pressed="true"]{background:var(--red)}
-
 /* ── the order ticket (brewns' printed receipt, in this site's type): white paper and
       dark ink on any surface, so it reads as a slip rather than a panel ── */
 .build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);grid-template-areas:"head ticket" "form ticket" "send ticket";column-gap:clamp(28px,4vw,56px);align-items:start}
 .build-head{grid-area:head}.build-form{grid-area:form}.build-send{grid-area:send}
-.ticket{--paper:#FFFCF7;--ink:#17110F;grid-area:ticket;position:sticky;top:110px;margin-bottom:10px;padding:22px 20px 20px;background:var(--paper);color:var(--ink);
+.ticket{--paper:#17131A;--ink:#FFF3E8;grid-area:ticket;position:sticky;top:110px;margin-bottom:10px;padding:22px 20px 20px;background:var(--paper);color:var(--ink);
   font-family:var(--ui);font-size:12px;line-height:1.55;letter-spacing:.06em;text-transform:uppercase;font-variant-numeric:tabular-nums;
-  box-shadow:0 1px 0 rgba(23,17,15,.06),0 28px 52px -28px rgba(70,34,24,.5)}
+  box-shadow:inset 0 0 0 1px var(--line),0 28px 52px -28px rgba(0,0,0,.8)}
 /* torn edge: a run of downward teeth, as the brewns slip ends */
 .ticket:after{content:"";position:absolute;left:0;right:0;top:100%;height:8px;
   background:conic-gradient(from -45deg at 50% 100%,transparent 90deg,var(--paper) 0) 0 0/12px 8px repeat-x;transform:scaleY(-1)}
 .t-brand{margin:0;text-align:center;font-family:var(--v4disp);font-weight:900;font-size:15px;letter-spacing:.14em}
-.t-stamp{margin:6px 0 0;text-align:center;font-size:10.5px;color:rgba(11,10,12,.55)}
+.t-stamp{margin:6px 0 0;text-align:center;font-size:10.5px;color:rgba(255,243,232,.55)}
 /* dotted rule, drawn with a gradient so it stays crisp at any size */
 .t-rule{height:1px;margin:14px 0;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 7px)}
 .t-lines{display:grid;gap:9px;min-height:64px}
 .tl{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}
-.tl span{color:rgba(11,10,12,.55)}
+.tl span{color:rgba(255,243,232,.55)}
 .tl b{font-weight:600;text-align:right;text-transform:none;letter-spacing:.01em;word-break:break-word}
-.t-empty{margin:0;color:rgba(11,10,12,.5);text-transform:none;letter-spacing:.01em}
-.t-foot{margin:0;text-align:center;font-size:10.5px;color:rgba(11,10,12,.55)}
+.t-empty{margin:0;color:rgba(255,243,232,.5);text-transform:none;letter-spacing:.01em}
+.t-foot{margin:0;text-align:center;font-size:10.5px;color:rgba(255,243,232,.55)}
 /* a new or changed line prints in, in the jerks of a thermal head */
 .tl.pr{animation:t-print .42s steps(7,end) both}
 @keyframes t-print{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
@@ -689,6 +679,151 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
   #ld{display:none}
   .build.rv .ticket,.build.rv.in .ticket{clip-path:none;animation:none}
   .tl.pr{animation:none}
+}
+
+
+/* ═════════════════════════════════════════════════════════════
+   v7 · the restaurant. Warm charcoal instead of black glass; sections run edge to edge
+   and are told apart by tone and a hairline, not floating panels; photographs of the
+   food in every section; the light stream only behind the hero. Cues from GetLayers'
+   Brewns (warm dark, alternating surfaces, menu as product rows), Ridgeline (photo-led
+   local business, hairlines, plain-spoken copy) and Northwall (surfaces that trade
+   places under one header).
+   ═════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#110D0C;--bg-2:#1A1311;--card:#231a17;--line:#35271F;--line-2:rgba(255,236,220,.16);
+  --mu:#B9A396;--di:#93806F;--r:12px;--pad:clamp(76px,9vw,128px)}
+body{background:var(--bg)}
+.glowfield{display:none}
+html.gl-stream-off .gl-stream{opacity:0}
+
+/* sections: full width, alternating tone, one hairline between */
+main>section:not(#top):before{display:none}
+/* one ground for the whole page: the warm charcoal, with soft patches of red glow scattered down it
+   (painted on the page itself, behind every section, so nothing restarts at a section edge) */
+main>section:not(#top),.stats,.marq{background:transparent}
+main>section:not(#top){border-top:1px solid var(--line);isolation:auto}
+body{background-color:var(--bg);background-repeat:no-repeat;background-image:
+  radial-gradient(644px 505px at 86% 9%,rgba(255,45,63,.15),rgba(255,45,63,0) 70%),
+  radial-gradient(713px 552px at 8% 17%,rgba(255,45,63,.13),rgba(255,45,63,0) 70%),
+  radial-gradient(598px 482px at 72% 27%,rgba(255,45,63,.12),rgba(255,45,63,0) 70%),
+  radial-gradient(736px 575px at 14% 37%,rgba(255,45,63,.13),rgba(255,45,63,0) 70%),
+  radial-gradient(644px 505px at 90% 47%,rgba(255,45,63,.15),rgba(255,45,63,0) 70%),
+  radial-gradient(690px 529px at 6% 57%,rgba(255,45,63,.12),rgba(255,45,63,0) 70%),
+  radial-gradient(621px 505px at 62% 67%,rgba(255,45,63,.13),rgba(255,45,63,0) 70%),
+  radial-gradient(713px 552px at 20% 77%,rgba(255,45,63,.12),rgba(255,45,63,0) 70%),
+  radial-gradient(644px 505px at 84% 87%,rgba(255,45,63,.13),rgba(255,45,63,0) 70%)}
+
+/* type: the hero's chunky face carries every headline; the red word replaces the italic serif */
+h2{font-family:var(--v4disp);font-weight:700;font-size:clamp(32px,4.1vw,60px);line-height:1;letter-spacing:-.035em}
+h2 em,.fline em{font-family:inherit;font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--red)}
+.w{transform:translate3d(0,.3em,0)}
+.kicker{color:#E8B9A0}
+
+/* calmer: no tilting photos, no custom cursor */
+[data-t3d],#heroShot{transform:none!important}
+html.has-cur #cur{display:none!important}
+html.has-cur [data-src]{cursor:zoom-in}
+.glare{display:none}
+
+/* header over warm charcoal */
+header.solid{background:rgba(17,13,12,.9)}
+
+/* hero */
+.heroframe{height:min(78svh,660px);aspect-ratio:722/914;border-radius:16px;border-color:rgba(255,236,220,.12)}
+.heroframe img{object-position:50% 60%}
+.heroart:before{background:radial-gradient(closest-side,rgba(255,90,60,.26),rgba(255,45,63,.08) 55%,rgba(255,45,63,0) 100%)}
+
+/* menu head: the sharing tray beside the title */
+.mhead{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center}
+.mhead .lede{margin-top:22px}
+.mheadpic{display:block;cursor:zoom-in}
+.mheadpic .frame{aspect-ratio:1058/638}
+.mheadpic:hover .frame img{transform:scale(1.03)}
+
+/* menu cards and the foot: flat, on the section's own ground */
+.mc-in{border:0;padding:0;background:none;gap:14px}
+.mc-pic{border-radius:10px}
+.mcard:hover .mc-in{border-color:transparent}
+.menufoot{border:0;border-top:1px solid var(--line);border-radius:0;background:none;padding:26px 0 0}
+
+/* build it your way: a band under the menu, not a box */
+.build{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:clamp(40px,5vw,64px) 0 0}
+.picks select,#b-note{background-color:var(--bg);border-radius:10px}
+.ticket{--paper:#FFF6EC;--ink:#2A1A15;box-shadow:0 28px 52px -28px rgba(0,0,0,.85)}
+.t-stamp,.t-foot,.tl span{color:rgba(42,26,21,.6)}
+.t-empty{color:rgba(42,26,21,.55)}
+
+/* the room: a photo wall with plain captions */
+.gal button{overflow:hidden;border-radius:var(--r)}
+.gal .gcap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:40px 18px 15px;text-align:left;font-family:var(--disp);font-size:15px;font-weight:600;color:#fff;
+  background:linear-gradient(180deg,rgba(17,13,12,0),rgba(17,13,12,.78));pointer-events:none}
+
+/* signature: the photograph a little warmer and straight */
+.sigimg{border-radius:var(--r)}
+
+/* reviews: the photograph of someone eating one, beside the score */
+.rev{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:center}
+.revpic{display:block;cursor:zoom-in}
+.revpic .frame{aspect-ratio:800/1046;max-height:640px}
+.revtext{display:grid;gap:clamp(36px,4vw,56px)}
+.revcard{padding:28px 0 0;border:0;border-top:1px solid var(--line);border-radius:0;background:none}
+
+/* faq: a tray under the question */
+.faqpic{display:block;margin-top:clamp(28px,3vw,44px);width:min(100%,380px);cursor:zoom-in}
+.faqpic .frame{aspect-ratio:4/4.6}
+
+/* visit */
+.map{border-radius:var(--r)}
+
+/* footer: the neon sign the big line quotes, dim behind it */
+footer{border-top:1px solid var(--line);background:var(--bg)}
+.fbg{position:absolute;inset:0 0 auto 0;height:min(78%,720px);z-index:-2;pointer-events:none;
+  background:url("images/gallery-3.webp") 50% 35%/cover no-repeat;opacity:.32;filter:saturate(1.15) blur(1.5px);
+  -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent);mask-image:linear-gradient(180deg,#000 30%,transparent)}
+.fline{font-family:var(--v4disp);font-weight:900;font-size:clamp(40px,7vw,112px);letter-spacing:-.045em}
+
+/* the shop's name, colossal in a thin red outline (after the gl-restyle hero mark that rose out of the page's edge),
+   now dripping: it rises up out of the line that closes the numbers band, settles just above it, and the paint runs
+   off its feet, over the line and on down into the menu. The letters are SVG text; the drips are placed by measuring
+   where each letter's feet actually sit, so they hang off the paint in whatever font loads. */
+.stats{position:relative;z-index:2;padding:clamp(44px,4.4vw,68px) 0 0}
+/* as wide as the column the numbers sit in; its feet stop a few points above the line (--dmg), the drips cross it */
+.dripmark{--dmw:min(1240px,calc(100vw - 2*clamp(20px,5vw,64px)));position:relative;pointer-events:none;width:var(--dmw);
+  height:calc(var(--dmw) * var(--dmr,.16));margin:clamp(14px,1.6vw,26px) auto calc(var(--dmw) * var(--dmg,.02))}
+.dripmark svg{position:absolute;left:0;top:0;display:block;width:100%;height:auto;overflow:visible}
+.dm-g{opacity:.34}
+.dm-drops circle{fill:none;stroke:#FF2D3F;stroke-width:1.5px;vector-effect:non-scaling-stroke}
+.dm-t{font-family:"Sofia Sans Extra Condensed","Arial Narrow",Impact,system-ui,sans-serif;font-weight:800;text-transform:uppercase}
+.dripmark.arm .dm-rise{opacity:0}
+.dm-drip{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(.12)}
+.dripmark.in .dm-drip{animation:dm-grow 1.5s cubic-bezier(.3,.75,.25,1) var(--dd,0s) both,dm-ooze var(--od,6s) ease-in-out calc(var(--dd,0s) + 1.5s) infinite alternate}
+@keyframes dm-grow{from{transform:scaleY(.12)}to{transform:scaleY(1)}}
+@keyframes dm-ooze{from{transform:scaleY(1)}to{transform:scaleY(1.12)}}
+.dm-drop{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
+.dripmark.in .dm-drop{animation:dm-fall var(--fd,5s) cubic-bezier(.5,0,.9,.4) var(--fl,3s) infinite}
+@keyframes dm-fall{0%,58%{opacity:0;transform:translateY(0) scale(.5)}62%{opacity:1;transform:translateY(1px) scale(1)}100%{opacity:0;transform:translateY(var(--fall,20px)) scale(.85)}}
+.dripmark:not(.run) :is(.dm-drip,.dm-drop){animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){
+  .dm-drip{transform:none!important;animation:none!important}
+  .dm-drop{display:none}
+}
+
+@media(max-width:960px){
+  .mhead{grid-template-columns:1fr}
+  .rev{grid-template-columns:1fr}
+  .revpic .frame{aspect-ratio:4/3.6;max-height:none}
+  .revpic .frame img{object-position:50% 40%}
+  .faqpic{width:100%}
+  .faqpic .frame{aspect-ratio:16/10}
+}
+@media(max-width:980px){
+  .heroframe{height:auto;width:100%;aspect-ratio:1/1.12}
+  .heroframe img{object-position:50% 62%}
+  .heroframe:after{background:linear-gradient(180deg,transparent 52%,rgba(17,13,12,.72) 84%,var(--bg) 100%)}
+}
+@media(max-width:760px){
+  .gal .gcap{font-size:13px;padding:30px 12px 11px}
 }
 </style>
 </head>
@@ -724,6 +859,7 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 
 <div id="prog"></div>
 <div class="glowfield" aria-hidden="true"></div>
+<canvas class="gl-stream" aria-hidden="true"></canvas>
 
 <header id="hd">
   <div class="wrap tbar">
@@ -733,8 +869,8 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
     </button>
     <nav id="nav" aria-label="Sections">
       <button type="button" data-go="menu" data-i18n="navMenu">Menu</button>
-      <button type="button" data-go="signature" data-i18n="navSignature">Signature</button>
       <button type="button" data-go="shop" data-i18n="navRoom">The Shop</button>
+      <button type="button" data-go="signature" data-i18n="navSignature">Signature</button>
       <button type="button" data-go="words" data-i18n="navReviews">Reviews</button>
       <button type="button" data-go="faq">FAQ</button>
       <button type="button" data-go="visit" data-i18n="findUs">Find Us</button>
@@ -778,7 +914,7 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
     </div>
     <div class="heroart">
       <figure class="heroframe" id="heroShot">
-        <img src="images/hero.webp" width="382" height="510" alt="Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign" fetchpriority="high" decoding="async">
+        <img src="images/burger-bags.webp" width="722" height="914" alt="A Buns and Guns smash burger with cheese, onion and pickles in front of branded takeaway bags" fetchpriority="high" decoding="async">
       </figure>
     </div>
   </div>
@@ -795,17 +931,21 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
     <div class="stat rv" style="--d:.16s"><b><span class="cu" data-to="4.8" data-dec="1">4.8</span><sup>★</sup></b><span data-i18n="statReviews">From 311 Google reviews</span></div>
     <div class="stat rv" style="--d:.24s"><b><span class="cu" data-to="6">6</span></b><span data-i18n="statDays">Nights a week, Tuesday to Sunday</span></div>
   </div>
+  <div class="dripmark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 150" preserveAspectRatio="xMidYMin meet"><defs><filter id="dmLine" x="-5%" y="-10%" width="110%" height="130%" color-interpolation-filters="sRGB"><feMorphology in="SourceAlpha" operator="erode" radius="1" result="in"/><feComposite in="SourceGraphic" in2="in" operator="out"/></filter><clipPath id="dmBand"><rect x="-5000" y="-5000" width="1" height="1"/></clipPath><clipPath id="dmAbove"><rect x="-5000" y="-5000" width="20000" height="20000"/></clipPath></defs><g class="dm-clip" clip-path="url(#dmAbove)"><g class="dm-rise"><g class="dm-cover" clip-path="url(#dmBand)" fill="#110D0C"></g><g class="dm-g"><g filter="url(#dmLine)" fill="#FF2D3F"><text class="dm-t" x="2" y="100" font-size="100">Buns &amp; Guns</text><g class="dm-d"></g></g><g class="dm-drops"></g></g></g></g></svg></div>
 </div>
 
 <!-- ══ menu ══ -->
-<section id="menu" class="surf-light" data-header-theme="light">
+<section id="menu" data-header-theme="dark">
   <div class="wrap">
-    <div class="head">
+    <div class="head mhead">
+      <div>
       <div class="rv">
         <p class="kicker"><span data-i18n="menuKicker">The board</span></p>
         <h2 data-i18n="menuTitle2">Pick your patty.<br>The board follows.</h2>
       </div>
       <p class="lede rv" style="--d:.1s" data-i18n="menuLede">Every burger is built on one of four patties — single 100 g, double 200 g, classic 200 g or wagyu 200 g. Choose one and every price on the board moves with it.</p>
+      </div>
+      <button class="mheadpic" type="button" data-src="images/burger-tray.webp" aria-label="Open photograph"><figure class="frame"><img src="images/burger-tray.webp" width="1058" height="638" alt="Four burgers on a red checked tray with fries, sweet potato fries and dipping sauces" loading="lazy"></figure></button>
     </div>
 
     <div class="controls rv">
@@ -889,6 +1029,24 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 </section>
 
 <!-- ══ signature ══ -->
+<section id="shop" data-header-theme="dark">
+  <div class="wrap">
+    <div class="head">
+      <div class="rv">
+        <p class="kicker"><span data-i18n="roomKicker">The room</span></p>
+        <h2 data-i18n="insideTitle">Eat under the neon.</h2>
+      </div>
+      <p class="lede rv" style="--d:.1s" data-i18n="insideText">Brick walls, red neon and an astronaut serving burgers across the galaxy. Grab a table and stay a while.</p>
+    </div>
+    <div class="gal">
+      <button type="button" data-src="images/gallery-2.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-2.webp" width="621" height="510" alt="Tables under the red Buns and Guns neon logo" loading="lazy"></figure><span class="gcap" data-i18n="orbCap1">Under the neon</span></button>
+      <button type="button" data-src="images/gallery-1.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-1.webp" width="680" height="510" alt="Dining room with a mural of an astronaut holding a burger" loading="lazy"></figure><span class="gcap" data-i18n="orbCap2">The astronaut</span></button>
+      <button type="button" data-src="images/gallery-4.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-4.webp" width="680" height="510" alt="Wide view of the restaurant with red booth seating" loading="lazy"></figure><span class="gcap" data-i18n="orbCap5">The room</span></button>
+      <button type="button" data-src="images/gallery-3.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-3.webp" width="680" height="317" alt="Neon sign reading You wanna burger me above Buns and Guns t-shirts" loading="lazy"></figure><span class="gcap" data-i18n="orbCap4">You wanna burger me?</span></button>
+    </div>
+  </div>
+</section>
+
 <section id="signature" data-header-theme="dark">
   <div class="wrap">
     <div class="sig">
@@ -924,28 +1082,14 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 </section>
 
 <!-- ══ the room ══ -->
-<section id="shop" class="surf-light" data-header-theme="light">
-  <div class="wrap">
-    <div class="head">
-      <div class="rv">
-        <p class="kicker"><span data-i18n="roomKicker">The room</span></p>
-        <h2 data-i18n="insideTitle">Eat under the neon.</h2>
-      </div>
-      <p class="lede rv" style="--d:.1s" data-i18n="insideText">Brick walls, red neon and an astronaut serving burgers across the galaxy. Grab a table and stay a while.</p>
-    </div>
-    <div class="gal">
-      <button type="button" data-src="images/gallery-1.webp" aria-label="Open photograph" data-t3d="rise" data-side="-1" data-hover><figure class="frame"><div class="par" data-par=".05"><img src="images/gallery-1.webp" width="680" height="510" alt="Dining room with a mural of an astronaut holding a burger" loading="lazy"></div></figure></button>
-      <button type="button" data-src="images/gallery-2.webp" aria-label="Open photograph" data-t3d="rise" data-side="1" data-hover><figure class="frame"><div class="par" data-par=".05"><img src="images/gallery-2.webp" width="621" height="510" alt="Tables under the red Buns and Guns neon logo" loading="lazy"></div></figure></button>
-      <button type="button" data-src="images/gallery-4.webp" aria-label="Open photograph" data-t3d="rise" data-side="-1" data-hover><figure class="frame"><div class="par" data-par=".05"><img src="images/gallery-4.webp" width="680" height="510" alt="Wide view of the restaurant with red booth seating" loading="lazy"></div></figure></button>
-      <button type="button" data-src="images/gallery-3.webp" aria-label="Open photograph" data-t3d="rise" data-side="1" data-hover><figure class="frame"><div class="par" data-par=".05"><img src="images/gallery-3.webp" width="680" height="317" alt="Neon sign reading You wanna burger me above Buns and Guns t-shirts" loading="lazy"></div></figure></button>
-    </div>
-  </div>
-</section>
+
 
 <!-- ══ reviews ══ -->
 <section id="words" data-header-theme="dark">
   <div class="wrap">
     <div class="rev">
+      <button class="revpic" type="button" data-src="images/burger-hands.webp" aria-label="Open photograph"><figure class="frame"><img src="images/burger-hands.webp" width="800" height="1046" alt="Two hands holding a smash burger over a tray of fries" loading="lazy"></figure></button>
+      <div class="revtext">
       <div class="rv">
         <p class="kicker"><span data-i18n="navReviews">Reviews</span></p>
         <div class="score"><span class="cu" data-to="4.8" data-dec="1">4.8</span><sup>★</sup></div>
@@ -962,16 +1106,18 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
           <a class="btn ghost sm" href="https://www.tripadvisor.com/UserReview-g1904143-d32859239-Buns_Guns_Pyla-Pyla_Larnaca_Larnaka_District.html" target="_blank" rel="noopener" data-i18n="reviewTripadvisor">Review on Tripadvisor</a>
         </div>
       </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ══ faq ══ -->
-<section id="faq" class="surf-light" data-header-theme="light">
+<section id="faq" data-header-theme="dark">
   <div class="wrap faqgrid">
     <div class="rv">
       <p class="kicker"><span data-i18n="faqKicker">Good to know</span></p>
       <h2 data-i18n="faqTitle">Before you order.</h2>
+      <button class="faqpic" type="button" data-src="images/hero.webp" aria-label="Open photograph"><figure class="frame"><img src="images/hero.webp" width="382" height="510" alt="Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign" loading="lazy"></figure></button>
     </div>
     <div class="rv" style="--d:.1s" id="faqBox"></div>
   </div>
@@ -1010,7 +1156,7 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
 </main>
 
 <footer data-header-theme="dark">
-  <canvas class="gl-clinker" aria-hidden="true"></canvas>
+  <div class="fbg" aria-hidden="true"></div>
   <div class="wrap">
     <p class="fline rv" data-i18n="footLine">You wanna burger me?</p>
     <div class="fcols">
@@ -1144,7 +1290,7 @@ Object.assign(GR,{"nameCheeseburger":"Τσίζμπεργκερ","nameChickenBurg
 /* build-it-your-way strings, as they were on the first site (e509849) */
 Object.assign(GR,{"buildTitle":"Φτιάξ' το με τον τρόπο σου","buildIntro":"Επιλέξτε το μπέργκερ και τα extra σας, προσθέστε ένα σημείωμα και στείλτε την παραγγελία σας.","labelBurger":"Μπέργκερ","anyBurger":"Οποιοδήποτε μπέργκερ","choosePatty":"Επιλέξτε μπιφτέκι","pattySingle":"Μονό smash 100γρ","pattyDouble":"Διπλό smash 200γρ","pattyClassic":"Κλασικό μπιφτέκι 200γρ","pattyWagyu":"Μπιφτέκι wagyu 200γρ","legendToppings":"Επικαλύψεις","topTomato":"Ντομάτα","topLettuce":"Μαρούλι","topOnion":"Κρεμμύδι","topCrispyOnion":"Τραγανό κρεμμύδι","topPickles":"Αγγουράκια τουρσί","topBacon":"Μπέικον","topJalapenos":"Χαλαπένιο","legendSauces":"Σάλτσες","sauceGun":"Gun Sauce","sauceHoneyMustard":"Μουστάρδα μελιού","sauceBbq":"Μπάρμπεκιου","sauceMayo":"Μαγιονέζα","sauceKetchup":"Κέτσαπ","sauceMustard":"Μουστάρδα","labelSpecialRequests":"Ειδικά αιτήματα","notePlaceholder":"Για παράδειγμα: χωρίς σάλτσα, χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι","sendWhatsapp":"Αποστολή στο WhatsApp","clearBtn":"Καθαρισμός","msgPickSomething":"Επιλέξτε κάτι ή γράψτε ένα αίτημα πρώτα.","msgOpeningWhatsapp":"Άνοιγμα WhatsApp.","msgBurger":"Μπέργκερ","msgPatty":"Μπιφτέκι","msgToppings":"Επικαλύψεις","msgSauces":"Σάλτσες","msgSpecialRequest":"Ειδικό αίτημα","waGreeting":"Γεια σας Buns and Guns!"});
 Object.assign(GR,{"curView":"Προβολή","lbClose":"Κλείσιμο","lbPrev":"Προηγούμενη φωτογραφία","lbNext":"Επόμενη φωτογραφία"});
-Object.assign(GR,{"order":"Παραγγελία","navSignature":"Σπεσιαλιτέ","navRoom":"Ο χώρος","navReviews":"Κριτικές","mondays":"Δευτέρα","menuKicker":"Ο κατάλογος","menuTitle2":"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.","menuLede":"Κάθε μπέργκερ χτίζεται σε ένα από τέσσερα μπιφτέκια — μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ. Διαλέξτε ένα και όλες οι τιμές προσαρμόζονται.","roomKicker":"Ο χώρος","footLine":"Θες να σε κάνω μπέργκερ;","footVisit":"Επισκεφθείτε μας","footOrder":"Παραγγελία","footHours":"Τρίτη έως Κυριακή · 17:30 – 22:00"});
+Object.assign(GR,{"order":"Παραγγελία","navSignature":"Σπεσιαλιτέ","navRoom":"Ο χώρος","navReviews":"Κριτικές","mondays":"Δευτέρα","menuKicker":"Ο κατάλογος","menuTitle2":"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.","menuLede":"Κάθε μπέργκερ χτίζεται σε ένα από τέσσερα μπιφτέκια — μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ. Διαλέξτε ένα και όλες οι τιμές προσαρμόζονται.","roomKicker":"Ο χώρος","footLine":"Θες να σε κάνω μπέργκερ;","footVisit":"Επισκεφθείτε μας","footOrder":"Παραγγελία","footHours":"Τρίτη έως Κυριακή · 17:30 – 22:00","orbCap1":"Κάτω από το νέον","orbCap2":"Ο αστροναύτης","orbCap3":"Στο τραπέζι","orbCap4":"Θες να σε κάνω μπέργκερ;","orbCap5":"Η σάλα"});
 const FAQ_GR=[["Κάνετε delivery;","Ναι, μέσω Foody — τα κουμπιά παραγγελίας σε αυτή τη σελίδα σας πηγαίνουν κατευθείαν εκεί."],["Ποια είναι η διαφορά ανάμεσα στα μπιφτέκια;","Το μονό είναι ένα smash μπιφτέκι 100γρ και το διπλό είναι δύο (200γρ). Το κλασικό είναι ένα κλασικό μπιφτέκι 200γρ και το wagyu ένα μπιφτέκι wagyu 200γρ."],["Τι γίνεται με τις αλλεργίες;","Παρακαλούμε ενημερώστε το προσωπικό μας για τυχόν αλλεργίες όταν παραγγέλνετε."],["Υπάρχουν επιλογές με πολλή πρωτεΐνη;","Η σαλάτα μπέργκερ και το Buff Burger — πενήντα και εκατόν οκτώ γραμμάρια πρωτεΐνης αντίστοιχα."],["Πότε είστε κλειστά;","Τις Δευτέρες. Κατά τα άλλα, Τρίτη έως Κυριακή, από τις 17:30 έως τις 22:00."]];
 
 /* ═══ state ═══ */
@@ -1519,7 +1665,7 @@ $('shareBtn').onclick=()=>{
 let lenis=null;
 const lb=$('lb'),lbImg=$('lbImg');
 let lbList=[],lbI=0,lbFrom=null,lbBusy=false,lbX=null,lbSwiped=false;
-const boxOf=el=>(el.querySelector('.frame')||el).getBoundingClientRect();
+const boxOf=el=>(el.closest('.orb')?el.querySelector('img'):(el.querySelector('.frame')||el)).getBoundingClientRect();
 function flip(el,dir){
   /* uniform scale plus a clip, so the cropped thumbnail grows into the full photo without stretching */
   const a=boxOf(el),b=lbImg.getBoundingClientRect();
@@ -1539,7 +1685,7 @@ function lbSet(el){
 }
 function openLb(el){
   if(lbBusy||lb.classList.contains('on'))return;
-  const set=[...document.querySelectorAll('.gal [data-src],.duo [data-src]')];
+  const set=[...document.querySelectorAll('.mheadpic[data-src],.gal [data-src],.duo [data-src],.revpic[data-src],.faqpic[data-src]')];
   lbList=set.includes(el)?set:[el];lbI=lbList.indexOf(el);lbFrom=el;
   lb.classList.toggle('multi',lbList.length>1);
   lbBusy=true;
@@ -1884,7 +2030,7 @@ const spy=new IntersectionObserver(en=>en.forEach(x=>{
   $('nav').querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.go===x.target.id));
   placeInd($('nav'),current($('nav')));
 }),{rootMargin:"-45% 0px -50% 0px"});
-["menu","signature","shop","words","faq","visit"].forEach(id=>spy.observe($(id)));
+["menu","shop","signature","words","faq","visit"].forEach(id=>spy.observe($(id)));
 const topSpy=new IntersectionObserver(([x])=>{
   if(x.isIntersecting){$('nav').querySelectorAll('button').forEach(b=>b.setAttribute('aria-current','false'));placeInd($('nav'),null)}
 },{rootMargin:"-45% 0px -50% 0px"});
@@ -1906,259 +2052,553 @@ addEventListener('resize',placeAll);
 setTimeout(()=>document.body.classList.add('ready'),1500);
 </script>
 <script>
-/* ═══ GetLayers gradient ════════════════════════════════════════════════
-   clinker · roll clinker-008 → behind the footer band   (https://www.getlayers.ai/?layer=clinker)
-   The FRAG below is the asset's shader exactly as GetLayers ships it. Colour comes
-   ONLY from CONFIG: the roll's values are merged over the source CONFIG, then the five
-   palette keys are tinted to this site's own tokens (--bg, --card, --red-2, --red, the
-   #FF7A86 light red). Never recolour in the shader.
-   The loop is the portable source's loop: clamped clock, two-pole pointer, paused
-   off-screen and in a hidden tab. Added here: canvas-relative sizing at the screen's
-   density, ~30 fps on phones, one still frame under prefers-reduced-motion, lazy start. */
-const GL_TINT={bgColor:"#0B0A0C",colorA:"#17131A",colorB:"#E3202F",colorC:"#FF2D3F",colorD:"#FF7A86"};
-const GL_CLINKER={
-  FRAG:`#version 300 es
-precision highp float;
-out vec4 fragColor;
-
-uniform vec2  iResolution;
-uniform float iTime;
-uniform vec2  iMouse;          // aspect-corrected units, same space as uv
-
-uniform vec3  uBg, uColorA, uColorB, uColorC, uColorD;
-uniform float uScale, uSpeed, uCellDrift, uWarp, uWarpScale, uRoughness, uLacunarity;
-uniform float uCrackWidth, uCrackGain, uEmber;
-uniform float uHeatScale, uHeatAmount, uBreathe;
-uniform float uContrast, uMidpoint, uSink, uGlow;
-uniform float uGrain, uDither, uVignette;
-uniform float uPointerRadius, uPointerStrength, uPointerHeat, uParallax;
-
-#define OCTAVES 4
-
-vec2 hash2(vec2 p) {
-  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
-  return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
-}
-
-vec2 hash22(vec2 p) {
-  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
-  return fract(sin(p) * 43758.5453123);
-}
-
-float snoise(vec2 p) {
-  const float K1 = 0.366025404, K2 = 0.211324865;
-  vec2 i = floor(p + (p.x + p.y) * K1);
-  vec2 a = p - i + (i.x + i.y) * K2;
-  float m = step(a.y, a.x);
-  vec2 o = vec2(m, 1.0 - m);
-  vec2 b = a - o + K2;
-  vec2 c = a - 1.0 + 2.0 * K2;
-  vec3 h = max(0.5 - vec3(dot(a, a), dot(b, b), dot(c, c)), 0.0);
-  vec3 n = h * h * h * h * vec3(dot(a, hash2(i)), dot(b, hash2(i + o)), dot(c, hash2(i + 1.0)));
-  return dot(n, vec3(70.0));
-}
-
-float fbm(vec2 p) {
-  float v = 0.0, amp = 0.5;
-  for (int i = 0; i < OCTAVES; i++) {
-    v += amp * snoise(p);
-    p *= uLacunarity;
-    amp *= uRoughness;
-  }
-  return v;
-}
-
-/* F2 - F1 over a cell lattice: zero along the seam between two neighbours, rising into
-   the middle of every cell. That difference IS the crack — no edge detection needed. */
-float seam(vec2 p, float t) {
-  vec2 n = floor(p), f = fract(p);
-  float d1 = 8.0, d2 = 8.0;
-  for (int j = -1; j <= 1; j++) {
-    for (int i = -1; i <= 1; i++) {
-      vec2 g = vec2(float(i), float(j));
-      vec2 h = hash22(n + g);
-      vec2 o = 0.5 + 0.5 * sin(t * uCellDrift + 6.2831853 * h);
-      vec2 r = g + o - f;
-      float d = dot(r, r);
-      if (d < d1) { d2 = d1; d1 = d; }
-      else if (d < d2) { d2 = d; }
-    }
-  }
-  return sqrt(d2) - sqrt(d1);
-}
-
-vec3 ramp4(float t) {
-  vec3 c = mix(uColorA, uColorB, smoothstep(0.00, 0.36, t));
-  c = mix(c, uColorC, smoothstep(0.32, 0.70, t));
-  c = mix(c, uColorD, smoothstep(0.66, 1.00, t));
-  return c;
-}
-
-// triangular-PDF dither — the only reliable cure for 8-bit gradient banding
-float triDither(vec2 fc) {
-  float a = fract(sin(dot(fc, vec2(12.9898, 78.233))) * 43758.5453);
-  float b = fract(sin(dot(fc + 17.0, vec2(12.9898, 78.233))) * 43758.5453);
-  return (a + b - 1.0) / 255.0;
-}
-
-
-// ---- house grain. ONE look across the collection: an integer hash (no sin() streaks),
-// triangular so it reads as film rather than static, weighted into the midtones so it
-// never crusts a black or a white. Static by default; uGrainAnim re-seeds it 24×/s.
-uniform float uGrainAnim;
-float houseGrain(vec2 fc) {
-  uvec2 q = uvec2(fc) * uvec2(1597334677u, 3812015801u)
-          + uint(floor(iTime * 24.0 * uGrainAnim)) * 2654435769u;
-  uint n = q.x ^ q.y; n = n * 1664525u + 1013904223u; n ^= n >> 16u; n *= 2246822519u; n ^= n >> 13u;
-  float a = float(n & 0xffffu) / 65535.0;
-  n *= 3266489917u; n ^= n >> 16u;
-  float b = float(n & 0xffffu) / 65535.0;
-  return a + b - 1.0;
-}
-void main() {
-  vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution) / iResolution.y;
-  float t = iTime * uSpeed;
-
-  // POINTER — a hand fanning the coals: the crust shifts a little, and the fire under it
-  // comes up where the draught goes. Because the pointer is lerped, the heat arrives a
-  // beat after the cursor and dies away behind it.
-  vec2 d = uv - iMouse;
-  float near = exp(-dot(d, d) / max(1e-4, uPointerRadius * uPointerRadius));
-  vec2 p = (uv + d * near * uPointerStrength - iMouse * uParallax) * uScale;
-
-  // the crust is not a tidy lattice — bend it before it is broken
-  vec2 wv = vec2(fbm(p * uWarpScale + vec2(0.0, t * 0.09)),
-                 fbm(p * uWarpScale + vec2(2.8, 6.1) - t * 0.07));
-  vec2 cp = p + uWarp * wv;
-
-  float crack = seam(cp, t);
-  float line = 1.0 - smoothstep(0.0, max(0.02, uCrackWidth), crack);
-
-  // some of the bed is hotter than the rest, and it breathes
-  float heat = fbm(p * uHeatScale + vec2(-t * 0.05, t * 0.04)) * 0.5 + 0.5;
-  heat = 1.0 - uHeatAmount + uHeatAmount * heat;
-  heat *= 1.0 + uBreathe * sin(t * 0.37 + cp.x * 0.4);
-  heat += near * uPointerHeat;
-
-  float f = clamp(line * uCrackGain * heat + uEmber * heat * (0.4 + 0.6 * (1.0 - line)), 0.0, 1.0);
-  float shade = clamp((f - uMidpoint) * uContrast + 0.5, 0.0, 1.0);
-
-  vec3 col = ramp4(shade);
-  col += uColorD * uGlow * pow(shade, 5.0);
-  col = mix(uBg, col, smoothstep(0.0, max(0.01, uSink), shade) * 0.90 + 0.10);
-
-  col *= 1.0 - uVignette * dot(uv, uv);
-  { float hgL = clamp(dot(col, vec3(0.299, 0.587, 0.114)), 0.0, 1.0);
-    col += houseGrain(gl_FragCoord.xy) * uGrain * mix(1.0, 4.0 * hgL * (1.0 - hgL), 0.6); }
-  col += triDither(gl_FragCoord.xy) * uDither;
-
-  fragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
-}`,
-  /* clinker-008, then the tint */
-  CONFIG:Object.assign({
-    bgColor:"#060302",colorA:"#160b06",colorB:"#6b2409",colorC:"#dc7a1e",colorD:"#ffe4a6",
-    scale:1.8,speed:0.33,cellDrift:0.34,warp:0.45,warpScale:0.55,roughness:0.52,lacunarity:2.05,
-    crackWidth:0.14,crackGain:0.55,ember:0.18,heatScale:0.42,heatAmount:0.82,breathe:0.18,
-    contrast:1.08,midpoint:0.52,sink:0.22,glow:0.12,
-    grain:0,grainAnim:0,dither:1.25,vignette:0.26,
-    cursor:1,pointerRadius:0.62,pointerStrength:0.14,pointerHeat:0.3,parallax:0.003,
-    maxDpr:2     /* perf knob only: up to 2 device px per CSS px, so phones get a sharp field */
-  },GL_TINT)
-};
-
-function glGradient(canvas,asset,onReady){
-  const CONFIG=asset.CONFIG;
-  const gl=canvas.getContext('webgl2',{alpha:false,antialias:false,depth:false,stencil:false,powerPreference:'low-power'});
-  if(!gl)return null;
-  const VERT=`#version 300 es
-void main() {
-  vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2);
-  gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
-}`;
-  const compile=(type,src)=>{const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(sh));return sh};
-  const program=gl.createProgram();
-  gl.attachShader(program,compile(gl.VERTEX_SHADER,VERT));
-  gl.attachShader(program,compile(gl.FRAGMENT_SHADER,asset.FRAG));
-  gl.linkProgram(program);
-  if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
-  gl.useProgram(program);
-  gl.bindVertexArray(gl.createVertexArray());
-  const LOC={},loc=n=>n in LOC?LOC[n]:(LOC[n]=gl.getUniformLocation(program,n));
-  const u1f=(n,v)=>gl.uniform1f(loc(n),v),u2f=(n,x,y)=>gl.uniform2f(loc(n),x,y);
-  const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
-
-  /* CONFIG → uniforms, by the sources' own naming: bgColor → uBg, every other key → u + Key.
-     Keys with no uniform (cursor, maxDpr) resolve to null and are ignored by GL. */
-  for(const k in CONFIG){
-    const u=k==="bgColor"?"uBg":"u"+k[0].toUpperCase()+k.slice(1);
-    if(typeof CONFIG[k]==="string"){const c=hex(CONFIG[k]);gl.uniform3f(loc(u),c[0],c[1],c[2])}
-    else u1f(u,CONFIG[k]);
-  }
-
-  const phone=matchMedia('(pointer:coarse)').matches||innerWidth<760;
-  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let res=1;              /* full resolution: the footer field is drawn at the screen's own density */
-  function resize(){
-    const dpr=Math.min(devicePixelRatio||1,CONFIG.maxDpr)*res;
-    const w=Math.max(1,Math.round(canvas.clientWidth*dpr)),h=Math.max(1,Math.round(canvas.clientHeight*dpr));
-    if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
-    gl.viewport(0,0,w,h);u2f('iResolution',w,h);
-  }
-  resize();
-
-  const mouse={x:0,y:0,ax:0,ay:0,tx:0,ty:0};
-  const aim=e=>{
-    const r=canvas.getBoundingClientRect();if(!r.height)return;
-    mouse.tx=((e.clientX-r.left)/r.width-.5)*(r.width/r.height);
-    mouse.ty=.5-(e.clientY-r.top)/r.height;
-  };
-
-  let visible=true,clock=still?12:0,prevT=performance.now(),lastDraw=0,raf=0;
-  const draw=()=>{u1f('iTime',clock);u2f('iMouse',mouse.x,mouse.y);u2f('iMouseVel',mouse.ax-mouse.x,mouse.ay-mouse.y);gl.drawArrays(gl.TRIANGLES,0,3)};
-  function frame(now){
-    raf=requestAnimationFrame(frame);
-    if(!visible||document.hidden){prevT=now;return}
-    if(phone&&now-lastDraw<31)return;          /* ~30 fps on phones */
-    lastDraw=now;
-    const raw=now-prevT;prevT=now;
-    const ms=raw>50?50:raw<4.167?4.167:raw,s=ms>36.7?2.2:ms*.06;
-    clock+=ms*.001;
-    const kLead=.105*s,kBody=.043*s;
-    mouse.ax+=(mouse.tx-mouse.ax)*kLead;mouse.ay+=(mouse.ty-mouse.ay)*kLead;
-    mouse.x+=(mouse.ax-mouse.x)*kBody;mouse.y+=(mouse.ay-mouse.y)*kBody;
-    if(!CONFIG.cursor){mouse.tx=0;mouse.ty=0}
-    draw();
-    /* a device that cannot hold the field steps down instead of stuttering: a slow
-       average over 40 drawn frames halves the resolution once; still slow, the loop
-       stops and the last frame stays as a still */
-    if(tier<2&&raw<250){acc+=raw;if(++n===40){   /* ≥250ms is a throttled window, not a slow GPU */
-      if(acc/40>45){if(tier===0){res*=.5;resize()}else{cancelAnimationFrame(raf)}tier++}else tier=2;
-      n=0;acc=0;
-    }}
-  }
-  let tier=0,n=0,acc=0;
-
-  let sized=0;
-  new ResizeObserver(()=>{if(sized++){resize();if(still)draw()}}).observe(canvas);
-  draw();                                       /* one frame before anything shows */
-  onReady&&onReady();
-  if(still)return gl;                           /* reduced motion: that frame is the gradient */
-  if(!phone){addEventListener('pointermove',aim,{passive:true});addEventListener('pointerdown',aim,{passive:true})}
-  new IntersectionObserver(es=>{visible=es[0].isIntersecting},{threshold:0}).observe(canvas);
-  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);canvas.remove()});
-  raf=requestAnimationFrame(frame);
-  return gl;
-}
-
-/* clinker: built only when the footer comes within a screen of the viewport. */
+/* ═══ the page stream ═══════════════════════════════════════════════════
+   After GetLayers' Relay template (its page-long particle stream): a ribbon of glowing
+   filaments and sparks that winds down the whole page in wide S-curves, drawn in raw
+   WebGL2 (no library, no build). The ribbon lives in PAGE coordinates, so it scrolls with
+   the page; its spine is baked into a float texture and every shader reads it. Strands are
+   additive lines carrying light pulses; the sparks are additive soft points whose size and
+   softness grow away from the focal plane; a small mip-blur bloom lifts the glow.
+   Here the ribbon also GROWS: its head runs ahead of the scroll, a little below the bottom
+   of the screen, and burns brighter than the stream behind it.
+   Colour comes only from COLORS (red tint of this site). Look knobs are in CONFIG. */
 (()=>{
-  const root=document.documentElement;
-  const start=(sel,asset,cls)=>{
-    const c=document.querySelector(sel);if(!c)return;
-    try{glGradient(c,asset,()=>root.classList.add(cls))}catch(e){console.warn('[getlayers]',e.message);c.remove()}
-  };
-  const foot=document.querySelector('.gl-clinker');
-  if(foot)new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect();start('.gl-clinker',GL_CLINKER,'gl-clinker-on')}},{rootMargin:'100% 0px'}).observe(foot);
+const cv=document.querySelector('.gl-stream');if(!cv)return;
+const CONFIG={particles:36000,lowShare:.45,strands:44,flowPx:90,scrollFlow:1.25,
+  spread:6,spreadEnds:120,turnHold:.3,pinchReach:300,breath:.35,breathWavelength:900,breathSpeed:.6,
+  spraySpread:2.4,bokehSpread:3.2,dustSpread:5.5,wobble:4,size:2.1,focal:.15,dof:.55,dofSize:2.2,twinkle:2.4,
+  brightness:.62,heat:1.2,altShare:.45,altStrands:.32,lineBase:.16,lineSpread:.9,lineWavelength:1560,
+  lineWaveAmp:.12,lineWaveSpeed:.25,pulseSpacing:1130,pulseSpeed:205,pulseGain:1.4,pulseSharp:9,parallax:.22,
+  headGlow:1.6,headWidth:150,headLead:1.05,
+  bloomStr:.52,bloomThresh:.07};
+const COLORS={main:'#FF2D3F',alt:'#FF7A3D',core:'#FFC9B0',deep:'#6B0F1A',spark:'#FFF3E8'};
+/* waypoints: [section selector, x share of the page width, y share of the section's height, depth, pinch] — every one lower than the last */
+const PATH=[
+  ['#top',1.12,-0.45,-2.6,0],['#top',.86,.02,-1.8,0],['#top',.5,.38,-.9,0],['#top',.14,.82,0,1],['#top',-.4,1.12,0,0]];
+const SAMPLES=4096,SEG=4200,CAM_Z=6,FOV=35,HALF_H=CAM_Z*Math.tan(FOV/2*Math.PI/180),REVEALED=1e7;
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)');
+const gl=cv.getContext('webgl2',{alpha:false,antialias:false,depth:false,stencil:false,powerPreference:'high-performance'});
+if(!gl){cv.remove();return}
+const floatRT=!!gl.getExtension('EXT_color_buffer_float');
+const rng=s=>()=>{s|=0;s=s+0x6d2b79f5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255].map(v=>Math.pow(v,2.2))};
+
+/* ── shaders ── */
+const CURVE=`
+uniform sampler2D uCurve;
+uniform float uHalfH,uCamZ,uPx,uLen,uTurnHold,uBreath,uBreathWave,uBreathSpeed,uTimeS,uHelixR,uHelixWave,uWideFrom,uWideRamp,uWideK,uSpinA;
+uniform vec3 uView;
+/* the room is a sticky stage: the stretch of spine inside its run is drawn in the stage's own frame,
+   folded into one screen by fPin (natural speed at both ends, evenly compressed in between), and the
+   ribbon above and below the run hangs off the stage's top and bottom edges, so the whole stream stays
+   one unbroken line while the stage is pinned and the helix stays put while the photographs orbit.
+   uPin: run top, run bottom, page y the stage top is drawn at, run length · uPinF: end zone, middle rate, morph */
+uniform vec4 uPin;uniform vec3 uPinF;uniform float uPinCX;
+float fPin(float x){float e=uPinF.x,c=uPinF.y,L=uPin.w;x=clamp(x,0.0,L);
+  float u=min(x/e,1.0),v=clamp((x-(L-e))/e,0.0,1.0);
+  float E1=x<e?x-e*(u*u*u-0.5*u*u*u*u):0.5*e;
+  float E2=e*(v*v*v-0.5*v*v*v*v);
+  return c*x+(1.0-c)*(E1+E2);}
+float pinY(float y){if(uPin.w<1.0)return y;return uPin.z+fPin(y-uPin.x)+min(y-uPin.x,0.0)+max(y-uPin.y,0.0);}
+vec4 curveRow(float u,float row){
+  float x=clamp(u,0.0,1.0)*${SAMPLES-1}.0;float i=floor(x);float v=(row+0.5)/2.0;
+  vec4 a=texture(uCurve,vec2((i+0.5)/${SAMPLES}.0,v));
+  vec4 b=texture(uCurve,vec2((min(i+1.0,${SAMPLES-1}.0)+0.5)/${SAMPLES}.0,v));
+  return mix(a,b,x-i);}
+vec3 onSpine(float u,vec2 o,float hx){
+  vec4 p=curveRow(u,0.0);vec2 n=curveRow(u,1.0).xy;
+  /* where the helix is wound, its axis is the room's vertical centre line */
+  if(hx>0.0){p.x=mix(p.x,uPinCX,hx);n=normalize(mix(n,vec2(-1.0,0.0),hx));}
+  vec2 page=vec2(p.x,pinY(p.y))+n*o.x*uPx*uView.y;
+  return vec3((page.x-uView.x)/uView.y,(uView.y-(page.y-uView.z))/uView.y,p.z+o.y*uPx);}
+float widthAt(float u,float pinch,float narrow,float wide){
+  float a=u*uLen;
+  float swell=1.0+uBreath*sin(a/uBreathWave*6.2831-uTimeS*uBreathSpeed);
+  float w=mix(wide,narrow,pinch)*swell*(1.0+uWideK*smoothstep(uWideFrom,uWideFrom+uWideRamp,a)+1.4*smoothstep(uWideFrom+uWideRamp*.5,uLen,a));   /* the footer band runs wide */
+  float r=max(curveRow(u,1.0).z*uTurnHold,1.0);
+  return w*r/pow(pow(w,4.0)+pow(r,4.0),0.25);}
+vec3 toWorld(vec3 s){float k=(uCamZ-s.z)/uCamZ;return vec3(s.x*uHalfH*k,s.y*uHalfH*k,s.z);}
+uniform mat4 uMV,uP;
+/* the growing head: a glow riding the front of the reveal */
+uniform float uRevealPx,uHeadGlow,uHeadWidth;
+float headBoost(float a){float d=(uRevealPx-a)/uHeadWidth;return 1.0+uHeadGlow*exp(-d*d*0.6)*step(d,3.0);}
+`;
+const POINTS_VERT=`#version 300 es
+precision highp float;precision highp sampler2D;
+${CURVE}
+in float aZ;in float aU;in float aSeed;in float aSize;in float aKind;in vec2 aOff;
+uniform float uTime,uFlowPx,uScrollPx,uWin0,uWinLen,uFadeIn,uFadeOut,uSpread,uSpreadEnds,uSpray,uBokeh,uDust,uWobble,uSize,uScale,uFocal,uDof,uDofSize,uTwinkle,uHeat,uAltShare;
+uniform vec3 uColMain,uColAlt,uColCore,uColDeep,uColSpark;
+out vec3 vColor;out float vBlur;
+void main(){
+  float ph=aSeed*6.2831;
+  float speed=(aKind<1.5?1.0:0.3)*(0.65+0.7*fract(aSeed*7.13));
+  /* only the stretch of the ribbon near the screen is populated: each spark is anchored to the curve
+     (it rides the flow) and wraps inside a window that follows the scroll */
+  float xs=aU*uWinLen+uTime*uFlowPx*speed+uScrollPx;
+  float u=(uWin0+mod(xs-uWin0,uWinLen))/uLen;
+  float pinch=curveRow(u,0.0).w;
+  float spread=widthAt(u,pinch,uSpread,uSpreadEnds);
+  if(aKind>2.5)spread*=uDust;else if(aKind>1.5)spread*=uBokeh;else if(aKind>0.5)spread*=uSpray;
+  vec2 o=aOff*spread+vec2(sin(uTime*0.7+ph),cos(uTime*0.6+ph*1.3))*uWobble;
+  float a=u*uLen;
+  float hx=curveRow(u,1.0).w;
+  float hd=1.0;hx*=uPinF.z;
+  if(hx>0.001){float hy=pinY(curveRow(u,0.0).y)-uPin.z;
+    float Rt=uHelixR*(1.0+0.05*sin(hy/(uHelixWave*1.25)*6.2831-uTime*0.7));
+    float g=step(0.5,fract(aSeed*11.7));
+    float th=hy/uHelixWave*6.2831+g*3.14159+aOff.x*0.07+uTime*0.35+uSpinA;
+    float rad=Rt*(0.9+0.2*aOff.y);
+    vec2 ho=vec2(cos(th),sin(th))*rad+aOff*(aKind<0.5?24.0:aKind<1.5?46.0:84.0);
+    o=mix(o,ho,hx);
+    /* front of the rope bright, back of it dim: the twist reads in depth */
+    hd=mix(1.0,(0.26+0.94*smoothstep(-1.0,1.0,sin(th)))*(aKind>1.5?0.5:1.0),hx);}
+  vec3 s=onSpine(u,o,hx);s.z+=aZ*(1.0-hx*0.7);
+  float fade=smoothstep(0.0,uFadeIn,a)*smoothstep(uLen,uLen-uFadeOut,a)*smoothstep(uRevealPx,uRevealPx-220.0,a);
+  float heat=pinch*(aKind<1.5?1.0:0.3);
+  vec3 hue=fract(aSeed*3.77)<uAltShare?uColAlt:uColMain;
+  vec3 base=mix(uColDeep,hue,0.55+0.45*fract(aSeed*5.31));
+  vec4 mv=uMV*vec4(toWorld(s),1.0);
+  float depth=-mv.z;
+  float blur=clamp(abs(depth-(uCamZ-uFocal))*uDof,0.0,1.0);
+  if(aKind>1.5&&aKind<2.5)blur=max(blur,0.8);
+  vBlur=blur;
+  float tw=0.55+0.45*sin(uTime*uTwinkle+ph);
+  vec3 c=mix(base,uColCore,clamp(heat*0.85,0.0,1.0))*(1.0+heat*uHeat);
+  if(fract(aSeed*13.7)<0.05)c=uColSpark*1.3;
+  float spreadOut=1.0+blur*uDofSize;
+  vColor=c*fade*tw*headBoost(a)*(1.0+hx*0.25)*hd/(spreadOut*spreadOut);
+  gl_PointSize=uSize*aSize*uScale*(uCamZ/depth)*spreadOut;
+  gl_Position=uP*mv;}`;
+const POINTS_FRAG=`#version 300 es
+precision highp float;uniform float uBright;in vec3 vColor;in float vBlur;out vec4 o;
+void main(){float r=length(gl_PointCoord-0.5)*2.0;if(r>1.0)discard;
+  float glint=exp(-r*r*6.0);
+  float disc=smoothstep(1.0,0.6,r)*0.5+smoothstep(0.5,0.92,r)*(1.0-smoothstep(0.9,1.0,r))*0.55;
+  o=vec4(vColor*mix(glint,disc,vBlur)*uBright,1.0);}`;
+const LINES_VERT=`#version 300 es
+precision highp float;precision highp sampler2D;
+${CURVE}
+in float aU;in vec4 aStrand;
+uniform float uTime,uFadeIn,uFadeOut,uSpread,uSpreadEnds,uLineSpread,uLineWavelength,uLineWaveAmp,uLineWaveSpeed,uPulseGain,uLineBase,uHeat,uAltStrands;
+uniform vec3 uColMain,uColAlt,uColCore,uColDeep;
+out vec3 vColor;out vec3 vPulse;out float vA;out float vPhase;
+void main(){
+  float u=aU;float a=u*uLen;
+  float pinch=curveRow(u,0.0).w;
+  float spread=widthAt(u,pinch,uSpread,uSpreadEnds)*uLineSpread;
+  float wave=sin(a/uLineWavelength*6.2831+aStrand.z+uTime*uLineWaveSpeed)*uLineWaveAmp;
+  vec2 lo=vec2(aStrand.x+wave,aStrand.y)*spread;
+  float hx=curveRow(u,1.0).w;
+  float hd=1.0;hx*=uPinF.z;
+  if(hx>0.001){float hy=pinY(curveRow(u,0.0).y)-uPin.z;
+    float Rt=uHelixR*(1.0+0.05*sin(hy/(uHelixWave*1.25)*6.2831-uTime*0.7));
+    float th=hy/uHelixWave*6.2831+step(3.14159,aStrand.z)*3.14159+aStrand.x*0.09+uTime*0.35+uSpinA;
+    float rad=Rt*(0.88+0.2*aStrand.y);
+    lo=mix(lo,vec2(cos(th),sin(th))*rad+vec2(aStrand.x,aStrand.y)*24.0,hx);
+    hd=mix(1.0,0.28+0.92*smoothstep(-1.0,1.0,sin(th)),hx);}
+  vec3 s=onSpine(u,lo,hx);
+  float fade=smoothstep(0.0,uFadeIn,a)*smoothstep(uLen*aStrand.w,uLen*aStrand.w-uFadeOut,a)*smoothstep(uRevealPx,uRevealPx-260.0,a);
+  vec3 hue=fract(aStrand.z*1.618)<uAltStrands?uColAlt:uColMain;
+  vec3 c=mix(mix(uColDeep,hue,0.75),uColCore,pinch*0.6);
+  float hb=headBoost(a);
+  vColor=c*fade*uLineBase*(1.0+pinch*uHeat+hx*0.8)*hb*hd;
+  vPulse=c*fade*uPulseGain*hb*(1.0+hx*0.6)*hd;
+  vA=a;vPhase=aStrand.z;
+  gl_Position=uP*uMV*vec4(toWorld(s),1.0);}`;
+const LINES_FRAG=`#version 300 es
+precision highp float;uniform float uBright,uPulseSpacing,uPulseShift,uPulseSharp;
+in vec3 vColor;in vec3 vPulse;in float vA;in float vPhase;out vec4 o;
+void main(){float p=fract((vA-uPulseShift)/uPulseSpacing+vPhase)-0.5;
+  float pulse=exp(-p*p*uPulseSharp*uPulseSharp);
+  o=vec4((vColor+vPulse*pulse)*uBright,1.0);}`;
+const QUAD_VERT=`#version 300 es
+void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.0-1.0,0.0,1.0);}`;
+const BRIGHT_FRAG=`#version 300 es
+precision highp float;uniform sampler2D uTex;uniform vec2 uTexel;uniform float uThresh;uniform vec2 uSize;out vec4 o;
+void main(){vec2 uv=gl_FragCoord.xy/uSize;
+  vec3 c=texture(uTex,uv+uTexel*vec2(-1,-1)).rgb+texture(uTex,uv+uTexel*vec2(1,-1)).rgb+texture(uTex,uv+uTexel*vec2(-1,1)).rgb+texture(uTex,uv+uTexel*vec2(1,1)).rgb;
+  c*=0.25;o=vec4(max(c-uThresh,0.0),1.0);}`;
+const DOWN_FRAG=`#version 300 es
+precision highp float;uniform sampler2D uTex;uniform vec2 uTexel;uniform vec2 uSize;out vec4 o;
+void main(){vec2 uv=gl_FragCoord.xy/uSize;
+  vec3 c=texture(uTex,uv+uTexel*vec2(-1,-1)).rgb+texture(uTex,uv+uTexel*vec2(1,-1)).rgb+texture(uTex,uv+uTexel*vec2(-1,1)).rgb+texture(uTex,uv+uTexel*vec2(1,1)).rgb;
+  o=vec4(c*0.25,1.0);}`;
+const BLUR_FRAG=`#version 300 es
+precision highp float;uniform sampler2D uTex;uniform vec2 uDir;uniform vec2 uSize;out vec4 o;
+void main(){vec2 uv=gl_FragCoord.xy/uSize;
+  vec3 c=texture(uTex,uv).rgb*0.227027;
+  c+=texture(uTex,uv+uDir*1.3846).rgb*0.316216+texture(uTex,uv-uDir*1.3846).rgb*0.316216;
+  c+=texture(uTex,uv+uDir*3.2308).rgb*0.070270+texture(uTex,uv-uDir*3.2308).rgb*0.070270;
+  o=vec4(c,1.0);}`;
+const COMP_FRAG=`#version 300 es
+precision highp float;uniform sampler2D uScene,uB0,uB1,uB2,uB3;uniform vec2 uSize;uniform float uStr;out vec4 o;
+void main(){vec2 uv=gl_FragCoord.xy/uSize;
+  vec3 c=texture(uScene,uv).rgb;
+  c+=(texture(uB0,uv).rgb*1.0+texture(uB1,uv).rgb*0.85+texture(uB2,uv).rgb*0.7+texture(uB3,uv).rgb*0.55)*uStr;
+  o=vec4(pow(clamp(c,0.0,1.0),vec3(1.0/2.2)),1.0);}`;
+
+function program(vs,fs){
+  const p=gl.createProgram();
+  for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);
+    if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(sh));gl.attachShader(p,sh)}
+  gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(p));
+  const L={};p.u=n=>n in L?L[n]:(L[n]=gl.getUniformLocation(p,n));return p}
+const f1=(p,n,v)=>gl.uniform1f(p.u(n),v);
+
+/* ── geometry ── */
+function buildPoints(){
+  const T=CONFIG.particles,r=rng(0x5eed1e),g=()=>r()+r()+r()+r()-2;
+  const z=new Float32Array(T),u=new Float32Array(T),seed=new Float32Array(T),size=new Float32Array(T),kind=new Float32Array(T),off=new Float32Array(T*2);
+  for(let i=0;i<T;i++){const pk=r(),k=pk<.79?0:pk<.93?1:pk<.96?2:3;kind[i]=k;u[i]=r();seed[i]=r();off[i*2]=g()*.5;off[i*2+1]=g()*.5;
+    if(k===0)size[i]=.35+Math.pow(r(),4)*2.4;else if(k===1)size[i]=.3+r()*.6;
+    else if(k===2){size[i]=1.2+r()*1.6;z[i]=1+r()*1.4}else{size[i]=.25+r()*.4;z[i]=-1.2+r()}}
+  return{z,u,seed,size,kind,off,count:T}}
+function buildLines(){
+  const n=CONFIG.strands,V=n*(SEG+1),r=rng(0xf11a),u=new Float32Array(V),st=new Float32Array(V*4),idx=new Uint32Array(n*SEG*2);let w=0;
+  for(let s=0;s<n;s++){const nx=(r()-.5)*2,nz=(r()-.5)*1.2,ph=r()*6.2831,end=.93+r()*.07;
+    for(let i=0;i<=SEG;i++){const v=s*(SEG+1)+i;u[v]=i/SEG;st.set([nx,nz,ph,end],v*4)}}
+  for(let i=0;i<SEG;i++)for(let s=0;s<n;s++){const v=s*(SEG+1)+i;idx[w++]=v;idx[w++]=v+1}
+  return{u,st,idx}}
+const buf=(data,target=gl.ARRAY_BUFFER)=>{const b=gl.createBuffer();gl.bindBuffer(target,b);gl.bufferData(target,data,gl.STATIC_DRAW);return b};
+const attr=(p,name,b,size)=>{const l=gl.getAttribLocation(p,name);if(l<0)return;gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,size,gl.FLOAT,false,0,0)};
+
+let pProg,lProg,bright,down,blur,comp;
+try{pProg=program(POINTS_VERT,POINTS_FRAG);lProg=program(LINES_VERT,LINES_FRAG);bright=program(QUAD_VERT,BRIGHT_FRAG);down=program(QUAD_VERT,DOWN_FRAG);blur=program(QUAD_VERT,BLUR_FRAG);comp=program(QUAD_VERT,COMP_FRAG)}
+catch(e){console.warn('[stream]',e.message);cv.remove();return}
+const PG=buildPoints(),LG=buildLines();
+const pVAO=gl.createVertexArray();gl.bindVertexArray(pVAO);
+attr(pProg,'aZ',buf(PG.z),1);attr(pProg,'aU',buf(PG.u),1);attr(pProg,'aSeed',buf(PG.seed),1);attr(pProg,'aSize',buf(PG.size),1);attr(pProg,'aKind',buf(PG.kind),1);attr(pProg,'aOff',buf(PG.off),2);
+const lVAO=gl.createVertexArray();gl.bindVertexArray(lVAO);
+attr(lProg,'aU',buf(LG.u),1);attr(lProg,'aStrand',buf(LG.st),4);buf(LG.idx,gl.ELEMENT_ARRAY_BUFFER);
+const quadVAO=gl.createVertexArray();
+gl.bindVertexArray(null);
+
+/* spine texture: row 0 = page x, y, depth, pinch · row 1 = in-page normal (x,y) + turn radius */
+const curveData=new Float32Array(SAMPLES*2*4);
+const curveTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,curveTex);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+
+let W=1,H=1,unit=1,dpr=1,tier='full',pathPts=[],length=1,sampleY=new Float32Array(SAMPLES),scrollY=0,lastScroll=NaN,scrollPx=0;
+let heroEnd=1e9,streamOff=false,pinOn=false,pinR0=0,pinR1=0,pinHs=1,pinL=1,pinE=1,pinC=1,pinCX=0,footY=1e9,helixZone=[0,0],head=0,headStart=0,pointer={x:0,y:0},look={x:0,y:0},lastT=-1,live=false,win0=0,winLen=1;
+/* quality steps: a machine that cannot hold ~50 fps drops one step (resolution, sparks) instead of lagging */
+const QUAL=[{dpr:1.15,parts:1},{dpr:1,parts:.6},{dpr:.8,parts:.35}];let q=0,slow=0,warm=0;
+/* the sticky room: its stage sits at stageTop() on screen. fPin folds the run into the stage (same curve as the
+   shader's); pageAtScreen() is the page height that is drawn at a screen height; pinProgress() is 0→1 while pinned */
+const stageTop=()=>Math.max(pinR0-scrollY,Math.min(0,pinR1-pinHs-scrollY));
+const fPin=x=>{x=Math.min(pinL,Math.max(0,x));const u=Math.min(x/pinE,1),v=Math.min(1,Math.max(0,(x-(pinL-pinE))/pinE));
+  const E1=x<pinE?x-pinE*(u**3-.5*u**4):.5*pinE,E2=pinE*(v**3-.5*v**4);return pinC*x+(1-pinC)*(E1+E2)};
+const fPinInv=s=>{let lo=0,hi=pinL;for(let i=0;i<30;i++){const m=(lo+hi)/2;if(fPin(m)<s)lo=m;else hi=m}return(lo+hi)/2};
+const pinProgress=()=>pinOn?Math.min(1,Math.max(0,(scrollY-pinR0)/Math.max(1,pinL-pinHs))):0;
+const pageAtScreen=s=>{
+  if(!pinOn)return scrollY+s;
+  const sT=stageTop();
+  if(s<sT)return pinR0+(s-sT);                       /* above the room: hangs off the stage's top edge */
+  if(s<=sT+pinHs)return pinR0+fPinInv(s-sT);         /* inside the stage */
+  return pinR1+(s-sT-pinHs)};                        /* below it: hangs off the bottom edge */
+const arcAtY=y=>{if(y<=sampleY[0])return 0;if(y>=sampleY[SAMPLES-1])return length;let lo=0,hi=SAMPLES-1;while(lo<hi){const m=lo+hi>>1;if(sampleY[m]>=y)hi=m;else lo=m+1}return lo/(SAMPLES-1)*length};
+const TURN_BASE=12,TURN_HOLD=28,TURN_SMOOTH=48,TURN_OPEN=1e4;
+
+/* centripetal Catmull-Rom (Barry–Goldman), resampled to equal arc length */
+function spline(P){
+  const ext=[[2*P[0][0]-P[1][0],2*P[0][1]-P[1][1],2*P[0][2]-P[1][2]],...P,[2*P[P.length-1][0]-P[P.length-2][0],2*P[P.length-1][1]-P[P.length-2][1],2*P[P.length-1][2]-P[P.length-2][2]]];
+  const dense=[],d=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]);
+  const mix=(a,b,s,t)=>[0,1,2].map(k=>a[k]*s+b[k]*t);
+  for(let i=0;i<ext.length-3;i++){
+    const p0=ext[i],p1=ext[i+1],p2=ext[i+2],p3=ext[i+3];
+    const t0=0,t1=t0+Math.sqrt(d(p0,p1))||1e-4,t2=t1+Math.sqrt(d(p1,p2))||1e-4,t3=t2+Math.sqrt(d(p2,p3))||1e-4;
+    const N=Math.max(24,Math.ceil(d(p1,p2)/8));
+    for(let k=0;k<N;k++){const t=t1+(t2-t1)*k/N;
+      const A1=mix(p0,p1,(t1-t)/(t1-t0),(t-t0)/(t1-t0)),A2=mix(p1,p2,(t2-t)/(t2-t1),(t-t1)/(t2-t1)),A3=mix(p2,p3,(t3-t)/(t3-t2),(t-t2)/(t3-t2));
+      const B1=mix(A1,A2,(t2-t)/(t2-t0),(t-t0)/(t2-t0)),B2=mix(A2,A3,(t3-t)/(t3-t1),(t-t1)/(t3-t1));
+      dense.push(mix(B1,B2,(t2-t)/(t2-t1),(t-t1)/(t2-t1)))}}
+  dense.push(P[P.length-1]);
+  const cum=[0];for(let i=1;i<dense.length;i++)cum.push(cum[i-1]+d(dense[i],dense[i-1]));
+  const total=cum[cum.length-1],out=[];let j=0;
+  for(let i=0;i<SAMPLES;i++){const s=total*i/(SAMPLES-1);while(j<cum.length-2&&cum[j+1]<s)j++;
+    const f=(s-cum[j])/Math.max(1e-6,cum[j+1]-cum[j]);out.push(mix(dense[j],dense[j+1],1-f,f))}
+  return{pts:out,total}}
+
+function resolvePath(){
+  const main=document.querySelector('main'),col=main.getBoundingClientRect(),pts=[];
+  const docTop=el=>{let y=0;for(let n=el;n;n=n.offsetParent instanceof HTMLElement?n.offsetParent:null)y+=n.offsetTop;return y};
+  let lastY=-1e9;
+  for(const[sel,x,y,z,pinch]of PATH){const el=document.querySelector(sel);if(!el)continue;
+    let py=docTop(el)+y*el.offsetHeight;if(py<=lastY)py=lastY+40;lastY=py;
+    pts.push({x:col.left+(sel==='#shop'&&innerWidth<860?.5:x)*col.width,y:py,z,pinch})}
+  const run=document.querySelector('.orbit-run'),stg=run&&run.querySelector('.orbit-stage');
+  helixZone=run?[docTop(run),docTop(run)+run.offsetHeight]:[0,0];
+  pinOn=!!(stg&&!REDUCE.matches&&getComputedStyle(stg).position==='sticky'&&run.offsetHeight>stg.offsetHeight+10);
+  if(pinOn){pinR0=helixZone[0];pinR1=helixZone[1];pinHs=stg.offsetHeight;pinL=pinR1-pinR0;pinE=.1*pinL;pinC=(pinHs-pinE)/(pinL-pinE);pinCX=col.left+.5*col.width}
+  const ft=document.querySelector('footer');footY=ft?docTop(ft):1e9;
+  const tp=document.getElementById('top');heroEnd=tp?docTop(tp)+tp.offsetHeight:1e9;
+  return pts}
+
+function bake(){
+  if(pathPts.length<2)return;
+  const{pts,total}=spline(pathPts.map(p=>[p.x,p.y,p.z]));
+  length=Math.max(1,total);
+  const step=length/(SAMPLES-1),at=i=>Math.min(SAMPLES-1,Math.max(0,i));
+  const ang=[];for(let i=0;i<SAMPLES;i++){const a=pts[at(i-1)],b=pts[at(i+1)];ang.push(Math.atan2(b[1]-a[1],b[0]-a[0]))}
+  const radius=ang.map((_,i)=>{let t=Math.abs(ang[at(i+TURN_BASE)]-ang[at(i-TURN_BASE)]);if(t>Math.PI)t=2*Math.PI-t;return Math.min(TURN_OPEN,2*TURN_BASE*step/Math.max(1e-4,t)/unit)});
+  const slideMin=(v,r)=>v.map((_,i)=>{let m=Infinity;for(let j=i-r;j<=i+r;j++)m=Math.min(m,v[at(j)]);return m});
+  const slideMean=(v,r)=>v.map((_,i)=>{let s=0;for(let j=i-r;j<=i+r;j++)s+=v[at(j)];return s/(2*r+1)});
+  const held=slideMean(slideMean(slideMin(radius,TURN_HOLD),TURN_SMOOTH),TURN_SMOOTH);
+  const ss=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t)};
+  /* the whole run winds into the helix, and a little past each end of it (that part hangs off the pinned stage, out of
+     sight, so the helix runs off the top and bottom of the screen); WHEN it winds is the morph uPinF.z, set by the scroll */
+  const ra=.4*H;
+  ang.forEach((a,i)=>{const y=pts[i][1],hh=pinOn?ss(pinR0-ra,pinR0,y)*(1-ss(pinR1,pinR1+ra,y)):0;curveData.set([-Math.sin(a),Math.cos(a),held[i],hh],(SAMPLES+i)*4)});
+  const peaks=pathPts.filter(p=>p.pinch>0).map(p=>{let best=0,bd=Infinity;pts.forEach((q,i)=>{const d=(q[0]-p.x)**2+(q[1]-p.y)**2;if(d<bd){bd=d;best=i}});return{at:best/(SAMPLES-1),pinch:p.pinch}});
+  const reach=CONFIG.pinchReach*unit;let maxY=-1e9;
+  pts.forEach((q,i)=>{const a=i/(SAMPLES-1);let pinch=0;for(const k of peaks){const d=((a-k.at)*length)/reach;pinch=Math.max(pinch,k.pinch*Math.exp(-d*d))}
+    curveData.set([q[0],q[1],q[2],pinch],i*4);maxY=Math.max(maxY,q[1]);sampleY[i]=maxY});
+  gl.bindTexture(gl.TEXTURE_2D,curveTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA32F,SAMPLES,2,0,gl.RGBA,gl.FLOAT,curveData)}
+
+/* ── render targets ── */
+let sceneRT=null,levels=[];
+function target(w,h){
+  const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+  if(floatRT)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,w,h,0,gl.RGBA,gl.HALF_FLOAT,null);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);
+  return{t,f,w,h}}
+function allocTargets(){
+  const old=[sceneRT,...levels.flatMap(l=>[l.a,l.b])].filter(Boolean);old.forEach(o=>{gl.deleteTexture(o.t);gl.deleteFramebuffer(o.f)});
+  const w=cv.width,h=cv.height;sceneRT=target(w,h);levels=[];
+  let lw=w,lh=h;const startDiv=tier==='low'?2:1;
+  for(let i=0;i<4;i++){lw=Math.max(2,lw>>1);lh=Math.max(2,lh>>1);if(i===0&&startDiv===2){lw=Math.max(2,lw>>1);lh=Math.max(2,lh>>1)}levels.push({a:target(lw,lh),b:target(lw,lh)})}
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null)}
+
+function resize(){
+  tier=(matchMedia('(pointer:coarse)').matches||innerWidth<=900)?'low':'full';
+  W=Math.max(1,cv.clientWidth);H=Math.max(1,cv.clientHeight);
+  dpr=Math.min(devicePixelRatio||1,tier==='low'?1.1:QUAL[q].dpr,QUAL[q].dpr);
+  unit=Math.min(1,Math.max(.5,innerWidth/1440));
+  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+  allocTargets();pathPts=resolvePath();bake()}
+
+/* ── matrices (column-major) ── */
+function persp(fovDeg,asp,n,f){const t=1/Math.tan(fovDeg*Math.PI/360);return new Float32Array([t/asp,0,0,0,0,t,0,0,0,0,(f+n)/(n-f),-1,0,0,2*f*n/(n-f),0])}
+function lookAtOrigin(ex,ey,ez){
+  let zx=ex,zy=ey,zz=ez;const zl=Math.hypot(zx,zy,zz);zx/=zl;zy/=zl;zz/=zl;
+  let xx=zz,xy=0,xz=-zx;const xl=Math.hypot(xx,xz)||1;xx/=xl;xz/=xl;   // up = +y
+  const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;
+  return new Float32Array([xx,yx,zx,0,xy,yy,zy,0,xz,yz,zz,0,-(xx*ex+xy*ey+xz*ez),-(yx*ex+yy*ey+yz*ez),-(zx*ex+zy*ey+zz*ez),1])}
+
+/* ── frame ── */
+function setShared(p,t){
+  gl.useProgram(p);
+  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,curveTex);gl.uniform1i(p.u('uCurve'),0);
+  f1(p,'uHalfH',HALF_H);f1(p,'uCamZ',CAM_Z);f1(p,'uPx',unit/(H/2));f1(p,'uLen',length);
+  gl.uniform3f(p.u('uView'),W/2,H/2,scrollY);
+  if(pinOn){const pp=pinProgress(),sm=(a,b,x)=>{const k=Math.min(1,Math.max(0,(x-a)/(b-a)));return k*k*(3-2*k)};
+    gl.uniform4f(p.u('uPin'),pinR0,pinR1,scrollY+stageTop(),pinL);f1(p,'uPinCX',pinCX);gl.uniform3f(p.u('uPinF'),pinE,pinC,sm(0,.14,pp)*(1-sm(.86,1,pp)));
+    f1(p,'uSpinA',pp*Math.PI*2*1.1)}
+  else{gl.uniform4f(p.u('uPin'),0,0,0,0);gl.uniform3f(p.u('uPinF'),1,1,0);f1(p,'uSpinA',0)}
+  f1(p,'uWideFrom',arcAtY(footY));f1(p,'uWideRamp',600*unit);f1(p,'uWideK',.75);f1(p,'uHelixR',235*unit);f1(p,'uHelixWave',1000*unit);f1(p,'uTime',t/1000);f1(p,'uTimeS',(t/1000)%1000);f1(p,'uTurnHold',CONFIG.turnHold);f1(p,'uBreath',CONFIG.breath);
+  f1(p,'uBreathWave',CONFIG.breathWavelength*unit);f1(p,'uBreathSpeed',CONFIG.breathSpeed);
+  f1(p,'uRevealPx',head);f1(p,'uHeadGlow',CONFIG.headGlow);f1(p,'uHeadWidth',CONFIG.headWidth*unit);
+  f1(p,'uFadeIn',120*unit);f1(p,'uFadeOut',Math.min(length/4,400*unit));
+  f1(p,'uSpread',CONFIG.spread);f1(p,'uSpreadEnds',CONFIG.spreadEnds);f1(p,'uHeat',CONFIG.heat);f1(p,'uBright',CONFIG.brightness);
+  gl.uniform3fv(p.u('uColMain'),C.main);gl.uniform3fv(p.u('uColAlt'),C.alt);gl.uniform3fv(p.u('uColCore'),C.core);gl.uniform3fv(p.u('uColDeep'),C.deep);gl.uniform3fv(p.u('uColSpark'),C.spark);
+  gl.uniformMatrix4fv(p.u('uMV'),false,MV);gl.uniformMatrix4fv(p.u('uP'),false,P)}
+const C={};for(const k in COLORS)C[k]=hex(COLORS[k]);
+let MV,P;
+const quad=(prog)=>{gl.useProgram(prog);gl.bindVertexArray(quadVAO);gl.drawArrays(gl.TRIANGLES,0,3)};
+const bindTex=(i,t)=>{gl.activeTexture(gl.TEXTURE0+i);gl.bindTexture(gl.TEXTURE_2D,t)};
+
+function render(t){
+  const dt=lastT<0?0:Math.min(.1,Math.max(0,(t-lastT)/1000));lastT=t;
+  const k=1-Math.exp(-3.2*dt);look.x+=(pointer.x-look.x)*k;look.y+=(pointer.y-look.y)*k;
+  P=persp(FOV,W/H,.1,60);MV=lookAtOrigin(-look.x*CONFIG.parallax,look.y*CONFIG.parallax,CAM_Z);
+
+  /* the head: ahead of the scroll, lagging it a little, so the tips keep creeping after you stop */
+  if(REDUCE.matches)head=REVEALED;
+  else{
+    let target=0;
+    if(t>headStart){const want=pageAtScreen(H*CONFIG.headLead);let i=SAMPLES-1;
+      if(want<sampleY[SAMPLES-1]){let lo=0,hi=SAMPLES-1;while(lo<hi){const m=lo+hi>>1;if(sampleY[m]>=want)hi=m;else lo=m+1}i=lo}
+      else i=SAMPLES+40;
+      target=Math.min(length+900*unit,(i/(SAMPLES-1))*length)}
+    const INTRO=3400,ip=(t-headStart)/INTRO;
+    if(ip<1){const e=Math.sin(Math.PI/2*Math.max(0,ip)),from=Math.min(target,arcAtY(pageAtScreen(0)));head=from+(target-from)*e}   /* the first reveal: one slow, eased pour down the page */
+    else{const catchUp=head<target-H*.5?3.2:1.7;head+=(target-head)*(1-Math.exp(-dt*catchUp))}
+    if(t-headStart>INTRO){const floor=arcAtY(pageAtScreen(H*.5));if(head<floor)head=floor}   /* the tip is never on screen: a jump or a fast scroll cannot leave the page bare */
+    if(head>length+500*unit)head=REVEALED}
+
+  winLen=Math.min(length,7*H);
+  win0=Math.max(0,Math.min(length-winLen,arcAtY(pageAtScreen(-.9*H))));
+  gl.bindFramebuffer(gl.FRAMEBUFFER,sceneRT.f);gl.viewport(0,0,sceneRT.w,sceneRT.h);
+  gl.clearColor(0,0,0,1);gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
+  /* filaments */
+  setShared(lProg,t);
+  f1(lProg,'uPulseShift',(((t/1000)*CONFIG.pulseSpeed*unit)+scrollPx)%(CONFIG.pulseSpacing*unit));
+  f1(lProg,'uPulseSharp',CONFIG.pulseSharp);f1(lProg,'uAltStrands',CONFIG.altStrands);f1(lProg,'uLineSpread',CONFIG.lineSpread);
+  f1(lProg,'uLineWavelength',CONFIG.lineWavelength*unit);f1(lProg,'uLineWaveAmp',CONFIG.lineWaveAmp);f1(lProg,'uLineWaveSpeed',CONFIG.lineWaveSpeed);
+  f1(lProg,'uPulseSpacing',CONFIG.pulseSpacing*unit);f1(lProg,'uPulseGain',CONFIG.pulseGain);f1(lProg,'uLineBase',CONFIG.lineBase);
+  gl.bindVertexArray(lVAO);
+  /* the segments inside the window, for the strands this quality keeps (strands are interleaved per segment) */
+  const i0=Math.max(0,Math.floor(win0/length*SEG)-1),i1=Math.min(SEG,Math.ceil((win0+winLen)/length*SEG)+1);
+  gl.drawElements(gl.LINES,(i1-i0)*CONFIG.strands*2,gl.UNSIGNED_INT,i0*CONFIG.strands*2*4);
+  /* sparks */
+  setShared(pProg,t);
+  f1(pProg,'uFlowPx',CONFIG.flowPx*unit);f1(pProg,'uScrollPx',scrollPx);f1(pProg,'uWin0',win0);f1(pProg,'uWinLen',winLen);f1(pProg,'uSpray',CONFIG.spraySpread);f1(pProg,'uBokeh',CONFIG.bokehSpread);f1(pProg,'uDust',CONFIG.dustSpread);
+  f1(pProg,'uWobble',CONFIG.wobble);f1(pProg,'uSize',CONFIG.size);f1(pProg,'uScale',unit*dpr);f1(pProg,'uFocal',CONFIG.focal);f1(pProg,'uDof',CONFIG.dof);
+  f1(pProg,'uDofSize',CONFIG.dofSize);f1(pProg,'uTwinkle',CONFIG.twinkle);f1(pProg,'uAltShare',CONFIG.altShare);
+  gl.bindVertexArray(pVAO);
+  gl.drawArrays(gl.POINTS,0,Math.floor(PG.count*Math.min(1,winLen/length)*QUAL[q].parts*(tier==='low'?CONFIG.lowShare:1)));
+  gl.disable(gl.BLEND);
+
+  /* bloom: bright pass → mip chain, each level blurred both ways */
+  gl.bindVertexArray(quadVAO);
+  let src=sceneRT.t,sw=sceneRT.w,sh=sceneRT.h;
+  levels.forEach((L,i)=>{
+    gl.bindFramebuffer(gl.FRAMEBUFFER,L.a.f);gl.viewport(0,0,L.a.w,L.a.h);
+    const pr=i===0?bright:down;gl.useProgram(pr);bindTex(0,src);gl.uniform1i(pr.u('uTex'),0);
+    gl.uniform2f(pr.u('uTexel'),.5/sw,.5/sh);gl.uniform2f(pr.u('uSize'),L.a.w,L.a.h);if(i===0)f1(pr,'uThresh',CONFIG.bloomThresh);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    gl.useProgram(blur);gl.uniform1i(blur.u('uTex'),0);gl.uniform2f(blur.u('uSize'),L.a.w,L.a.h);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,L.b.f);bindTex(0,L.a.t);gl.uniform2f(blur.u('uDir'),1/L.a.w,0);gl.drawArrays(gl.TRIANGLES,0,3);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,L.a.f);bindTex(0,L.b.t);gl.uniform2f(blur.u('uDir'),0,1/L.a.h);gl.drawArrays(gl.TRIANGLES,0,3);
+    src=L.a.t;sw=L.a.w;sh=L.a.h});
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,cv.width,cv.height);
+  gl.useProgram(comp);
+  bindTex(0,sceneRT.t);gl.uniform1i(comp.u('uScene'),0);
+  levels.forEach((L,i)=>{bindTex(1+i,L.a.t);gl.uniform1i(comp.u('uB'+i),1+i)});
+  gl.uniform2f(comp.u('uSize'),cv.width,cv.height);f1(comp,'uStr',CONFIG.bloomStr);
+  gl.drawArrays(gl.TRIANGLES,0,3);
+  if(!live){live=true;document.documentElement.classList.add('gl-stream-on')}}
+
+/* ── drive ── */
+function onScroll(){
+  const y=scrollY=window.scrollY;
+  if(!Number.isNaN(lastScroll))scrollPx+=Math.abs(y-lastScroll)*CONFIG.scrollFlow;lastScroll=y;
+  if(REDUCE.matches&&!raf)requestAnimationFrame(t=>render(t))}
+let raf=0,running=false;
+function loop(t){
+  raf=requestAnimationFrame(loop);
+  /* the stream lives behind the hero only: once the hero has scrolled away it stops drawing */
+  const off=window.scrollY>heroEnd;
+  if(off!==streamOff){streamOff=off;document.documentElement.classList.toggle('gl-stream-off',off);lastT=-1;warm=0}
+  if(off)return;
+  const gap=lastT<0?0:t-lastT;
+  render(t);
+  if(warm++<90||gap>250||gap===0)return;               /* ignore the compile frames and tab wake-ups */
+  slow=gap>21?slow+1:Math.max(0,slow-1);
+  if(slow>60&&q<QUAL.length-1){q++;slow=0;warm=0;resize()}
+  else if(slow>90&&q===QUAL.length-1&&!document.documentElement.classList.contains('lowfx')){document.documentElement.classList.add('lowfx');slow=0;warm=0}}
+function sync(){
+  const run=!document.hidden&&!REDUCE.matches;
+  if(run&&!running){running=true;lastT=-1;raf=requestAnimationFrame(loop)}
+  else if(!run&&running){running=false;cancelAnimationFrame(raf);raf=0}
+  if(REDUCE.matches)requestAnimationFrame(t=>render(t))}
+function start(){
+  resize();scrollY=window.scrollY;lastScroll=NaN;onScroll();
+  headStart=performance.now();
+  addEventListener('scroll',onScroll,{passive:true});
+  let rt=0;const relayout=()=>{clearTimeout(rt);rt=setTimeout(()=>{const w=cv.clientWidth,h=cv.clientHeight;
+    if(w!==W||h!==H||Math.abs(innerWidth/1440-unit)>.001)resize();else{pathPts=resolvePath();bake()}if(REDUCE.matches)requestAnimationFrame(t=>render(t))},120)};
+  addEventListener('resize',relayout);
+  new ResizeObserver(relayout).observe(document.querySelector('main'));
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches)addEventListener('pointermove',e=>{pointer.x=e.clientX/innerWidth*2-1;pointer.y=e.clientY/innerHeight*2-1},{passive:true});
+  document.addEventListener('visibilitychange',sync);REDUCE.addEventListener('change',sync);
+  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);cv.remove()});
+  sync()}
+/* build once the page has painted, so the stream never competes with the first screen */
+const go=()=>{try{start()}catch(e){console.warn('[stream]',e&&e.message||e);cv.remove()}};
+/* start as soon as the markup is parsed — it grows in under the loader, so it is already running when the page opens */
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTimeout(go,0),{once:true});else setTimeout(go,0);
+})();
+
+
+/* ═══ the dripping name ═══ the text is drawn once on a canvas in the same font, the row just above the baseline is
+   scanned for solid paint, and a drip hangs from most feet (seeded, so it is the same on every load). The line under
+   the name is the menu's own top border: inside every drip that reaches it a sliver of the page's ground is laid over
+   it, so the paint runs over the line instead of the line cutting through the paint. On arrival the name rises up out
+   of that line (clipped to it, as the old hero mark rose out of the page's edge), then the drips run. */
+(()=>{
+  const box=document.querySelector('.dripmark');if(!box)return;
+  const svg=box.querySelector('svg'),txt=svg.querySelector('.dm-t'),dg=svg.querySelector('.dm-d'),cover=svg.querySelector('.dm-cover'),
+    dropsG=svg.querySelector('.dm-drops'),erode=svg.querySelector('feMorphology'),band=svg.querySelector('#dmBand rect'),
+    above=svg.querySelector('#dmAbove rect'),clipG=svg.querySelector('.dm-clip'),riseG=svg.querySelector('.dm-rise'),menu=document.getElementById('menu');
+  const NS='http://www.w3.org/2000/svg',FS=100,BASE=100,PAD=2,GAP=9;
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches||!riseG.animate;
+  let vbW=420,vbTop=0,rise=80,risen=false;
+  if(still)clipG.removeAttribute('clip-path');else box.classList.add('arm');
+  function drip(x,y0,L,w0,ws,r){
+    /* flared top hidden inside the letter, a thin stem, a round bulb at the end */
+    return `M${x-w0/2},${y0}C${x-w0/2},${y0+L*.2} ${x-ws/2},${y0+L*.22} ${x-ws/2},${y0+L*.4}L${x-ws/2},${y0+L-r*1.7}`+
+      `C${x-ws/2},${y0+L-r} ${x-r},${y0+L-r*1.2} ${x-r},${y0+L-r*.15}C${x-r},${y0+L+r*.8} ${x+r},${y0+L+r*.8} ${x+r},${y0+L-r*.15}`+
+      `C${x+r},${y0+L-r*1.2} ${x+ws/2},${y0+L-r} ${x+ws/2},${y0+L-r*1.7}L${x+ws/2},${y0+L*.4}C${x+ws/2},${y0+L*.22} ${x+w0/2},${y0+L*.2} ${x+w0/2},${y0}Z`}
+  /* where the line is, in the drawing's own units; the cover strip and the rise clip follow it */
+  function line(){
+    const r=svg.getBoundingClientRect(),px=r.width/vbW;if(!(px>0))return;
+    erode.setAttribute('radius',Math.max(.35,1.5/px).toFixed(2));          /* the outline stays ~1.5px at any size */
+    const ly=menu?vbTop+(menu.getBoundingClientRect().top-r.top)/px:BASE+1+GAP;
+    band.setAttribute('x','-5000');band.setAttribute('width','20000');
+    band.setAttribute('y',(ly-1.5/px).toFixed(3));band.setAttribute('height',(4/px).toFixed(3));
+    above.setAttribute('y',(vbTop-500).toFixed(1));above.setAttribute('height',(ly-vbTop+500).toFixed(3));
+    rise=ly-vbTop;
+  }
+  function build(){
+    const fam=getComputedStyle(txt).fontFamily;
+    const c=document.createElement('canvas'),k=4,cx=c.getContext('2d');
+    cx.font=`800 ${FS*k}px ${fam}`;
+    const label=txt.textContent.toUpperCase(),m=cx.measureText(label);
+    const w=Math.ceil(m.width/k)+PAD*2,asc=(m.actualBoundingBoxAscent||72*k)/k;
+    c.width=w*k;c.height=(BASE+20)*k;
+    cx.font=`800 ${FS*k}px ${fam}`;cx.fillStyle='#000';cx.textBaseline='alphabetic';cx.fillText(label,PAD*k,BASE*k);
+    txt.setAttribute('x',PAD);
+    const row=cx.getImageData(0,(BASE-4)*k,c.width,1).data;
+    /* runs of solid paint along the feet */
+    const runs=[];let st=-1;
+    for(let i=0;i<c.width;i++){const on=row[i*4+3]>140;if(on&&st<0)st=i;if(!on&&st>=0){runs.push([st/k,i/k]);st=-1}}
+    if(st>=0)runs.push([st/k,c.width/k]);
+    dg.textContent='';cover.textContent='';dropsG.textContent='';
+    const rnd=(q=>()=>{q=q*16807%2147483647;return(q-1)/2147483646})(20261010);
+    let maxEnd=BASE;const drops=[];
+    runs.forEach(r=>{
+      const rw=r[1]-r[0];if(rw<5)return;
+      const n=rw>26?2:1;
+      for(let j=0;j<n;j++){
+        if(rnd()<.28)continue;
+        const x=n===1?(r[0]+r[1])/2+(rnd()-.5)*rw*.3:r[0]+rw*(j?.72:.28)+(rnd()-.5)*rw*.12;
+        /* some hang short of the line, most run over it; none reach the menu's words */
+        const L=4+Math.pow(rnd(),1.3)*30,wsz=Math.min(rw*.85,12+rnd()*5),ws=Math.min(wsz*.42,4.4+rnd()*1.6),rr=ws*1.12+rnd()*.8;
+        const d=drip(x,BASE-7,L+7,wsz,ws,rr),dd=(.45+rnd()*.6).toFixed(2)+'s',od=(4.5+rnd()*4).toFixed(2)+'s';
+        for(const g of [dg,cover]){const p=document.createElementNS(NS,'path');p.setAttribute('class','dm-drip');p.setAttribute('d',d);
+          p.style.setProperty('--dd',dd);p.style.setProperty('--od',od);g.appendChild(p)}
+        maxEnd=Math.max(maxEnd,BASE+L+rr);
+        if(L>20&&drops.length<6)drops.push([x,BASE+L+rr*1.25,rr*.72]);
+      }
+    });
+    drops.forEach(([x,y,r],i)=>{const d=document.createElementNS(NS,'circle');d.setAttribute('class','dm-drop');d.setAttribute('cx',x.toFixed(1));d.setAttribute('cy',y.toFixed(1));d.setAttribute('r',r.toFixed(1));
+      d.style.setProperty('--fd',(4.6+i*.9).toFixed(1)+'s');d.style.setProperty('--fl',(1.4+i*1.1).toFixed(1)+'s');d.style.setProperty('--fall',(8+i*2)+'px');dropsG.appendChild(d)});
+    const top=BASE-asc-3,bot=maxEnd+24;
+    vbTop=top;vbW=w;
+    svg.setAttribute('viewBox',`0 ${top.toFixed(1)} ${w} ${(bot-top).toFixed(1)}`);
+    box.style.setProperty('--dmr',((BASE+1-top)/w).toFixed(4));box.style.setProperty('--dmg',(GAP/w).toFixed(4));
+    line();requestAnimationFrame(line);
+  }
+  function arrive(){
+    if(risen)return;risen=true;
+    if(still){clipG.removeAttribute('clip-path');return}
+    line();
+    const a=riseG.animate([{transform:`translateY(${rise.toFixed(1)}px)`,opacity:0},{opacity:1,offset:.3},{transform:'translateY(0px)',opacity:1}],
+      {duration:1100,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+    const open=()=>clipG.removeAttribute('clip-path');setTimeout(open,700);
+  }
+  const go=()=>{try{build()}catch(e){}};
+  go();
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);
+  if(document.fonts&&document.fonts.addEventListener)document.fonts.addEventListener('loadingdone',go);
+  addEventListener('resize',line);
+  new IntersectionObserver(es=>es.forEach(e=>{box.classList.toggle('run',e.isIntersecting);
+    if(e.isIntersecting&&!box.classList.contains('in')){box.classList.add('in');arrive()}}),{rootMargin:'0px 0px -4% 0px'}).observe(box);
 })();
 
 /* ═══ header over the page's dark and light surfaces (after brewns' data-header-theme probe) ═══
