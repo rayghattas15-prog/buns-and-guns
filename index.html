@@ -1090,7 +1090,7 @@ footer.near .fbg{background-image:url("images/gallery-3.webp")}
         <label><span data-i18n="labelPatty">Patty</span>
           <select id="b-size">
             <option value="" data-i18n="choosePatty">Choose a patty</option>
-            <option data-i18n="pattySingle">Single smash · 100 g</option><option data-i18n="pattyDouble">Double smash · 2 × 100 g</option><option data-i18n="pattyClassic">Classic patty · 200 g</option><option data-i18n="pattyWagyu">Wagyu patty · 200 g</option>
+            <option data-i18n="pattySingle">Single smash · 100 g</option><option data-i18n="pattyDouble">Double smash · 200 g</option><option data-i18n="pattyClassic">Classic patty · 200 g</option><option data-i18n="pattyWagyu">Wagyu patty · 200 g</option>
           </select>
         </label>
       </div>
@@ -1346,8 +1346,8 @@ const CONFIG={
   whatsapp:"35799403810"   /* ⚠ PLACEHOLDER — not a WhatsApp number */
 };
 
-/* ═══ data — carried over from v4 / v5 (patty labels now say 2 × 100 g for the double) ═══ */
-const SIZES=["Single 100g","Double 2×100g","Classic 200g","Wagyu 200g"];
+/* ═══ data — carried over from v4 / v5 (the double is labelled 200 g: two 100 g patties) ═══ */
+const SIZES=["Single 100g","Double 200g","Classic 200g","Wagyu 200g"];
 const SK=["sizeSingle","sizeDouble","sizeClassic","sizeWagyu"];
 const PIC={"The OG":"images/dish-og.webp","Sweet Fries":"images/dish-sweet-fries.webp","Chicken Fingers":"images/dish-chicken-fingers.webp"};
 /* each photograph's own size and where its subject sits — properties of the shot, not design */
@@ -1440,7 +1440,7 @@ const GR={
  menuLede:"Κάθε μπέργκερ έρχεται με ένα από τέσσερα μπιφτέκια — μονό σμας (100γρ), διπλό σμας (2 × 100γρ), κλασικό (200γρ) ή βάγκιου (200γρ). Διαλέξτε ένα και όλες οι τιμές του καταλόγου αλλάζουν μαζί του.",
  altTray:"Τέσσερα μπέργκερ σε κόκκινο καρό δίσκο με πατάτες, γλυκοπατάτες και σάλτσες",openPhoto:"Άνοιγμα φωτογραφίας",
  tabBurgers:"Μπέργκερ",tabSides:"Πατάτες & συνοδευτικά",tabProtein:"Πρωτεΐνη & επιδόρπια",tabDrinks:"Ποτά",labelPatty:"Μπιφτέκι",
- sizeSingle:"Μονό 100γρ",sizeDouble:"Διπλό 2×100γρ",sizeClassic:"Κλασικό 200γρ",sizeWagyu:"Βάγκιου 200γρ",
+ sizeSingle:"Μονό 100γρ",sizeDouble:"Διπλό 200γρ",sizeClassic:"Κλασικό 200γρ",sizeWagyu:"Βάγκιου 200γρ",
  groupAddons:"Πρόσθετα",addExtraSmash:"Επιπλέον σμας μπιφτέκι 100γρ",addExtraClassic:"Επιπλέον κλασικό μπιφτέκι 200γρ",addEgg:"Αυγό",addBacon:"Μπέικον",addCheese:"Τυρί",
  groupFries:"Πατάτες",sideFries:"Πατάτες",sideSweetFries:"Γλυκοπατάτες",sideLoaded:"Φορτωμένες πατάτες",sideTruffleFries:"Πατάτες με τρούφα",groupMoreSides:"Άλλα συνοδευτικά",
  groupProtein:"Πρωτεΐνη",groupDesserts:"Επιδόρπια",groupSpecials:"Σπέσιαλ",
@@ -1455,7 +1455,7 @@ const GR={
  buildTitle:"Φτιάξτε το όπως το θέλετε",
  buildIntro:"Διαλέξτε μπέργκερ και έξτρα, προσθέστε ένα σημείωμα και στείλτε μας το ως αίτημα παραγγελίας στο WhatsApp.",
  labelBurger:"Μπέργκερ",anyBurger:"Οποιοδήποτε μπέργκερ",choosePatty:"Επιλέξτε μπιφτέκι",
- pattySingle:"Μονό σμας · 100γρ",pattyDouble:"Διπλό σμας · 2 × 100γρ",pattyClassic:"Κλασικό μπιφτέκι · 200γρ",pattyWagyu:"Μπιφτέκι βάγκιου · 200γρ",
+ pattySingle:"Μονό σμας · 100γρ",pattyDouble:"Διπλό σμας · 200γρ",pattyClassic:"Κλασικό μπιφτέκι · 200γρ",pattyWagyu:"Μπιφτέκι βάγκιου · 200γρ",
  legendToppings:"Υλικά",topTomato:"Ντομάτα",topLettuce:"Μαρούλι",topOnion:"Κρεμμύδι",topCrispyOnion:"Τραγανό κρεμμύδι",topPickles:"Αγγουράκια τουρσί",topBacon:"Μπέικον",topJalapenos:"Χαλαπένιο",
  legendSauces:"Σάλτσες",sauceGun:"Σάλτσα Γκαν",sauceHoneyMustard:"Μουστάρδα με μέλι",sauceBbq:"Μπάρμπεκιου",sauceMayo:"Μαγιονέζα",sauceKetchup:"Κέτσαπ",sauceMustard:"Μουστάρδα",
  labelSpecialRequests:"Ειδικά αιτήματα",notePlaceholder:"Για παράδειγμα: χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι, αλλεργία στο σουσάμι",
