@@ -98,7 +98,9 @@ html.i18n-wait :is(#hd,main,footer,.mbar){visibility:hidden}
   --hd:76px;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+/* scrollbar-gutter: the scrollbar's room is kept while the loader holds the page still, so the page does not get
+   narrower (and lay itself out again) at the moment you first scroll */
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scrollbar-gutter:stable}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
@@ -152,8 +154,8 @@ main,footer{position:relative;z-index:1}
 
 /* ── progress + header (as v4) ───────────────── */
 #prog{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--ember));box-shadow:var(--gl);transform-origin:0 50%;transform:scaleX(0);z-index:95}
-header{position:fixed;inset:0 0 auto;z-index:80;font-family:var(--v4body);transition:transform .7s var(--e),background .5s var(--v4e),border-color .5s,backdrop-filter .5s;border-bottom:1px solid transparent}
-header.solid{background:rgba(8,7,10,.72);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-color:var(--line)}
+header{position:fixed;inset:0 0 auto;z-index:80;font-family:var(--v4body);transition:transform .7s var(--e),background .5s var(--v4e),border-color .5s;border-bottom:1px solid transparent}
+header.solid{background:rgba(8,7,10,.72);border-color:var(--line)}
 header.hide{transform:translateY(-100%)}
 #hd .wrap,#top .wrap{width:min(1200px,90vw)}
 .tbar{display:flex;align-items:center;justify-content:space-between;gap:18px;height:78px}
@@ -456,7 +458,7 @@ footer{padding:clamp(80px,10vw,140px) 0 36px;border-top:1px solid var(--line)}
 .mbar .a1{flex:1.6;background:var(--red);color:#fff}
 .mbar .a2{color:var(--tx);box-shadow:inset 0 0 0 1px var(--line-2)}
 #totop{position:fixed;right:24px;bottom:24px;z-index:74;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);
-  background:rgba(23,19,26,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--mu);
+  background:rgba(23,19,26,.94);color:var(--mu);
   opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .5s var(--e),transform .5s var(--e),translate .7s var(--e),color .3s}
 #totop.on{opacity:1;transform:none;pointer-events:auto}
 #totop:hover{color:var(--tx)}
@@ -659,7 +661,6 @@ footer{isolation:isolate;overflow:hidden}
   opacity:0;transition:opacity 1.2s ease}
 .foodstream.on{opacity:1}
 .fs-i{position:absolute;left:0;top:0;will-change:transform,opacity;backface-visibility:hidden}
-.fs-i>span{display:block;will-change:transform}
 .fs-i img{display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none}
 /* writing sits on its own dark panel: every section after the hero is a glass slab, the veins run in the gaps and margins around it */
 main>section:not(#top){isolation:isolate}
@@ -680,7 +681,7 @@ footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:non
   background:linear-gradient(180deg,rgba(11,10,12,0) 0,rgba(11,10,12,.93) 56px,var(--bg) 120px)}
 
 /* ── every section now sits on the dark; the red veins run behind all of them ── */
-header{transition:transform .7s var(--e),background .5s var(--v4e),border-color .5s,backdrop-filter .5s,color .4s}
+header{transition:transform .7s var(--e),background .5s var(--v4e),border-color .5s,color .4s}
 header[data-theme="light"]{color:var(--tx)}
 header.solid[data-theme="light"]{background:rgba(242,230,218,.84);border-color:var(--line)}
 header[data-theme="light"] :is(.lang,.icobtn){background:rgba(255,255,255,.45)}
@@ -770,7 +771,9 @@ html.has-cur [data-src]{cursor:zoom-in}
 .glare{display:none}
 
 /* header over warm charcoal */
-header.solid{background:rgba(17,13,12,.9)}
+/* no frosted glass on the bar: under a 94% solid ground it hardly showed, yet it was blurred afresh on every frame the
+   food moved behind it, and the blur growing in on the first scroll was what made that first scroll stutter */
+header.solid{background:rgba(17,13,12,.94)}
 
 /* hero */
 .heroframe{height:min(78svh,660px);aspect-ratio:722/914;border-radius:16px;border-color:rgba(255,236,220,.12)}
@@ -1169,11 +1172,11 @@ footer.near .fbg{background-image:url("images/gallery-3.webp")}
       <div>
         <div class="rv">
           <p class="kicker"><span data-i18n="sigKicker">The signature</span></p>
-          <h2>The <em>OG</em>.</h2>
+          <h2 data-i18n="sigTitle">The <em>OG</em>.</h2>
           <p class="lede" data-fact="desc:The OG">Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.</p>
         </div>
         <div class="pts">
-          <div class="pti rv"><span class="n">01</span><div><h4>Gun Sauce</h4><p data-i18n="sigGunText">The house sauce. It is also on the Burger Salad and the Animal Style.</p></div></div>
+          <div class="pti rv"><span class="n">01</span><div><h4 data-i18n="sauceGun">Gun Sauce</h4><p data-i18n="sigGunText">The house sauce. It is also on the Burger Salad and the Animal Style.</p></div></div>
           <div class="pti rv" style="--d:.08s"><span class="n">02</span><div><h4 data-i18n="sigWays">Four ways to order it</h4><p data-i18n="sigWaysText">Single smash (100 g), double smash (2 × 100 g), classic (200 g) or wagyu (200 g) — from <span data-fact="ogMin">€8.50</span> to <span data-fact="ogMax">€16</span>.</p></div></div>
           <div class="pti rv" style="--d:.16s"><span class="n">03</span><div><h4 data-i18n="sigLoad">Load it up</h4><p data-i18n="sigLoadText">Extra smash or classic patty, egg, bacon or cheese from the add-ons.</p></div></div>
         </div>
@@ -1352,11 +1355,11 @@ const PIC_META={"The OG":[340,510,"50% 74%"],"Sweet Fries":[680,382,"50% 55%"],"
 const MENU={
  burgers:[
   {group:"Burgers",gk:"tabBurgers",items:[
-   {name:"The OG",prices:[8.5,10.5,10.5,16],desc:"Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese."},
+   {name:"The OG",nk:"nameOG",prices:[8.5,10.5,10.5,16],desc:"Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese."},
    {name:"Cheeseburger",nk:"nameCheeseburger",prices:[8.5,10.5,10.5,16],desc:"Brioche, ketchup, mustard, pickles, red onions and cheese."},
-   {name:"Truffle",prices:[9,11,11,16.5],desc:"Brioche, black truffle garlic mayo, caramelised onions, crispy onions, lettuce and cheese."},
-   {name:"Whiskey Business",prices:[9,11,11,16.5],desc:"Brioche, pineapple Jack Daniel's, tomato, red onion, crispy onion, lettuce, bacon and cheese."},
-   {name:"Mr. Hot Shot",prices:[8.5,10.5,10.5,16],desc:"Brioche, BJM sauce, buffalo sauce, tomato, lettuce, red onion, pickles, crispy onion, jalapeño and cheese."},
+   {name:"Truffle",nk:"nameTruffle",prices:[9,11,11,16.5],desc:"Brioche, black truffle garlic mayo, caramelised onions, crispy onions, lettuce and cheese."},
+   {name:"Whiskey Business",nk:"nameWhiskey",prices:[9,11,11,16.5],desc:"Brioche, pineapple Jack Daniel's, tomato, red onion, crispy onion, lettuce, bacon and cheese."},
+   {name:"Mr. Hot Shot",nk:"nameHotShot",prices:[8.5,10.5,10.5,16],desc:"Brioche, BJM sauce, buffalo sauce, tomato, lettuce, red onion, pickles, crispy onion, jalapeño and cheese."},
    {name:"Chicken Burger",nk:"nameChickenBurger",price:9,desc:"Brioche, buttermilk fried chicken breast, honey mustard, lettuce and pickles."}
   ]},
   {group:"Add-ons",gk:"groupAddons",flat:true,items:[
@@ -1372,14 +1375,14 @@ const MENU={
    {name:"Truffle Fries",nk:"sideTruffleFries",price:6.5,desc:"Truffle mayo, garlic and parmesan."}
   ]},
   {group:"More sides",gk:"groupMoreSides",items:[
-   {name:"Animal Style",price:6.5,desc:"Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions."},
+   {name:"Animal Style",nk:"nameAnimal",price:6.5,desc:"Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions."},
    {name:"Chicken Fingers",nk:"nameChickenFingers",price:9.5,desc:"Buttermilk fried chicken strips, fries and sauce."}
   ]}
  ],
  protein:[
   {group:"Protein",gk:"groupProtein",items:[
    {name:"Burger Salad",nk:"nameBurgerSalad",price:7.5,desc:"Shredded lettuce, tomato, red onions, pickles, two smashed patties with cheese, Gun Sauce.",meta:"420 cal · 50g protein",mk:"metaBurgerSalad"},
-   {name:"Buff Burger",price:13.5,desc:"Protein sweet potato pancakes, two egg whites, 20g lean bacon, 300g 95% lean beef, three high-protein cheese slices, 30g Philadelphia, ketchup, mustard, lettuce, tomato, red onions and pickles.",meta:"620 cal · 108g protein",mk:"metaBuffBurger"}
+   {name:"Buff Burger",nk:"nameBuff",price:13.5,desc:"Protein sweet potato pancakes, two egg whites, 20g lean bacon, 300g 95% lean beef, three high-protein cheese slices, 30g Philadelphia, ketchup, mustard, lettuce, tomato, red onions and pickles.",meta:"620 cal · 108g protein",mk:"metaBuffBurger"}
   ]},
   {group:"Desserts",gk:"groupDesserts",items:[
    {name:"Skillet Cookie",nk:"nameSkilletCookie",price:6.5,desc:"Triple chocolate brown butter cookie, baked to order, with vanilla ice cream."},
@@ -1410,13 +1413,14 @@ const FAQ_ID=["delivery","patties","allergens","protein","hours"];
    Every word the page can show, in one place: the live-site strings, the v4/v5 additions and the October 2026 pass that
    finished the job (alt text, labels, order request, hours, menu descriptions). Written for the site, not
    supplied by the owners: worth a read by a native speaker before it is final.
-   Kept in Latin letters on purpose: the shop's name, brands, dish names that are names on their own menu
-   (The OG, Truffle, Whiskey Business, Mr. Hot Shot, Animal Style, Buff Burger) and smash / wagyu, which Greek
-   menus write in Latin too. Prices and decimals follow Greek style: 8,50 €, 4,8. */
+   Everything is in Greek letters, the dishes' own names too (Ο Αυθεντικός, Τρούφα, Ουίσκι Μπίζνες, …), as are
+   σμας, βάγκιου, Μπλακ Άνγκους and σάλτσα Γκαν. Only the shop's name and real brands keep their own spelling (Jack
+   Daniel's, Philadelphia, Nutella, Pivo, IPA, BJM, Foody, Google, WhatsApp, Instagram, Tripadvisor). Prices and
+   decimals follow Greek style: 8,50 €, 4,8. */
 const GR={
  /* page */
- docTitle:"Buns & Guns — Smash μπέργκερ · Πύλα, Λάρνακα",
- docDesc:"Οικογενειακό μπεργκεράδικο στην Πύλα, Λάρνακα. Black Angus ψημένο τη στιγμή, wagyu, φιλετάκια κοτόπουλου και πατάτες με τρούφα για περίπου 10–15 € το άτομο. Ανοιχτά Τρίτη έως Κυριακή, 17:30–22:00. Διανομή μέσω Foody.",
+ docTitle:"Buns & Guns — Σμας μπέργκερ · Πύλα, Λάρνακα",
+ docDesc:"Οικογενειακό μπεργκεράδικο στην Πύλα, Λάρνακα. Μπλακ Άνγκους ψημένο τη στιγμή, βάγκιου, φιλετάκια κοτόπουλου και πατάτες με τρούφα για περίπου 10–15 € το άτομο. Ανοιχτά Τρίτη έως Κυριακή, 17:30–22:00. Διανομή μέσω Foody.",
  skipMenu:"Μετάβαση στο μενού",
  /* header */
  backTop:"Επιστροφή στην κορυφή",altLogo:"Λογότυπο Buns and Guns",placeShort:"Πύλα · Λάρνακα",placeLong:"Πύλα · Λάρνακα · Κύπρος",
@@ -1424,23 +1428,24 @@ const GR={
  langToggleLabel:"Γλώσσα",navIgLabel:"Το Buns and Guns στο Instagram",order:"Παραγγελία",
  /* hero */
  heroTitle:"<span><i>Ψήνεται</i></span><span><i><em>τη στιγμή.</em></i></span>",
- lead:"Smash και wagyu μπέργκερ, φιλετάκια κοτόπουλου και πατάτες με τρούφα στην Πύλα, Λάρνακα. Ένα πλήρες γεύμα για περίπου <span class=\"nw\">10–15 €</span>.",
+ lead:"Σμας και βάγκιου μπέργκερ, φιλετάκια κοτόπουλου και πατάτες με τρούφα στην Πύλα, Λάρνακα. Ένα πλήρες γεύμα για περίπου <span class=\"nw\">10–15 €</span>.",
  seeMenu:"Δείτε το μενού",orderDeliveryFoody:"Παραγγελία για διανομή",
  lblAddress:"Διεύθυνση",addrShort:"Πιερίας, Πύλα",lblSpend:"Μέσο κόστος",spendHead:"<span class=\"nw\">10–15 €</span> το άτομο",lblClosed:"Κλειστά",mondays:"Κάθε Δευτέρα",lblRated:"Βαθμολογία",ratedGoogle:"4,8 ★ στο Google",
- altHero:"Ένα smash μπέργκερ του Buns and Guns με τυρί, κρεμμύδι και αγγουράκια τουρσί, μπροστά σε σακούλες πακέτου με το λογότυπο του μαγαζιού",
- ticker:"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ; · BLACK ANGUS ΨΗΜΕΝΟ ΤΗ ΣΤΙΓΜΗ · GUN SAUCE · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · ΠΙΕΡΙΑΣ, ΠΥΛΑ · ",
+ altHero:"Ένα σμας μπέργκερ του Buns and Guns με τυρί, κρεμμύδι και αγγουράκια τουρσί, μπροστά σε σακούλες πακέτου με το λογότυπο του μαγαζιού",
+ ticker:"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ; · ΜΠΛΑΚ ΑΝΓΚΟΥΣ ΨΗΜΕΝΟ ΤΗ ΣΤΙΓΜΗ · ΣΑΛΤΣΑ ΓΚΑΝ · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · ΠΙΕΡΙΑΣ, ΠΥΛΑ · ",
  /* numbers */
- statSizes:"Μπιφτέκια για να διαλέξετε",unitG:"γρ",statProtein:"Πρωτεΐνη στο Buff Burger",statReviews:"Από 311 κριτικές στο Google",statDays:"Βράδια την εβδομάδα, Τρίτη έως Κυριακή",
+ statSizes:"Μπιφτέκια για να διαλέξετε",unitG:"γρ",statProtein:"Πρωτεΐνη στο Μπαφ Μπέργκερ",statReviews:"Από 311 κριτικές στο Google",statDays:"Βράδια την εβδομάδα, Τρίτη έως Κυριακή",
  /* the board */
  menuKicker:"Ο κατάλογος",menuTitle2:"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.",
- menuLede:"Κάθε μπέργκερ έρχεται με ένα από τέσσερα μπιφτέκια — μονό smash (100γρ), διπλό smash (2 × 100γρ), κλασικό (200γρ) ή wagyu (200γρ). Διαλέξτε ένα και όλες οι τιμές του καταλόγου αλλάζουν μαζί του.",
+ menuLede:"Κάθε μπέργκερ έρχεται με ένα από τέσσερα μπιφτέκια — μονό σμας (100γρ), διπλό σμας (2 × 100γρ), κλασικό (200γρ) ή βάγκιου (200γρ). Διαλέξτε ένα και όλες οι τιμές του καταλόγου αλλάζουν μαζί του.",
  altTray:"Τέσσερα μπέργκερ σε κόκκινο καρό δίσκο με πατάτες, γλυκοπατάτες και σάλτσες",openPhoto:"Άνοιγμα φωτογραφίας",
  tabBurgers:"Μπέργκερ",tabSides:"Πατάτες & συνοδευτικά",tabProtein:"Πρωτεΐνη & επιδόρπια",tabDrinks:"Ποτά",labelPatty:"Μπιφτέκι",
- sizeSingle:"Μονό 100γρ",sizeDouble:"Διπλό 2×100γρ",sizeClassic:"Κλασικό 200γρ",sizeWagyu:"Wagyu 200γρ",
- groupAddons:"Πρόσθετα",addExtraSmash:"Επιπλέον smash μπιφτέκι 100γρ",addExtraClassic:"Επιπλέον κλασικό μπιφτέκι 200γρ",addEgg:"Αυγό",addBacon:"Μπέικον",addCheese:"Τυρί",
+ sizeSingle:"Μονό 100γρ",sizeDouble:"Διπλό 2×100γρ",sizeClassic:"Κλασικό 200γρ",sizeWagyu:"Βάγκιου 200γρ",
+ groupAddons:"Πρόσθετα",addExtraSmash:"Επιπλέον σμας μπιφτέκι 100γρ",addExtraClassic:"Επιπλέον κλασικό μπιφτέκι 200γρ",addEgg:"Αυγό",addBacon:"Μπέικον",addCheese:"Τυρί",
  groupFries:"Πατάτες",sideFries:"Πατάτες",sideSweetFries:"Γλυκοπατάτες",sideLoaded:"Φορτωμένες πατάτες",sideTruffleFries:"Πατάτες με τρούφα",groupMoreSides:"Άλλα συνοδευτικά",
  groupProtein:"Πρωτεΐνη",groupDesserts:"Επιδόρπια",groupSpecials:"Σπέσιαλ",
- drinkSoft:"Αναψυκτικά",drinkBottledSoft:"Αναψυκτικά σε μπουκάλι",drinkJuice:"Χυμός",drinkWater:"Νερό",drinkMilkshakes:"Μιλκσέικ",drinkLemonades:"Stetes Lemonades",drinkDraft:"Βαρελίσια Pivo / IPA",
+ drinkSoft:"Αναψυκτικά",drinkBottledSoft:"Αναψυκτικά σε μπουκάλι",drinkJuice:"Χυμός",drinkWater:"Νερό",drinkMilkshakes:"Μιλκσέικ",drinkLemonades:"Λεμονάδες Στέτες",drinkDraft:"Βαρελίσια Pivo / IPA",
+ nameOG:"Ο Αυθεντικός",nameTruffle:"Τρούφα",nameWhiskey:"Ουίσκι Μπίζνες",nameHotShot:"Μίστερ Χοτ Σοτ",nameAnimal:"Άνιμαλ Στάιλ",nameBuff:"Μπαφ Μπέργκερ",
  nameCheeseburger:"Τσίζμπεργκερ",nameChickenBurger:"Μπέργκερ κοτόπουλο",nameChickenFingers:"Φιλετάκια κοτόπουλου",nameBurgerSalad:"Σαλάτα μπέργκερ",nameSkilletCookie:"Μπισκότο στο τηγανάκι",nameFrenchToast:"Αυγόφετες",
  metaBurgerSalad:"420 θερμίδες · 50γρ πρωτεΐνη",metaBuffBurger:"620 θερμίδες · 108γρ πρωτεΐνη",
  pricesNote:"Οι τιμές είναι σε ευρώ και μπορεί να αλλάξουν.",
@@ -1450,9 +1455,9 @@ const GR={
  buildTitle:"Φτιάξτε το όπως το θέλετε",
  buildIntro:"Διαλέξτε μπέργκερ και έξτρα, προσθέστε ένα σημείωμα και στείλτε μας το ως αίτημα παραγγελίας στο WhatsApp.",
  labelBurger:"Μπέργκερ",anyBurger:"Οποιοδήποτε μπέργκερ",choosePatty:"Επιλέξτε μπιφτέκι",
- pattySingle:"Μονό smash · 100γρ",pattyDouble:"Διπλό smash · 2 × 100γρ",pattyClassic:"Κλασικό μπιφτέκι · 200γρ",pattyWagyu:"Μπιφτέκι wagyu · 200γρ",
+ pattySingle:"Μονό σμας · 100γρ",pattyDouble:"Διπλό σμας · 2 × 100γρ",pattyClassic:"Κλασικό μπιφτέκι · 200γρ",pattyWagyu:"Μπιφτέκι βάγκιου · 200γρ",
  legendToppings:"Υλικά",topTomato:"Ντομάτα",topLettuce:"Μαρούλι",topOnion:"Κρεμμύδι",topCrispyOnion:"Τραγανό κρεμμύδι",topPickles:"Αγγουράκια τουρσί",topBacon:"Μπέικον",topJalapenos:"Χαλαπένιο",
- legendSauces:"Σάλτσες",sauceGun:"Gun Sauce",sauceHoneyMustard:"Μουστάρδα με μέλι",sauceBbq:"Μπάρμπεκιου",sauceMayo:"Μαγιονέζα",sauceKetchup:"Κέτσαπ",sauceMustard:"Μουστάρδα",
+ legendSauces:"Σάλτσες",sauceGun:"Σάλτσα Γκαν",sauceHoneyMustard:"Μουστάρδα με μέλι",sauceBbq:"Μπάρμπεκιου",sauceMayo:"Μαγιονέζα",sauceKetchup:"Κέτσαπ",sauceMustard:"Μουστάρδα",
  labelSpecialRequests:"Ειδικά αιτήματα",notePlaceholder:"Για παράδειγμα: χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι, αλλεργία στο σουσάμι",
  sendWhatsapp:"Αποστολή στο WhatsApp",copyOrder:"Αντιγραφή παραγγελίας",clearBtn:"Καθαρισμός",
  msgPickSomething:"Επιλέξτε κάτι ή γράψτε ένα αίτημα πρώτα.",
@@ -1469,14 +1474,15 @@ const GR={
  altGal4:"Γενική άποψη του μαγαζιού με κόκκινα σεπαρέ",altGal3:"Η επιγραφή νέον με το σύνθημα του μαγαζιού, πάνω από μπλουζάκια Buns and Guns",
  igMore:"Περισσότερα από το μαγαζί στο Instagram · @bunsandguns.cy",
  /* signature */
- sigKicker:"Η σπεσιαλιτέ μας",sigGunText:"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Animal Style.",
- sigWays:"Τέσσερις τρόποι να το παραγγείλετε",sigWaysText:"Μονό smash (100γρ), διπλό smash (2 × 100γρ), κλασικό (200γρ) ή wagyu (200γρ) — από <span data-fact='ogMin'>8,50 €</span> έως <span data-fact='ogMax'>16 €</span>.",
- sigLoad:"Φορτώστε το",sigLoadText:"Επιπλέον smash ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.",
- altOg:"Smash μπέργκερ με τυρί, κόκκινο κρεμμύδι και αγγουράκια τουρσί",altSweetFries:"Τηγανητές γλυκοπατάτες",altChickenFingers:"Τηγανητά φιλετάκια κοτόπουλου με πατάτες",
+ sigKicker:"Η σπεσιαλιτέ μας",sigGunText:"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Άνιμαλ Στάιλ.",
+ sigTitle:"Ο <em>Αυθεντικός</em>.",
+ sigWays:"Τέσσερις τρόποι να το παραγγείλετε",sigWaysText:"Μονό σμας (100γρ), διπλό σμας (2 × 100γρ), κλασικό (200γρ) ή βάγκιου (200γρ) — από <span data-fact='ogMin'>8,50 €</span> έως <span data-fact='ogMax'>16 €</span>.",
+ sigLoad:"Φορτώστε το",sigLoadText:"Επιπλέον σμας ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.",
+ altOg:"Σμας μπέργκερ με τυρί, κόκκινο κρεμμύδι και αγγουράκια τουρσί",altSweetFries:"Τηγανητές γλυκοπατάτες",altChickenFingers:"Τηγανητά φιλετάκια κοτόπουλου με πατάτες",
  /* reviews */
  revCount:"Από 311 κριτικές στο Google.",readGoogle:"Διαβάστε τες στο Google",readTripadvisor:"Διαβάστε τες στο Tripadvisor",
  revAsk:"Φάγατε εδώ;",revAskText:"Αφήστε μια κριτική εκεί που θα τη διαβάσει το επόμενο τραπέζι. Παίρνει μόνο ένα λεπτό.",reviewGoogle:"Κριτική στο Google",reviewTripadvisor:"Κριτική στο Tripadvisor",
- altHands:"Δύο χέρια κρατούν ένα smash μπέργκερ πάνω από έναν δίσκο με πατάτες",
+ altHands:"Δύο χέρια κρατούν ένα σμας μπέργκερ πάνω από έναν δίσκο με πατάτες",
  /* faq */
  faqKicker:"Καλό να ξέρετε",faqTitle:"Πριν παραγγείλετε.",altFaq:"Τρία μπέργκερ, γλυκοπατάτες και σάλτσες κάτω από την επιγραφή νέον του Buns and Guns",
  /* visit */
@@ -1488,7 +1494,7 @@ const GR={
  daysOn:["την Κυριακή","τη Δευτέρα","την Τρίτη","την Τετάρτη","την Πέμπτη","την Παρασκευή","το Σάββατο"],tomorrow:"αύριο",todayWord:"σήμερα",
  statusOpenNow:"Ανοιχτά τώρα έως τις 22:00",statusOpensToday:"Ανοίγουμε σήμερα στις 17:30",statusClosedOpens:"Κλειστά τώρα · ανοίγουμε {day} στις 17:30",
  toastAddress:"Η διεύθυνση αντιγράφηκε",toastLink:"Ο σύνδεσμος αντιγράφηκε",toastCopyFailed:"Η αντιγραφή απέτυχε",
- copyAddrText:"Πιερίας, Πύλα, Λάρνακα 7080, Κύπρος",shareTitle:"Buns & Guns, Πύλα",shareText:"Smash μπέργκερ με Black Angus, στην Πύλα",
+ copyAddrText:"Πιερίας, Πύλα, Λάρνακα 7080, Κύπρος",shareTitle:"Buns & Guns, Πύλα",shareText:"Σμας μπέργκερ με Μπλακ Άνγκους, στην Πύλα",
  /* footer */
  footLine:"Θες να σε κάνω μπέργκερ;",footVisit:"Επισκεφθείτε μας",addrFoot:"Πιερίας, Πύλα<br>Λάρνακα 7080, Κύπρος",footOrder:"Παραγγελία",
  footHours:"Τρίτη έως Κυριακή · 17:30 – 22:00",privacyLink:"Απόρρητο",
@@ -1498,7 +1504,7 @@ const GR={
 /* menu descriptions in Greek, matched on the English text. A sheet row's own description_gr always wins; a row whose
    English was changed in the sheet (so no longer matches) shows its English until description_gr is filled in. */
 const DESC_GR={
- "Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.":"Ψωμάκι μπριός, Gun Sauce, ντομάτα, μαρούλι, κόκκινο κρεμμύδι, τραγανό κρεμμύδι, αγγουράκια τουρσί και τυρί.",
+ "Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.":"Ψωμάκι μπριός, σάλτσα Γκαν, ντομάτα, μαρούλι, κόκκινο κρεμμύδι, τραγανό κρεμμύδι, αγγουράκια τουρσί και τυρί.",
  "Brioche, ketchup, mustard, pickles, red onions and cheese.":"Ψωμάκι μπριός, κέτσαπ, μουστάρδα, αγγουράκια τουρσί, κόκκινα κρεμμύδια και τυρί.",
  "Brioche, black truffle garlic mayo, caramelised onions, crispy onions, lettuce and cheese.":"Ψωμάκι μπριός, μαγιονέζα σκόρδου με μαύρη τρούφα, καραμελωμένα κρεμμύδια, τραγανά κρεμμύδια, μαρούλι και τυρί.",
  "Brioche, pineapple Jack Daniel's, tomato, red onion, crispy onion, lettuce, bacon and cheese.":"Ψωμάκι μπριός, ανανάς με Jack Daniel's, ντομάτα, κόκκινο κρεμμύδι, τραγανό κρεμμύδι, μαρούλι, μπέικον και τυρί.",
@@ -1508,18 +1514,18 @@ const DESC_GR={
  "Fresh sweet potato fries.":"Φρέσκες τηγανητές γλυκοπατάτες.",
  "Cheddar cheese, bacon and crispy onions.":"Τυρί τσένταρ, μπέικον και τραγανά κρεμμύδια.",
  "Truffle mayo, garlic and parmesan.":"Μαγιονέζα τρούφας, σκόρδο και παρμεζάνα.",
- "Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions.":"Smash μπιφτέκι Black Angus, τυρί τσένταρ, Gun Sauce, τραγανά κρεμμύδια.",
+ "Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions.":"Σμας μπιφτέκι Μπλακ Άνγκους, τυρί τσένταρ, σάλτσα Γκαν, τραγανά κρεμμύδια.",
  "Buttermilk fried chicken strips, fries and sauce.":"Τηγανητά φιλετάκια κοτόπουλου μαριναρισμένα σε βουτυρόγαλα, πατάτες και σάλτσα.",
- "Shredded lettuce, tomato, red onions, pickles, two smashed patties with cheese, Gun Sauce.":"Ψιλοκομμένο μαρούλι, ντομάτα, κόκκινα κρεμμύδια, αγγουράκια τουρσί, δύο smash μπιφτέκια με τυρί, Gun Sauce.",
+ "Shredded lettuce, tomato, red onions, pickles, two smashed patties with cheese, Gun Sauce.":"Ψιλοκομμένο μαρούλι, ντομάτα, κόκκινα κρεμμύδια, αγγουράκια τουρσί, δύο σμας μπιφτέκια με τυρί, σάλτσα Γκαν.",
  "Protein sweet potato pancakes, two egg whites, 20g lean bacon, 300g 95% lean beef, three high-protein cheese slices, 30g Philadelphia, ketchup, mustard, lettuce, tomato, red onions and pickles.":"Πανκέικ γλυκοπατάτας με πρωτεΐνη, δύο ασπράδια αυγού, 20γρ άπαχο μπέικον, 300γρ μοσχάρι 95% άπαχο, τρεις φέτες τυρί υψηλής πρωτεΐνης, 30γρ Philadelphia, κέτσαπ, μουστάρδα, μαρούλι, ντομάτα, κόκκινα κρεμμύδια και αγγουράκια τουρσί.",
  "Triple chocolate brown butter cookie, baked to order, with vanilla ice cream.":"Μπισκότο τριπλής σοκολάτας με καβουρδισμένο βούτυρο, ψημένο τη στιγμή, με παγωτό βανίλια.",
  "Japanese milk bread French toast, Nutella drizzle and vanilla ice cream.":"Αυγόφετες από ιαπωνικό ψωμί γάλακτος, με Nutella και παγωτό βανίλια."
 };
 const FAQ_GR=[
  ["Κάνετε διανομή;","Ναι, μέσω Foody — τα κουμπιά παραγγελίας σε αυτή τη σελίδα σας πηγαίνουν κατευθείαν εκεί."],
- ["Ποια είναι η διαφορά ανάμεσα στα μπιφτέκια;","Το μονό είναι ένα smash μπιφτέκι 100γρ και το διπλό δύο τέτοια (2 × 100γρ). Το κλασικό είναι ένα μπιφτέκι 200γρ που δεν πατιέται στη σχάρα και το wagyu ένα μπιφτέκι wagyu 200γρ."],
+ ["Ποια είναι η διαφορά ανάμεσα στα μπιφτέκια;","Το μονό είναι ένα σμας μπιφτέκι 100γρ και το διπλό δύο τέτοια (2 × 100γρ). Το κλασικό είναι ένα μπιφτέκι 200γρ που δεν πατιέται στη σχάρα και το βάγκιου ένα μπιφτέκι βάγκιου 200γρ."],
  ["Τι γίνεται με τις αλλεργίες;","Ενημερώστε το προσωπικό μας για οποιαδήποτε αλλεργία ή δυσανεξία πριν παραγγείλετε — θα σας πει τι περιέχει κάθε πιάτο και πώς φτιάχνεται. Μπορείτε να ρωτήσετε για οποιοδήποτε από τα 14 αλλεργιογόνα που ορίζει η ευρωπαϊκή νομοθεσία, όπως η γλουτένη, το γάλα, τα αυγά, το σουσάμι, η μουστάρδα και η σόγια. Αν παραγγέλνετε στο WhatsApp, γράψτε την αλλεργία σας στα Ειδικά αιτήματα."],
- ["Υπάρχουν επιλογές με πολλή πρωτεΐνη;","Η σαλάτα μπέργκερ και το Buff Burger — πενήντα και εκατόν οκτώ γραμμάρια πρωτεΐνης αντίστοιχα."],
+ ["Υπάρχουν επιλογές με πολλή πρωτεΐνη;","Η σαλάτα μπέργκερ και το Μπαφ Μπέργκερ — πενήντα και εκατόν οκτώ γραμμάρια πρωτεΐνης αντίστοιχα."],
  ["Πότε είστε κλειστά;","Τις Δευτέρες. Κατά τα άλλα, Τρίτη έως Κυριακή, από τις 17:30 έως τις 22:00."]
 ];
 
@@ -2182,11 +2188,13 @@ function go(id){
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 function startLenis(){
   if(reduce||!fine||lenis)return;
-  if(document.documentElement.classList.contains('ld-lock')){setTimeout(startLenis,150);return}   /* scroll waits for the loader */
+  /* fetched straight away, even while the loader is up, so it is ready before the first scroll instead of arriving
+     (and taking the scroll over) in the middle of it */
   if(!window.Lenis){
     if(!startLenis.asked){startLenis.asked=true;const sc=document.createElement('script');sc.src='https://unpkg.com/lenis@1.1.13/dist/lenis.min.js';sc.async=true;sc.onload=startLenis;document.head.appendChild(sc)}
     return;
   }
+  if(document.documentElement.classList.contains('ld-lock')){setTimeout(startLenis,100);return}   /* scroll waits for the loader */
   lenis=new Lenis({lerp:.085,smoothWheel:true,wheelMultiplier:1});
   (function raf(t){lenis.raf(t);requestAnimationFrame(raf)})(performance.now());
 }
@@ -2227,7 +2235,9 @@ if(fine&&!reduce){
   marq.addEventListener('pointerenter',()=>{mSlow=.25;wake()});
   marq.addEventListener('pointerleave',()=>{mSlow=1;wake()});
 }
-addEventListener('resize',()=>{mHalf=0});
+/* the ticker is measured again only when the width changes: a phone's address bar sliding away on the first scroll is
+   a resize too, and re-measuring then restarted the ticker mid-scroll */
+let mW=innerWidth;addEventListener('resize',()=>{if(innerWidth!==mW){mW=innerWidth;mHalf=0}});
 
 /* ═══ frame loop: header, progress, parallax, menu cards, marquee ═══ */
 function setT(el,s){if(el._t!==s){el._t=s;el.style.transform=s}}
@@ -2357,6 +2367,23 @@ const topSpy=new IntersectionObserver(([x])=>{
 topSpy.observe($('top'));
 
 /* ═══ boot ═══ */
+/* ═══ photos warmed ahead of the scroll ═══ each lazy photo is fetched and decoded while it is still a couple of
+   screens below, so the first time you scroll down to it there is no decoding left to do in the middle of the scroll
+   (decoding on first sight was what made the first pass down the page catch). Menu photos redrawn by a tab or the
+   language switch are picked up as they appear. */
+(()=>{
+  if(!('IntersectionObserver' in window)||!HTMLImageElement.prototype.decode)return;
+  const warm=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;const im=e.target;warm.unobserve(im);
+    im.loading='eager';const dec=()=>im.decode().catch(()=>{});
+    im.complete&&im.naturalWidth?dec():im.addEventListener('load',dec,{once:true});
+  }),{rootMargin:'0px 0px 200% 0px'});
+  const watch=()=>document.querySelectorAll('img[loading=lazy]').forEach(im=>{if(!im._warm){im._warm=1;warm.observe(im)}});
+  const go=()=>{watch();new MutationObserver(watch).observe($('menuBox'),{childList:true})};
+  /* after the page has loaded and gone quiet, so the first screen never waits on these */
+  const idle=window.requestIdleCallback||(f=>setTimeout(f,300));
+  if(document.readyState==='complete')idle(go,{timeout:1500});else addEventListener('load',()=>idle(go,{timeout:1500}),{once:true});
+})();
 $('yr').textContent=new Date().getFullYear();
 {const h=document.querySelector('#top h1'),last=h.querySelector('span:last-child i');
  const free=()=>h.classList.add('risen');
@@ -2378,9 +2405,11 @@ setTimeout(()=>document.body.classList.add('ready'),1500);
    cup), on the site's own red, amber and cream. Burgers, doubles, fries, onion rings, a soda and loose fries ride
    one winding river from the top right of the hero to the bottom left, each bobbing and turning slowly, nearer ones
    bigger, brighter and faster.
-   Every item is an <img> moved by Web Animations on transform and opacity only, so the browser hands it to the
-   compositor: after setup there is no script per frame, nothing is redrawn as you scroll, and it pauses whenever the
-   hero is off screen. Under reduced motion the food holds still where it lies. Look knobs are in CONFIG. */
+   Every item is an <img> moved by one Web Animation on transform and opacity only (the trip and the bob are baked
+   into the same keyframes), so the browser hands it to the compositor: after setup there is no script per frame,
+   nothing is redrawn as you scroll, and it pauses whenever the hero is off screen. One animation per item, not two,
+   halves what the browser has to keep up to date on every frame you scroll. Under reduced motion the food holds
+   still where it lies. Look knobs are in CONFIG. */
 (()=>{
 const box=document.querySelector('.foodstream');if(!box)return;
 const CONFIG={
@@ -2432,33 +2461,30 @@ function build(){
   box.style.setProperty('--fs-h',H+'px');
   const c=course(W,HH),smin=phone?CONFIG.sizeMinPhone:CONFIG.sizeMin,smax=phone?CONFIG.sizeMaxPhone:CONFIG.sizeMax,spread=phone?CONFIG.spreadPhone:CONFIG.spread;
   const was=items.map(it=>it.run?it.run.currentTime:null);
-  items.forEach(it=>{it.run&&it.run.cancel();it.bob&&it.bob.cancel();it.el.remove()});
+  items.forEach(it=>{it.run&&it.run.cancel();it.el.remove()});
   items=cast.map((m,i)=>{
     const w=Math.round((smin+(smax-smin)*m.z)*m.f[1]),op=CONFIG.farOpacity+(1-CONFIG.farOpacity)*m.z,off=m.side*spread*(.4+.6*m.z);
     const el=document.createElement('div');el.className='fs-i';el.style.width=w+'px';
-    const inner=document.createElement('span'),img=document.createElement('img');
+    const img=document.createElement('img');
     img.src=`images/stream/${m.f[0]}.svg`;img.alt='';img.decoding='async';img.width=w;
     /* depth by shade, not see-through: painted once into the item's own layer, never per frame */
     const sh=CONFIG.farShade+(1-CONFIG.farShade)*m.z;if(sh<.99)img.style.filter=`brightness(${sh.toFixed(2)}) saturate(${(.75+.25*m.z).toFixed(2)})`;
-    inner.appendChild(img);el.appendChild(inner);box.appendChild(el);
-    const S=48,frames=[];
-    for(let k=0;k<=S;k++){const t=k/S,[x,y,nx,ny]=at(c,t*c.total),fade=Math.min(1,t/.05,(1-t)/.1);
-      frames.push({offset:t,opacity:+(op*Math.max(0,fade)).toFixed(3),
-        transform:`translate3d(${(x+nx*off-w/2).toFixed(1)}px,${(y+ny*off-w/2).toFixed(1)}px,0) rotate(${(m.turn0+m.spin*CONFIG.spin*t).toFixed(1)}deg)`})}
+    el.appendChild(img);box.appendChild(el);
     const dur=c.total/(CONFIG.speed*(.75+.5*m.z)*m.speedJ)*1000;
+    /* the bob: a whole number of slow sways per trip, so the loop joins up; ten keyframes a sway keep it round */
+    const nb=Math.max(1,Math.round(dur/(2*m.bobD))),bb=CONFIG.bob*(.6+.4*m.z),br=CONFIG.bobTurn,S=Math.max(48,nb*10),frames=[];
+    for(let k=0;k<=S;k++){const t=k/S,[x,y,nx,ny]=at(c,t*c.total),fade=Math.min(1,t/.05,(1-t)/.1),sw=Math.sin(2*Math.PI*(nb*t+m.bobP));
+      frames.push({offset:t,opacity:+(op*Math.max(0,fade)).toFixed(3),
+        transform:`translate3d(${(x+nx*off-w/2).toFixed(1)}px,${(y+ny*off-w/2+bb*sw).toFixed(1)}px,0) rotate(${(m.turn0+m.spin*CONFIG.spin*t+br*sw).toFixed(1)}deg)`})}
     if(REDUCE){const fr=frames[Math.round(m.phase*S)];el.style.transform=fr.transform;el.style.opacity=fr.opacity;return{el}}
     const run=el.animate(frames,{duration:dur,iterations:Infinity,easing:'linear'});
     run.currentTime=was[i]!=null?was[i]%dur:m.phase*dur;
-    const b=CONFIG.bob*(.6+.4*m.z),r=CONFIG.bobTurn;
-    const bob=inner.animate([{transform:`translate3d(0,${-b}px,0) rotate(${-r}deg)`},{transform:`translate3d(0,${b}px,0) rotate(${r}deg)`}],
-      {duration:m.bobD,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});
-    bob.currentTime=m.bobP*m.bobD;
-    if(!visible){run.pause();bob.pause()}
-    return{el,run,bob};
+    if(!visible)run.pause();
+    return{el,run};
   });
   key=[W,HH].join(',');
 }
-function sync(){items.forEach(it=>{if(!it.run)return;if(visible&&!document.hidden){it.run.play();it.bob.play()}else{it.run.pause();it.bob.pause()}})}
+function sync(){items.forEach(it=>{if(!it.run)return;if(visible&&!document.hidden)it.run.play();else it.run.pause()})}
 function start(){
   build();
   requestAnimationFrame(()=>box.classList.add('on'));

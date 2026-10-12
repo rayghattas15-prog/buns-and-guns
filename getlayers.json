@@ -25,7 +25,7 @@
         "https://www.getlayers.ai/?layer=brewns"
       ],
       "placed": "#top hero, div.foodstream first in <main> (z-index -1, behind every word); runs 26% past the hero's foot, then fades",
-      "how": "cartoon SVG stickers in images/stream (burger, double, fries, ring, soda, fry) as <img>; Web Animations on transform and opacity only, 48 keyframes along a Catmull-Rom river, plus a slow bob; seeded cast, so the same river on every load; all knobs in the food stream CONFIG",
+      "how": "cartoon SVG stickers in images/stream (burger, double, fries, ring, soda, fry) as <img>; one Web Animation per item on transform and opacity only: the trip along a Catmull-Rom river and the slow bob baked into the same keyframes; seeded cast, so the same river on every load; all knobs in the food stream CONFIG",
       "palette": {
         "ink": "#1A0F0C",
         "edge": "#FFF3E8",
