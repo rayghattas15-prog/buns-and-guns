@@ -253,6 +253,7 @@ header.hide{transform:translateY(-100%)}
 .marq i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red);margin:0 30px;vertical-align:middle}
 @keyframes slide{to{transform:translateX(-50%)}}
 .marq.js .tr{animation:none;will-change:transform}
+.marq .tr-in{display:inline-flex}
 
 /* ── stats ───────────────────────────────────── */
 .stats{padding:clamp(64px,8vw,112px) 0}
@@ -651,11 +652,15 @@ html.ld.gl-ready :is(.scrollcue,.marq){animation:gl-fade 1s var(--e) .9s both}
 /* ── clinker-008 behind the footer band ── its contract: behind display type, not
       paragraphs — so the fire burns under the big line and goes dark under the columns */
 footer{isolation:isolate;overflow:hidden}
-/* the stream behind the hero: a canvas fixed to the PAGE, not the screen, so it scrolls with the page itself
-   (on a phone the scroll never has to wait for it); drawn transparent over the page's ground, no blend mode,
-   fading out under the hero */
-.gl-stream{position:absolute;left:0;top:0;width:100%;height:var(--gl-h,100vh);z-index:-1;display:block;pointer-events:none;opacity:0;transition:opacity .6s ease}
-html.gl-stream-on .gl-stream{opacity:1}
+/* the food stream behind the hero: cartoon burgers, fries and rings drifting down the hero in one winding river.
+   Plain images moved only by transform and opacity, so the phone's compositor runs it on its own: no WebGL, no
+   per-frame script, nothing redrawn as you scroll. The box is pinned to the page and scrolls with it. */
+.foodstream{position:absolute;left:0;top:0;width:100%;height:var(--fs-h,100vh);z-index:-1;pointer-events:none;overflow:hidden;contain:strict;
+  opacity:0;transition:opacity 1.2s ease}
+.foodstream.on{opacity:1}
+.fs-i{position:absolute;left:0;top:0;will-change:transform,opacity;backface-visibility:hidden}
+.fs-i>span{display:block;will-change:transform}
+.fs-i img{display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none}
 /* writing sits on its own dark panel: every section after the hero is a glass slab, the veins run in the gaps and margins around it */
 main>section:not(#top){isolation:isolate}
 /* a machine that can't keep the stream smooth swaps the frosted glass for a plain darker slab (set by the stream) */
@@ -665,6 +670,8 @@ main>section:not(#top):before{content:"";position:absolute;z-index:-1;left:50%;t
   -webkit-backdrop-filter:blur(16px) saturate(1.15);backdrop-filter:blur(16px) saturate(1.15);
   box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
 #top p,#top .herometa{text-shadow:0 1px 18px rgba(8,7,10,.85)}
+/* the food drifts behind the hero copy: its small type carries a dark halo so it always reads */
+#top p,#top .herometa b,#top .herometa span{text-shadow:0 0 3px #110D0C,0 0 8px #110D0C,0 0 18px rgba(17,13,12,.95),0 0 34px rgba(17,13,12,.8)}
 footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(11,10,12,0) 0,rgba(11,10,12,.3) clamp(70px,9vw,130px),rgba(11,10,12,.3) 100%)}
 /* the columns sit on the dark: a scrim hung from the columns themselves, so it follows them at any height */
@@ -994,8 +1001,8 @@ footer.near .fbg{background-image:url("images/gallery-3.webp")}
 </header>
 
 <main>
-<!-- the stream behind the hero (see "the page stream" below): first in <main>, under everything in it -->
-<canvas class="gl-stream" aria-hidden="true"></canvas>
+<!-- the food stream behind the hero (see "the food stream" below): first in <main>, under everything in it -->
+<div class="foodstream" aria-hidden="true"></div>
 <!-- ══ hero (as v4) ══ -->
 <div class="hero" id="top" data-header-theme="dark">
   <div class="wrap herogrid">
@@ -1558,7 +1565,7 @@ function capsGr(root){
 let mHalf=0; /* marquee loop width, re-measured whenever its text changes */
 /* what is near the screen; the frame loop only works on those (see "depth: setup") */
 const near=new Set();
-const nearIO=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?near.add(e.target):near.delete(e.target)),{rootMargin:"160px 0px"});
+const nearIO=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?near.add(e.target):near.delete(e.target));wake()},{rootMargin:"160px 0px"});
 
 /* split headings into words so they can rise one after another */
 function splitHeads(){
@@ -1645,8 +1652,8 @@ function bindCards(){
     nearIO.observe(c.el);
     cardIO.observe(c.el);
     if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
-    c.el.addEventListener('pointermove',e=>{const r=c.el.getBoundingClientRect();c.tx=Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1));c.ty=Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))});
-    c.el.addEventListener('pointerleave',()=>{c.tx=c.ty=0});
+    c.el.addEventListener('pointermove',e=>{const r=c.el.getBoundingClientRect();c.tx=Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1));c.ty=Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1));wake()});
+    c.el.addEventListener('pointerleave',()=>{c.tx=c.ty=0;wake()});
   });
 }
 function cardHTML(it,idx){
@@ -2110,7 +2117,7 @@ function ticker(){
   const items=tr("ticker","YOU WANNA BURGER ME · BLACK ANGUS SMASHED TO ORDER · GUN SAUCE · TRUFFLE FRIES · PIERIAS, PYLA · ")
     .split("·").map(s=>s.trim()).filter(Boolean);
   const half=Array(4).fill(items.map(t=>`<span>${t}<i></i></span>`).join("")).join("");
-  $('tk').innerHTML=half+half;
+  $('tk').innerHTML=`<div class="tr-in">${half+half}</div>`;
   mHalf=0;
 }
 
@@ -2161,7 +2168,7 @@ function setLang(l,byUser){
   }
   langReady=true;
 }
-document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang,true)});
+document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>{if(b.dataset.lang!==lang){setLang(b.dataset.lang,true);wake()}});   /* wake: the ticker's new words need their drift */
 setLang(lang);
 
 /* ═══ scrolling ═══ */
@@ -2199,7 +2206,7 @@ const heroImg=$('heroShot'),heroPic=heroImg.querySelector('img'),heroTx=document
 let heroFrameH=heroImg.offsetHeight;
 new ResizeObserver(()=>{heroFrameH=heroImg.offsetHeight}).observe(heroImg);
 const marq=document.querySelector('.marq'),tk=$('tk');
-let mx=0,mv=1,mDir=1,mSk=0,mSlow=1;
+let mv=.9,mDir=1,mSk=0,mSlow=1,mRun=null;
 if(!reduce)marq.classList.add('js');
 pars.forEach(p=>nearIO.observe(p));
 nearIO.observe(marq);
@@ -2217,19 +2224,28 @@ if(fine&&!reduce){
     });
     el.addEventListener('pointerleave',()=>{el.style.translate=''});
   });
-  marq.addEventListener('pointerenter',()=>mSlow=.25);
-  marq.addEventListener('pointerleave',()=>mSlow=1);
+  marq.addEventListener('pointerenter',()=>{mSlow=.25;wake()});
+  marq.addEventListener('pointerleave',()=>{mSlow=1;wake()});
 }
 addEventListener('resize',()=>{mHalf=0});
 
 /* ═══ frame loop: header, progress, parallax, menu cards, marquee ═══ */
 function setT(el,s){if(el._t!==s){el._t=s;el.style.transform=s}}
 const totop=$('totop'),mbar=$('mbar');
-let lastY=scrollY,lastT=performance.now();
-(function tick(now){
-  now=now||performance.now();
-  const dt=clamp((now-lastT)/16.667,.25,3);lastT=now;
-  const y=scrollY,vh=innerHeight,dy=y-lastY;
+/* The loop sleeps whenever nothing on screen needs it (page still, no card easing, marquee out of view) and wakes on
+   scroll, resize or the pointer. While it runs, every frame is a main-thread frame, and in each one the browser also
+   updates the style of all the running food animations; asleep, the food runs on the compositor alone. Scroll
+   position and viewport size are read when they change, never once a frame, for the same reason. */
+let SY=scrollY,VH=innerHeight,VW=innerWidth,raf=0,slept=true;
+function wake(){if(!raf)raf=requestAnimationFrame(tick)}
+addEventListener('scroll',()=>{SY=scrollY;wake()},{passive:true});
+addEventListener('resize',()=>{VH=innerHeight;VW=innerWidth;SY=scrollY;wake()});
+let lastY=SY,lastT=performance.now();
+function tick(now){
+  raf=0;now=now||performance.now();
+  const dt=slept?1:clamp((now-lastT)/16.667,.25,3);lastT=now;slept=false;
+  const y=SY,vh=VH,dy=y-lastY;
+  let busy=!!dy;
   if(dy||!tick.once){
     tick.once=true;
     hd.classList.toggle('solid',y>30);
@@ -2254,7 +2270,7 @@ let lastY=scrollY,lastT=performance.now();
     const k=1-Math.pow(1-.075,dt);
     /* hero: on desktop the copy lifts and fades as you scroll away; on a phone the photograph drifts in its frame */
     if(y<vh*1.3){
-      if(innerWidth>980){
+      if(VW>980){
         const p=clamp(y/(vh*.9),0,1),o=(1-p*.6).toFixed(3);
         setT(heroTx,`translate3d(0,${(p*-44).toFixed(1)}px,0)`);
         if(heroTx._o!==o){heroTx._o=o;heroTx.style.opacity=o}
@@ -2268,23 +2284,42 @@ let lastY=scrollY,lastT=performance.now();
       c.lag+=(want-c.lag)*kc;
       setT(c.lagEl,`translate3d(0,${c.lag.toFixed(2)}px,0)`);
       c.x+=(c.tx-c.x)*k;c.y+=(c.ty-c.y)*k;
+      if(Math.abs(want-c.lag)>.02||Math.abs(c.tx-c.x)+Math.abs(c.ty-c.y)>.001)busy=true;
       if(Math.abs(c.x)+Math.abs(c.y)>.001||c.inner._t)setT(c.inner,`rotateY(${(c.x*5).toFixed(2)}deg) rotateX(${(-c.y*5).toFixed(2)}deg)`);
     }
-    /* marquee runs with the scroll: faster as you scroll, reverses when you scroll up (only while it is in view) */
+    /* marquee runs with the scroll: faster as you scroll, reverses when you scroll up (only while it is in view).
+       The steady drift is a Web Animation the compositor plays on its own; scrolling only changes its speed and
+       leans it, so once the page is still the loop can sleep and the ticker keeps moving without it. */
     if(near.has(marq)){
-      if(!mHalf)mHalf=tk.scrollWidth/2;
+      if(!mHalf||!mRun){
+        const row=tk.firstElementChild;mHalf=row?row.scrollWidth/2:0;
+        if(mRun){mRun.cancel();mRun=null}
+        if(mHalf&&row.animate){
+          const d=mHalf/54*1000;   /* 54 px a second at rest */
+          mRun=row.animate([{transform:'translate3d(0,0,0)'},{transform:`translate3d(${-mHalf}px,0,0)`}],{duration:d,iterations:Infinity,easing:'linear'});
+          mRun.currentTime=d*400;  /* far into the loop, so it can run backwards for hours */
+          mRun._r=1;
+        }
+      }
       const v=dy/dt;
       if(v>.3)mDir=1;else if(v<-.3)mDir=-1;
       const target=(.9+Math.min(Math.abs(v)*.5,14))*mDir*mSlow;
       mv+=(target-mv)*(1-Math.pow(1-.08,dt));
-      mx-=mv*dt;
-      if(mHalf){if(mx<=-mHalf)mx+=mHalf;else if(mx>0)mx-=mHalf}
+      if(Math.abs(target-mv)<.004)mv=target;
       mSk+=(clamp(v*.35,-7,7)-mSk)*(1-Math.pow(1-.1,dt));
-      tk.style.transform=`translate3d(${mx.toFixed(2)}px,0,0) skewX(${(-mSk).toFixed(2)}deg)`;
-    }
+      if(Math.abs(mSk)<.01)mSk=0;
+      if(mRun){
+        if(mRun.playState!=='running')mRun.play();
+        const rate=+(mv/.9).toFixed(3);
+        if(mRun._r!==rate){mRun._r=rate;mRun.updatePlaybackRate?mRun.updatePlaybackRate(rate):mRun.playbackRate=rate}
+      }
+      setT(tk,mSk?`skewX(${(-mSk).toFixed(2)}deg)`:'none');
+      if(mv!==target||mSk)busy=true;
+    }else if(mRun&&mRun.playState==='running')mRun.pause();
   }
-  requestAnimationFrame(tick);
-})();
+  if(busy)wake();else slept=true;
+}
+wake();
 
 /* ═══ reveals ═══ */
 const io=new IntersectionObserver(en=>en.forEach(x=>{
@@ -2337,488 +2372,103 @@ addEventListener('resize',placeAll);
 setTimeout(()=>document.body.classList.add('ready'),1500);
 </script>
 <script>
-/* ═══ the page stream ═══════════════════════════════════════════════════
-   After GetLayers' Relay template (its page-long particle stream): a ribbon of glowing filaments and sparks that
-   winds down behind the hero in wide S-curves, drawn in raw WebGL2 (no library, no build). The ribbon lives in PAGE
-   coordinates; its spine is baked into a float texture and every shader reads it. Strands are additive lines carrying
-   light pulses; the sparks are additive soft points whose size and softness grow away from the focal plane; a small
-   mip-blur bloom lifts the glow. The ribbon also GROWS: its head runs ahead of the scroll, a little below the bottom
-   of the screen, and burns brighter than the stream behind it.
-   October 2026, for phones (same look, much less work):
-   · the canvas is pinned to the PAGE, not the screen: the browser scrolls it like a photo, so the stream can never
-     lag behind your finger and nothing is redrawn because you scrolled;
-   · it is drawn with its own transparency instead of a CSS blend mode (a blend over the whole screen is costly);
-   · phones and tablets draw it at 30 frames a second (the page itself still scrolls at full rate), with a cap on the
-     number of pixels; a device that still cannot keep up steps down a quality level;
-   · it stops completely whenever it is off screen, and its shaders compile without freezing the page.
-   Colour comes only from COLORS (red tint of this site). Look knobs are in CONFIG. */
+/* ═══ the food stream ═══════════════════════════════════════════════════
+   Replaces the WebGL light stream, which was too heavy for phones. Made with GetLayers' scene lab: Ink Ticker for the
+   comic-ink look (flat colour, one heavy ink line) and Brewns for the motion (beans drifting weightless behind the
+   cup), on the site's own red, amber and cream. Burgers, doubles, fries, onion rings, a soda and loose fries ride
+   one winding river from the top right of the hero to the bottom left, each bobbing and turning slowly, nearer ones
+   bigger, brighter and faster.
+   Every item is an <img> moved by Web Animations on transform and opacity only, so the browser hands it to the
+   compositor: after setup there is no script per frame, nothing is redrawn as you scroll, and it pauses whenever the
+   hero is off screen. Under reduced motion the food holds still where it lies. Look knobs are in CONFIG. */
 (()=>{
-const cv=document.querySelector('.gl-stream');if(!cv)return;
-const CONFIG={particles:36000,lowShare:.45,strands:44,flowPx:90,scrollFlow:1.25,
-  spread:6,spreadEnds:120,turnHold:.3,pinchReach:300,breath:.35,breathWavelength:900,breathSpeed:.6,
-  spraySpread:2.4,bokehSpread:3.2,dustSpread:5.5,wobble:4,size:2.1,focal:.15,dof:.55,dofSize:2.2,twinkle:2.4,
-  brightness:.62,heat:1.2,altShare:.45,altStrands:.32,lineBase:.16,lineSpread:.9,lineWavelength:1560,
-  lineWaveAmp:.12,lineWaveSpeed:.25,pulseSpacing:1130,pulseSpeed:205,pulseGain:1.4,pulseSharp:9,parallax:.22,
-  headGlow:1.6,headWidth:150,headLead:1.05,
-  bloomStr:.52,bloomThresh:.07};
-/* phones and tablets: same stream, a lighter build of it — about a third of the filament geometry and fewer sparks,
-   drawn at a lower resolution and 30 fps. The look (colours, shape, pulses, head glow) is unchanged. */
-const LOW=matchMedia('(pointer:coarse)').matches||innerWidth<=900;
-if(LOW)Object.assign(CONFIG,{strands:18,lowShare:.3,size:2.4});
-const FRAME_MS=LOW?1000/30:0;
-const PIX_BUDGET=LOW?3.6e5:3.2e6;   /* most pixels the canvas may have, whatever the screen */
-const COLORS={main:'#FF2D3F',alt:'#FF7A3D',core:'#FFC9B0',deep:'#6B0F1A',spark:'#FFF3E8'};
-/* waypoints: [section selector, x share of the page width, y share of the section's height, depth, pinch] — every one lower than the last */
-const PATH=[
-  ['#top',1.12,-0.45,-2.6,0],['#top',.86,.02,-1.8,0],['#top',.5,.38,-.9,0],['#top',.14,.82,0,1],['#top',-.4,1.12,0,0]];
-const SAMPLES=4096,SEG=LOW?1300:4200,CAM_Z=6,FOV=35,HALF_H=CAM_Z*Math.tan(FOV/2*Math.PI/180),REVEALED=1e7;
-const REDUCE=matchMedia('(prefers-reduced-motion: reduce)');
-const gl=cv.getContext('webgl2',{alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,powerPreference:'high-performance'});
-if(!gl){cv.remove();return}
-const floatRT=!!gl.getExtension('EXT_color_buffer_float');
-const KPC=gl.getExtension('KHR_parallel_shader_compile');   /* compile off the main thread where the browser can */
-const rng=s=>()=>{s|=0;s=s+0x6d2b79f5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
-const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255].map(v=>Math.pow(v,2.2))};
+const box=document.querySelector('.foodstream');if(!box)return;
+const CONFIG={
+  count:28,countPhone:18,          /* items in the river */
+  speed:42,                        /* px a second along the river, for an item halfway in depth */
+  sizeMin:62,sizeMax:150,          /* item width at the back and at the front of the river (desktop, px) */
+  sizeMinPhone:44,sizeMaxPhone:94, /* the same on a phone */
+  spread:105,spreadPhone:58,       /* how far items wander either side of the river's centre line (px) */
+  spin:150,                        /* degrees an item turns over one whole trip */
+  bob:7,bobTurn:8,                 /* px and degrees of the slow bob */
+  farShade:.5,                     /* brightness of the items at the back (1 = as bright as the front) */
+  farOpacity:.8,                   /* and how solid they are (the front is always fully solid) */
+  tail:.26                         /* how far below the hero the river runs before it fades (share of the hero's height) */
+};
+/* name, size factor, how often it turns up */
+const FOOD=[['burger',1,6],['double',1.06,3],['fries',.9,6],['ring',.82,3],['soda',.86,2],['fry',.36,6]];
+/* the river's course: [x share of the page width, y share of the hero's height] — top right to bottom left */
+const PATH=[[1.14,-.42],[.88,.04],[.52,.38],[.16,.8],[-.36,1.14]];
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const phone=matchMedia('(pointer:coarse)').matches||innerWidth<=760;
+const rnd=(s=>()=>{s=s*16807%2147483647;return(s-1)/2147483646})(20261012);   /* seeded: the same river on every load */
+const hero=document.getElementById('top');
+let items=[],key='',visible=true;
 
-/* ── shaders ── */
-const CURVE=`
-uniform sampler2D uCurve;
-uniform float uHalfH,uCamZ,uPx,uPxZ,uLen,uTurnHold,uBreath,uBreathWave,uBreathSpeed,uTimeS,uHelixR,uHelixWave,uWideFrom,uWideRamp,uWideK,uSpinA;
-uniform vec3 uView;
-/* the room is a sticky stage: the stretch of spine inside its run is drawn in the stage's own frame,
-   folded into one screen by fPin (natural speed at both ends, evenly compressed in between), and the
-   ribbon above and below the run hangs off the stage's top and bottom edges, so the whole stream stays
-   one unbroken line while the stage is pinned and the helix stays put while the photographs orbit.
-   uPin: run top, run bottom, page y the stage top is drawn at, run length · uPinF: end zone, middle rate, morph */
-uniform vec4 uPin;uniform vec3 uPinF;uniform float uPinCX;
-float fPin(float x){float e=uPinF.x,c=uPinF.y,L=uPin.w;x=clamp(x,0.0,L);
-  float u=min(x/e,1.0),v=clamp((x-(L-e))/e,0.0,1.0);
-  float E1=x<e?x-e*(u*u*u-0.5*u*u*u*u):0.5*e;
-  float E2=e*(v*v*v-0.5*v*v*v*v);
-  return c*x+(1.0-c)*(E1+E2);}
-float pinY(float y){if(uPin.w<1.0)return y;return uPin.z+fPin(y-uPin.x)+min(y-uPin.x,0.0)+max(y-uPin.y,0.0);}
-vec4 curveRow(float u,float row){
-  float x=clamp(u,0.0,1.0)*${SAMPLES-1}.0;float i=floor(x);float v=(row+0.5)/2.0;
-  vec4 a=texture(uCurve,vec2((i+0.5)/${SAMPLES}.0,v));
-  vec4 b=texture(uCurve,vec2((min(i+1.0,${SAMPLES-1}.0)+0.5)/${SAMPLES}.0,v));
-  return mix(a,b,x-i);}
-vec3 onSpine(float u,vec2 o,float hx){
-  vec4 p=curveRow(u,0.0);vec2 n=curveRow(u,1.0).xy;
-  /* where the helix is wound, its axis is the room's vertical centre line */
-  if(hx>0.0){p.x=mix(p.x,uPinCX,hx);n=normalize(mix(n,vec2(-1.0,0.0),hx));}
-  vec2 page=vec2(p.x,pinY(p.y))+n*o.x*uPx*uView.y;
-  return vec3((page.x-uView.x)/uView.y,(uView.y-(page.y-uView.z))/uView.y,p.z+o.y*uPxZ);}
-float widthAt(float u,float pinch,float narrow,float wide){
-  float a=u*uLen;
-  float swell=1.0+uBreath*sin(a/uBreathWave*6.2831-uTimeS*uBreathSpeed);
-  float w=mix(wide,narrow,pinch)*swell*(1.0+uWideK*smoothstep(uWideFrom,uWideFrom+uWideRamp,a)+1.4*smoothstep(uWideFrom+uWideRamp*.5,uLen,a));   /* the footer band runs wide */
-  float r=max(curveRow(u,1.0).z*uTurnHold,1.0);
-  return w*r/pow(pow(w,4.0)+pow(r,4.0),0.25);}
-vec3 toWorld(vec3 s){float k=(uCamZ-s.z)/uCamZ;return vec3(s.x*uHalfH*k,s.y*uHalfH*k,s.z);}
-uniform mat4 uMV,uP;
-/* the growing head: a glow riding the front of the reveal */
-uniform float uRevealPx,uHeadGlow,uHeadWidth;
-float headBoost(float a){float d=(uRevealPx-a)/uHeadWidth;return 1.0+uHeadGlow*exp(-d*d*0.6)*step(d,3.0);}
-`;
-const POINTS_VERT=`#version 300 es
-precision highp float;precision highp sampler2D;
-${CURVE}
-in float aZ;in float aU;in float aSeed;in float aSize;in float aKind;in vec2 aOff;
-uniform float uTime,uFlowPx,uScrollPx,uWin0,uWinLen,uFadeIn,uFadeOut,uSpread,uSpreadEnds,uSpray,uBokeh,uDust,uWobble,uSize,uScale,uFocal,uDof,uDofSize,uTwinkle,uHeat,uAltShare;
-uniform vec3 uColMain,uColAlt,uColCore,uColDeep,uColSpark;
-out vec3 vColor;out float vBlur;
-void main(){
-  float ph=aSeed*6.2831;
-  float speed=(aKind<1.5?1.0:0.3)*(0.65+0.7*fract(aSeed*7.13));
-  /* only the stretch of the ribbon near the screen is populated: each spark is anchored to the curve
-     (it rides the flow) and wraps inside a window that follows the scroll */
-  float xs=aU*uWinLen+uTime*uFlowPx*speed+uScrollPx;
-  float u=(uWin0+mod(xs-uWin0,uWinLen))/uLen;
-  float pinch=curveRow(u,0.0).w;
-  float spread=widthAt(u,pinch,uSpread,uSpreadEnds);
-  if(aKind>2.5)spread*=uDust;else if(aKind>1.5)spread*=uBokeh;else if(aKind>0.5)spread*=uSpray;
-  vec2 o=aOff*spread+vec2(sin(uTime*0.7+ph),cos(uTime*0.6+ph*1.3))*uWobble;
-  float a=u*uLen;
-  float hx=curveRow(u,1.0).w;
-  float hd=1.0;hx*=uPinF.z;
-  if(hx>0.001){float hy=pinY(curveRow(u,0.0).y)-uPin.z;
-    float Rt=uHelixR*(1.0+0.05*sin(hy/(uHelixWave*1.25)*6.2831-uTime*0.7));
-    float g=step(0.5,fract(aSeed*11.7));
-    float th=hy/uHelixWave*6.2831+g*3.14159+aOff.x*0.07+uTime*0.35+uSpinA;
-    float rad=Rt*(0.9+0.2*aOff.y);
-    vec2 ho=vec2(cos(th),sin(th))*rad+aOff*(aKind<0.5?24.0:aKind<1.5?46.0:84.0);
-    o=mix(o,ho,hx);
-    /* front of the rope bright, back of it dim: the twist reads in depth */
-    hd=mix(1.0,(0.26+0.94*smoothstep(-1.0,1.0,sin(th)))*(aKind>1.5?0.5:1.0),hx);}
-  vec3 s=onSpine(u,o,hx);s.z+=aZ*(1.0-hx*0.7);
-  float fade=smoothstep(0.0,uFadeIn,a)*smoothstep(uLen,uLen-uFadeOut,a)*smoothstep(uRevealPx,uRevealPx-220.0,a);
-  float heat=pinch*(aKind<1.5?1.0:0.3);
-  vec3 hue=fract(aSeed*3.77)<uAltShare?uColAlt:uColMain;
-  vec3 base=mix(uColDeep,hue,0.55+0.45*fract(aSeed*5.31));
-  vec4 mv=uMV*vec4(toWorld(s),1.0);
-  float depth=-mv.z;
-  float blur=clamp(abs(depth-(uCamZ-uFocal))*uDof,0.0,1.0);
-  if(aKind>1.5&&aKind<2.5)blur=max(blur,0.8);
-  vBlur=blur;
-  float tw=0.55+0.45*sin(uTime*uTwinkle+ph);
-  vec3 c=mix(base,uColCore,clamp(heat*0.85,0.0,1.0))*(1.0+heat*uHeat);
-  if(fract(aSeed*13.7)<0.05)c=uColSpark*1.3;
-  float spreadOut=1.0+blur*uDofSize;
-  vColor=c*fade*tw*headBoost(a)*(1.0+hx*0.25)*hd/(spreadOut*spreadOut);
-  gl_PointSize=uSize*aSize*uScale*(uCamZ/depth)*spreadOut;
-  gl_Position=uP*mv;}`;
-const POINTS_FRAG=`#version 300 es
-precision highp float;uniform float uBright;in vec3 vColor;in float vBlur;out vec4 o;
-void main(){float r=length(gl_PointCoord-0.5)*2.0;if(r>1.0)discard;
-  float glint=exp(-r*r*6.0);
-  float disc=smoothstep(1.0,0.6,r)*0.5+smoothstep(0.5,0.92,r)*(1.0-smoothstep(0.9,1.0,r))*0.55;
-  o=vec4(vColor*mix(glint,disc,vBlur)*uBright,1.0);}`;
-const LINES_VERT=`#version 300 es
-precision highp float;precision highp sampler2D;
-${CURVE}
-in float aU;in vec4 aStrand;
-uniform float uTime,uFadeIn,uFadeOut,uSpread,uSpreadEnds,uLineSpread,uLineWavelength,uLineWaveAmp,uLineWaveSpeed,uPulseGain,uLineBase,uHeat,uAltStrands;
-uniform vec3 uColMain,uColAlt,uColCore,uColDeep;
-out vec3 vColor;out vec3 vPulse;out float vA;out float vPhase;
-void main(){
-  float u=aU;float a=u*uLen;
-  float pinch=curveRow(u,0.0).w;
-  float spread=widthAt(u,pinch,uSpread,uSpreadEnds)*uLineSpread;
-  float wave=sin(a/uLineWavelength*6.2831+aStrand.z+uTime*uLineWaveSpeed)*uLineWaveAmp;
-  vec2 lo=vec2(aStrand.x+wave,aStrand.y)*spread;
-  float hx=curveRow(u,1.0).w;
-  float hd=1.0;hx*=uPinF.z;
-  if(hx>0.001){float hy=pinY(curveRow(u,0.0).y)-uPin.z;
-    float Rt=uHelixR*(1.0+0.05*sin(hy/(uHelixWave*1.25)*6.2831-uTime*0.7));
-    float th=hy/uHelixWave*6.2831+step(3.14159,aStrand.z)*3.14159+aStrand.x*0.09+uTime*0.35+uSpinA;
-    float rad=Rt*(0.88+0.2*aStrand.y);
-    lo=mix(lo,vec2(cos(th),sin(th))*rad+vec2(aStrand.x,aStrand.y)*24.0,hx);
-    hd=mix(1.0,0.28+0.92*smoothstep(-1.0,1.0,sin(th)),hx);}
-  vec3 s=onSpine(u,lo,hx);
-  float fade=smoothstep(0.0,uFadeIn,a)*smoothstep(uLen*aStrand.w,uLen*aStrand.w-uFadeOut,a)*smoothstep(uRevealPx,uRevealPx-260.0,a);
-  vec3 hue=fract(aStrand.z*1.618)<uAltStrands?uColAlt:uColMain;
-  vec3 c=mix(mix(uColDeep,hue,0.75),uColCore,pinch*0.6);
-  float hb=headBoost(a);
-  vColor=c*fade*uLineBase*(1.0+pinch*uHeat+hx*0.8)*hb*hd;
-  vPulse=c*fade*uPulseGain*hb*(1.0+hx*0.6)*hd;
-  vA=a;vPhase=aStrand.z;
-  gl_Position=uP*uMV*vec4(toWorld(s),1.0);}`;
-const LINES_FRAG=`#version 300 es
-precision highp float;uniform float uBright,uPulseSpacing,uPulseShift,uPulseSharp;
-in vec3 vColor;in vec3 vPulse;in float vA;in float vPhase;out vec4 o;
-void main(){float p=fract((vA-uPulseShift)/uPulseSpacing+vPhase)-0.5;
-  float pulse=exp(-p*p*uPulseSharp*uPulseSharp);
-  o=vec4((vColor+vPulse*pulse)*uBright,1.0);}`;
-const QUAD_VERT=`#version 300 es
-void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.0-1.0,0.0,1.0);}`;
-const BRIGHT_FRAG=`#version 300 es
-precision highp float;uniform sampler2D uTex;uniform vec2 uTexel;uniform float uThresh;uniform vec2 uSize;out vec4 o;
-void main(){vec2 uv=gl_FragCoord.xy/uSize;
-  vec3 c=texture(uTex,uv+uTexel*vec2(-1,-1)).rgb+texture(uTex,uv+uTexel*vec2(1,-1)).rgb+texture(uTex,uv+uTexel*vec2(-1,1)).rgb+texture(uTex,uv+uTexel*vec2(1,1)).rgb;
-  c*=0.25;o=vec4(max(c-uThresh,0.0),1.0);}`;
-const DOWN_FRAG=`#version 300 es
-precision highp float;uniform sampler2D uTex;uniform vec2 uTexel;uniform vec2 uSize;out vec4 o;
-void main(){vec2 uv=gl_FragCoord.xy/uSize;
-  vec3 c=texture(uTex,uv+uTexel*vec2(-1,-1)).rgb+texture(uTex,uv+uTexel*vec2(1,-1)).rgb+texture(uTex,uv+uTexel*vec2(-1,1)).rgb+texture(uTex,uv+uTexel*vec2(1,1)).rgb;
-  o=vec4(c*0.25,1.0);}`;
-const BLUR_FRAG=`#version 300 es
-precision highp float;uniform sampler2D uTex;uniform vec2 uDir;uniform vec2 uSize;out vec4 o;
-void main(){vec2 uv=gl_FragCoord.xy/uSize;
-  vec3 c=texture(uTex,uv).rgb*0.227027;
-  c+=texture(uTex,uv+uDir*1.3846).rgb*0.316216+texture(uTex,uv-uDir*1.3846).rgb*0.316216;
-  c+=texture(uTex,uv+uDir*3.2308).rgb*0.070270+texture(uTex,uv-uDir*3.2308).rgb*0.070270;
-  o=vec4(c,1.0);}`;
-/* the last pass writes light with its own transparency (premultiplied: alpha = the brightest channel), so the
-   page shows through the dark and no CSS blend mode is needed; it fades to nothing toward the canvas's bottom edge */
-const COMP_FRAG=`#version 300 es
-precision highp float;uniform sampler2D uScene,uB0,uB1,uB2,uB3;uniform vec2 uSize;uniform float uStr,uFade;out vec4 o;
-void main(){vec2 uv=gl_FragCoord.xy/uSize;
-  vec3 c=texture(uScene,uv).rgb;
-  c+=(texture(uB0,uv).rgb*1.0+texture(uB1,uv).rgb*0.85+texture(uB2,uv).rgb*0.7+texture(uB3,uv).rgb*0.55)*uStr;
-  c=pow(clamp(c,0.0,1.0),vec3(1.0/2.2))*smoothstep(0.0,uFade,gl_FragCoord.y);
-  o=vec4(c,max(c.r,max(c.g,c.b)));}`;
-
-function program(vs,fs){
-  const p=gl.createProgram();p.sh=[];
-  for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);gl.attachShader(p,sh);p.sh.push(sh)}
-  gl.linkProgram(p);
-  const L={};p.u=n=>n in L?L[n]:(L[n]=gl.getUniformLocation(p,n));return p}
-const compiled=p=>!KPC||gl.getProgramParameter(p,KPC.COMPLETION_STATUS_KHR);
-function checked(p){if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(p.sh.map(x=>gl.getShaderInfoLog(x)||'').join(' ')+(gl.getProgramInfoLog(p)||''));return p}
-const f1=(p,n,v)=>gl.uniform1f(p.u(n),v);
-
-/* ── geometry ── */
-function buildPoints(){
-  const T=CONFIG.particles,r=rng(0x5eed1e),g=()=>r()+r()+r()+r()-2;
-  const z=new Float32Array(T),u=new Float32Array(T),seed=new Float32Array(T),size=new Float32Array(T),kind=new Float32Array(T),off=new Float32Array(T*2);
-  for(let i=0;i<T;i++){const pk=r(),k=pk<.79?0:pk<.93?1:pk<.96?2:3;kind[i]=k;u[i]=r();seed[i]=r();off[i*2]=g()*.5;off[i*2+1]=g()*.5;
-    if(k===0)size[i]=.35+Math.pow(r(),4)*2.4;else if(k===1)size[i]=.3+r()*.6;
-    else if(k===2){size[i]=1.2+r()*1.6;z[i]=1+r()*1.4}else{size[i]=.25+r()*.4;z[i]=-1.2+r()}}
-  return{z,u,seed,size,kind,off,count:T}}
-function buildLines(){
-  const n=CONFIG.strands,V=n*(SEG+1),r=rng(0xf11a),u=new Float32Array(V),st=new Float32Array(V*4),idx=new Uint32Array(n*SEG*2);let w=0;
-  for(let s=0;s<n;s++){const nx=(r()-.5)*2,nz=(r()-.5)*1.2,ph=r()*6.2831,end=.93+r()*.07;
-    for(let i=0;i<=SEG;i++){const v=s*(SEG+1)+i;u[v]=i/SEG;st.set([nx,nz,ph,end],v*4)}}
-  for(let i=0;i<SEG;i++)for(let s=0;s<n;s++){const v=s*(SEG+1)+i;idx[w++]=v;idx[w++]=v+1}
-  return{u,st,idx}}
-const buf=(data,target=gl.ARRAY_BUFFER)=>{const b=gl.createBuffer();gl.bindBuffer(target,b);gl.bufferData(target,data,gl.STATIC_DRAW);return b};
-const attr=(p,name,b,size)=>{const l=gl.getAttribLocation(p,name);if(l<0)return;gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,size,gl.FLOAT,false,0,0)};
-
-let pProg,lProg,bright,down,blur,comp,PG,LG,pVAO,lVAO,quadVAO,curveTex;
-const curveData=new Float32Array(SAMPLES*2*4);
-/* spine texture: row 0 = x, y (in the canvas's own page box), depth, pinch · row 1 = in-page normal (x,y) + turn radius + helix */
-function setup(){
-  [pProg,lProg,bright,down,blur,comp].forEach(checked);
-  PG=buildPoints();LG=buildLines();
-  pVAO=gl.createVertexArray();gl.bindVertexArray(pVAO);
-  attr(pProg,'aZ',buf(PG.z),1);attr(pProg,'aU',buf(PG.u),1);attr(pProg,'aSeed',buf(PG.seed),1);attr(pProg,'aSize',buf(PG.size),1);attr(pProg,'aKind',buf(PG.kind),1);attr(pProg,'aOff',buf(PG.off),2);
-  lVAO=gl.createVertexArray();gl.bindVertexArray(lVAO);
-  attr(lProg,'aU',buf(LG.u),1);attr(lProg,'aStrand',buf(LG.st),4);buf(LG.idx,gl.ELEMENT_ARRAY_BUFFER);
-  quadVAO=gl.createVertexArray();
-  gl.bindVertexArray(null);
-  curveTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,curveTex);
-  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+/* Catmull-Rom through the waypoints, as a dense polyline with its running length */
+function course(W,H){
+  const P=PATH.map(([x,y])=>[x*W,y*H]),E=[[2*P[0][0]-P[1][0],2*P[0][1]-P[1][1]],...P,[2*P[P.length-1][0]-P[P.length-2][0],2*P[P.length-1][1]-P[P.length-2][1]]];
+  const pts=[];
+  for(let i=0;i<E.length-3;i++)for(let k=0;k<40;k++){const t=k/40,t2=t*t,t3=t2*t,[a,b,c,d]=[E[i],E[i+1],E[i+2],E[i+3]];
+    pts.push([0,1].map(j=>.5*((2*b[j])+(-a[j]+c[j])*t+(2*a[j]-5*b[j]+4*c[j]-d[j])*t2+(-a[j]+3*b[j]-3*c[j]+d[j])*t3)))}
+  pts.push(P[P.length-1]);
+  const len=[0];for(let i=1;i<pts.length;i++)len.push(len[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+  return {pts,len,total:len[len.length-1]};
 }
-
-/* W,H: the canvas in CSS px (as wide as the page, as tall as the hero plus a tail); VH: the viewport's height;
-   cvTop: where the canvas starts on the page; sy: the page's scroll */
-let W=1,H=1,VH=innerHeight,cvTop=0,fadePx=200,unit=1,dpr=1,tier='full',pathPts=[],length=1,sampleY=new Float32Array(SAMPLES),sy=0,lastScroll=NaN,scrollPx=0;
-let geomKey='',footY=1e9,head=0,headStart=0,pointer={x:0,y:0},look={x:0,y:0},lastT=-1,live=false,win0=0,winLen=1;
-/* quality steps: a device that cannot hold the stream's rate drops one step (resolution, sparks) instead of lagging */
-const QUAL=LOW?[{dpr:.75,parts:1},{dpr:.62,parts:.65},{dpr:.5,parts:.4}]:[{dpr:1.15,parts:1},{dpr:1,parts:.6},{dpr:.8,parts:.35}];let q=0,slow=0,warm=0;
-const docTop=el=>{let y=0;for(let n=el;n;n=n.offsetParent instanceof HTMLElement?n.offsetParent:null)y+=n.offsetTop;return y};
-/* a screen height → the matching height in the canvas's own coordinates */
-const pageAtScreen=s=>sy-cvTop+s;
-const arcAtY=y=>{if(y<=sampleY[0])return 0;if(y>=sampleY[SAMPLES-1])return length;let lo=0,hi=SAMPLES-1;while(lo<hi){const m=lo+hi>>1;if(sampleY[m]>=y)hi=m;else lo=m+1}return lo/(SAMPLES-1)*length};
-const TURN_BASE=12,TURN_HOLD=28,TURN_SMOOTH=48,TURN_OPEN=1e4;
-/* the dormant sticky-room helix of an earlier version: kept in the shaders, switched off here */
-const pinOn=false,pinR0=0,pinR1=0;
-
-/* centripetal Catmull-Rom (Barry–Goldman), resampled to equal arc length */
-function spline(P){
-  const ext=[[2*P[0][0]-P[1][0],2*P[0][1]-P[1][1],2*P[0][2]-P[1][2]],...P,[2*P[P.length-1][0]-P[P.length-2][0],2*P[P.length-1][1]-P[P.length-2][1],2*P[P.length-1][2]-P[P.length-2][2]]];
-  const dense=[],d=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]);
-  const mix=(a,b,s,t)=>[0,1,2].map(k=>a[k]*s+b[k]*t);
-  for(let i=0;i<ext.length-3;i++){
-    const p0=ext[i],p1=ext[i+1],p2=ext[i+2],p3=ext[i+3];
-    const t0=0,t1=t0+Math.sqrt(d(p0,p1))||1e-4,t2=t1+Math.sqrt(d(p1,p2))||1e-4,t3=t2+Math.sqrt(d(p2,p3))||1e-4;
-    const N=Math.max(24,Math.ceil(d(p1,p2)/8));
-    for(let k=0;k<N;k++){const t=t1+(t2-t1)*k/N;
-      const A1=mix(p0,p1,(t1-t)/(t1-t0),(t-t0)/(t1-t0)),A2=mix(p1,p2,(t2-t)/(t2-t1),(t-t1)/(t2-t1)),A3=mix(p2,p3,(t3-t)/(t3-t2),(t-t2)/(t3-t2));
-      const B1=mix(A1,A2,(t2-t)/(t2-t0),(t-t0)/(t2-t0)),B2=mix(A2,A3,(t3-t)/(t3-t1),(t-t1)/(t3-t1));
-      dense.push(mix(B1,B2,(t2-t)/(t2-t1),(t-t1)/(t2-t1)))}}
-  dense.push(P[P.length-1]);
-  const cum=[0];for(let i=1;i<dense.length;i++)cum.push(cum[i-1]+d(dense[i],dense[i-1]));
-  const total=cum[cum.length-1],out=[];let j=0;
-  for(let i=0;i<SAMPLES;i++){const s=total*i/(SAMPLES-1);while(j<cum.length-2&&cum[j+1]<s)j++;
-    const f=(s-cum[j])/Math.max(1e-6,cum[j+1]-cum[j]);out.push(mix(dense[j],dense[j+1],1-f,f))}
-  return{pts:out,total}}
-
-/* the canvas covers the hero and a tail below it (the ribbon's end runs off past the hero's bottom edge) */
-function layoutCanvas(){
-  const hero=document.getElementById('top'),hh=hero?hero.offsetHeight:innerHeight;
-  const tail=Math.round(Math.min(320,Math.max(180,hh*.26)));
-  cv.style.setProperty('--gl-h',(hh+tail)+'px');
-  fadePx=tail+hh*.06;
+/* the point and the sideways direction at a distance along the river */
+function at(c,d){
+  let i=1;while(i<c.len.length-1&&c.len[i]<d)i++;
+  const a=c.pts[i-1],b=c.pts[i],f=(d-c.len[i-1])/Math.max(1e-6,c.len[i]-c.len[i-1]),dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;
+  return [a[0]+dx*f,a[1]+dy*f,-dy/l,dx/l];
 }
-function resolvePath(){
-  const main=document.querySelector('main'),col=main.getBoundingClientRect(),cr=cv.getBoundingClientRect(),pts=[];
-  cvTop=docTop(cv);
-  let lastY=-1e9;
-  for(const[sel,x,y,z,pinch]of PATH){const el=document.querySelector(sel);if(!el)continue;
-    let py=docTop(el)-cvTop+y*el.offsetHeight;if(py<=lastY)py=lastY+40;lastY=py;
-    pts.push({x:col.left-cr.left+x*col.width,y:py,z,pinch})}
-  return pts}
+/* the cast, decided once (seeded), so a rebuild on resize keeps every item's look and place in the river */
+const pick=()=>{let t=FOOD.reduce((a,f)=>a+f[2],0),r=rnd()*t;for(const f of FOOD){r-=f[2];if(r<=0)return f}return FOOD[0]};
+const N=phone?CONFIG.countPhone:CONFIG.count;
+const cast=Array.from({length:N},(_,i)=>{const f=pick();return{f,z:rnd(),side:rnd()*2-1,spin:(rnd()<.5?-1:1)*(.5+rnd()*.5),turn0:rnd()*360,
+  phase:(i+rnd()*.7)/N,bobD:2600+rnd()*2200,bobP:rnd(),speedJ:.85+rnd()*.3}}).sort((a,b)=>a.z-b.z);   /* back to front */
 
-function bake(){
-  if(pathPts.length<2)return;
-  const{pts,total}=spline(pathPts.map(p=>[p.x,p.y,p.z]));
-  length=Math.max(1,total);
-  const step=length/(SAMPLES-1),at=i=>Math.min(SAMPLES-1,Math.max(0,i));
-  const ang=[];for(let i=0;i<SAMPLES;i++){const a=pts[at(i-1)],b=pts[at(i+1)];ang.push(Math.atan2(b[1]-a[1],b[0]-a[0]))}
-  const radius=ang.map((_,i)=>{let t=Math.abs(ang[at(i+TURN_BASE)]-ang[at(i-TURN_BASE)]);if(t>Math.PI)t=2*Math.PI-t;return Math.min(TURN_OPEN,2*TURN_BASE*step/Math.max(1e-4,t)/unit)});
-  const slideMin=(v,r)=>v.map((_,i)=>{let m=Infinity;for(let j=i-r;j<=i+r;j++)m=Math.min(m,v[at(j)]);return m});
-  const slideMean=(v,r)=>v.map((_,i)=>{let s=0;for(let j=i-r;j<=i+r;j++)s+=v[at(j)];return s/(2*r+1)});
-  const held=slideMean(slideMean(slideMin(radius,TURN_HOLD),TURN_SMOOTH),TURN_SMOOTH);
-  const ss=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t)};
-  /* the whole run winds into the helix, and a little past each end of it (that part hangs off the pinned stage, out of
-     sight, so the helix runs off the top and bottom of the screen); WHEN it winds is the morph uPinF.z, set by the scroll */
-  const ra=.4*H;
-  ang.forEach((a,i)=>{const y=pts[i][1],hh=pinOn?ss(pinR0-ra,pinR0,y)*(1-ss(pinR1,pinR1+ra,y)):0;curveData.set([-Math.sin(a),Math.cos(a),held[i],hh],(SAMPLES+i)*4)});
-  const peaks=pathPts.filter(p=>p.pinch>0).map(p=>{let best=0,bd=Infinity;pts.forEach((q,i)=>{const d=(q[0]-p.x)**2+(q[1]-p.y)**2;if(d<bd){bd=d;best=i}});return{at:best/(SAMPLES-1),pinch:p.pinch}});
-  const reach=CONFIG.pinchReach*unit;let maxY=-1e9;
-  pts.forEach((q,i)=>{const a=i/(SAMPLES-1);let pinch=0;for(const k of peaks){const d=((a-k.at)*length)/reach;pinch=Math.max(pinch,k.pinch*Math.exp(-d*d))}
-    curveData.set([q[0],q[1],q[2],pinch],i*4);maxY=Math.max(maxY,q[1]);sampleY[i]=maxY});
-  gl.bindTexture(gl.TEXTURE_2D,curveTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA32F,SAMPLES,2,0,gl.RGBA,gl.FLOAT,curveData)}
-
-/* ── render targets ── */
-let sceneRT=null,levels=[];
-function target(w,h){
-  const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
-  if(floatRT)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,w,h,0,gl.RGBA,gl.HALF_FLOAT,null);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
-  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-  const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);
-  return{t,f,w,h}}
-function allocTargets(){
-  const old=[sceneRT,...levels.flatMap(l=>[l.a,l.b])].filter(Boolean);old.forEach(o=>{gl.deleteTexture(o.t);gl.deleteFramebuffer(o.f)});
-  const w=cv.width,h=cv.height;sceneRT=target(w,h);levels=[];
-  let lw=w,lh=h;const startDiv=tier==='low'?2:1;
-  for(let i=0;i<4;i++){lw=Math.max(2,lw>>1);lh=Math.max(2,lh>>1);if(i===0&&startDiv===2){lw=Math.max(2,lw>>1);lh=Math.max(2,lh>>1)}levels.push({a:target(lw,lh),b:target(lw,lh)})}
-  gl.bindFramebuffer(gl.FRAMEBUFFER,null)}
-
-function resize(){
-  tier=(matchMedia('(pointer:coarse)').matches||innerWidth<=900)?'low':'full';
-  VH=innerHeight;
-  layoutCanvas();
-  W=Math.max(1,cv.clientWidth);H=Math.max(1,cv.clientHeight);
-  unit=Math.min(1,Math.max(.5,innerWidth/1440));
-  sizeBuffers();pathPts=resolvePath();bake();
-  geomKey=geomOf()}
-/* the drawing buffer and the bloom targets only (a quality step changes nothing else) */
-function sizeBuffers(){
-  dpr=Math.min(devicePixelRatio||1,QUAL[q].dpr,Math.sqrt(PIX_BUDGET/(W*H)));
-  cv.width=Math.max(1,Math.round(W*dpr));cv.height=Math.max(1,Math.round(H*dpr));
-  allocTargets()}
-/* what the drawing depends on: if none of it moved, a resize (a phone's address bar sliding away) costs nothing */
-const geomOf=()=>{const t=document.getElementById('top');return [innerWidth,t?t.offsetHeight:0,t?docTop(t):0,devicePixelRatio].join(',')};
-
-/* ── matrices (column-major) ── */
-function persp(fovDeg,asp,n,f){const t=1/Math.tan(fovDeg*Math.PI/360);return new Float32Array([t/asp,0,0,0,0,t,0,0,0,0,(f+n)/(n-f),-1,0,0,2*f*n/(n-f),0])}
-function lookAtOrigin(ex,ey,ez){
-  let zx=ex,zy=ey,zz=ez;const zl=Math.hypot(zx,zy,zz);zx/=zl;zy/=zl;zz/=zl;
-  let xx=zz,xy=0,xz=-zx;const xl=Math.hypot(xx,xz)||1;xx/=xl;xz/=xl;   // up = +y
-  const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;
-  return new Float32Array([xx,yx,zx,0,xy,yy,zy,0,xz,yz,zz,0,-(xx*ex+xy*ey+xz*ez),-(yx*ex+yy*ey+yz*ez),-(zx*ex+zy*ey+zz*ez),1])}
-
-/* ── frame ── */
-function setShared(p,t){
-  gl.useProgram(p);
-  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,curveTex);gl.uniform1i(p.u('uCurve'),0);
-  f1(p,'uHalfH',HALF_H);f1(p,'uCamZ',CAM_Z);f1(p,'uPx',unit/(H/2));f1(p,'uPxZ',unit/(VH/2));f1(p,'uLen',length);
-  gl.uniform3f(p.u('uView'),W/2,H/2,0);
-  gl.uniform4f(p.u('uPin'),0,0,0,0);gl.uniform3f(p.u('uPinF'),1,1,0);f1(p,'uSpinA',0);f1(p,'uPinCX',0);
-  f1(p,'uWideFrom',arcAtY(footY));f1(p,'uWideRamp',600*unit);f1(p,'uWideK',.75);f1(p,'uHelixR',235*unit);f1(p,'uHelixWave',1000*unit);f1(p,'uTime',t/1000);f1(p,'uTimeS',(t/1000)%1000);f1(p,'uTurnHold',CONFIG.turnHold);f1(p,'uBreath',CONFIG.breath);
-  f1(p,'uBreathWave',CONFIG.breathWavelength*unit);f1(p,'uBreathSpeed',CONFIG.breathSpeed);
-  f1(p,'uRevealPx',head);f1(p,'uHeadGlow',CONFIG.headGlow);f1(p,'uHeadWidth',CONFIG.headWidth*unit);
-  f1(p,'uFadeIn',120*unit);f1(p,'uFadeOut',Math.min(length/4,400*unit));
-  f1(p,'uSpread',CONFIG.spread);f1(p,'uSpreadEnds',CONFIG.spreadEnds);f1(p,'uHeat',CONFIG.heat);f1(p,'uBright',CONFIG.brightness);
-  gl.uniform3fv(p.u('uColMain'),C.main);gl.uniform3fv(p.u('uColAlt'),C.alt);gl.uniform3fv(p.u('uColCore'),C.core);gl.uniform3fv(p.u('uColDeep'),C.deep);gl.uniform3fv(p.u('uColSpark'),C.spark);
-  gl.uniformMatrix4fv(p.u('uMV'),false,MV);gl.uniformMatrix4fv(p.u('uP'),false,P)}
-const C={};for(const k in COLORS)C[k]=hex(COLORS[k]);
-let MV,P;
-const bindTex=(i,t)=>{gl.activeTexture(gl.TEXTURE0+i);gl.bindTexture(gl.TEXTURE_2D,t)};
-
-function render(t){
-  const dt=lastT<0?0:Math.min(.1,Math.max(0,(t-lastT)/1000));lastT=t;
-  const k=1-Math.exp(-3.2*dt);look.x+=(pointer.x-look.x)*k;look.y+=(pointer.y-look.y)*k;
-  const par=CONFIG.parallax*Math.min(1,VH/H);
-  P=persp(FOV,W/H,.1,60);MV=lookAtOrigin(-look.x*par,look.y*par,CAM_Z);
-
-  /* the head: ahead of the scroll, lagging it a little, so the tips keep creeping after you stop */
-  if(REDUCE.matches)head=REVEALED;
-  else{
-    let target=0;
-    if(t>headStart){const want=pageAtScreen(VH*CONFIG.headLead);let i=SAMPLES-1;
-      if(want<sampleY[SAMPLES-1]){let lo=0,hi=SAMPLES-1;while(lo<hi){const m=lo+hi>>1;if(sampleY[m]>=want)hi=m;else lo=m+1}i=lo}
-      else i=SAMPLES+40;
-      target=Math.min(length+900*unit,(i/(SAMPLES-1))*length)}
-    const INTRO=3400,ip=(t-headStart)/INTRO;
-    if(ip<1){const e=Math.sin(Math.PI/2*Math.max(0,ip)),from=Math.min(target,arcAtY(pageAtScreen(0)));head=from+(target-from)*e}   /* the first reveal: one slow, eased pour down the page */
-    else{const catchUp=head<target-VH*.5?3.2:1.7;head+=(target-head)*(1-Math.exp(-dt*catchUp))}
-    if(t-headStart>INTRO){const floor=arcAtY(pageAtScreen(VH*.5));if(head<floor)head=floor}   /* the tip is never on screen: a jump or a fast scroll cannot leave the page bare */
-    if(head>length+500*unit)head=REVEALED}
-
-  winLen=Math.min(length,7*VH);
-  win0=Math.max(0,Math.min(length-winLen,arcAtY(pageAtScreen(-.9*VH))));
-  gl.bindFramebuffer(gl.FRAMEBUFFER,sceneRT.f);gl.viewport(0,0,sceneRT.w,sceneRT.h);
-  gl.clearColor(0,0,0,1);gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
-  /* filaments */
-  setShared(lProg,t);
-  f1(lProg,'uPulseShift',(((t/1000)*CONFIG.pulseSpeed*unit)+scrollPx)%(CONFIG.pulseSpacing*unit));
-  f1(lProg,'uPulseSharp',CONFIG.pulseSharp);f1(lProg,'uAltStrands',CONFIG.altStrands);f1(lProg,'uLineSpread',CONFIG.lineSpread);
-  f1(lProg,'uLineWavelength',CONFIG.lineWavelength*unit);f1(lProg,'uLineWaveAmp',CONFIG.lineWaveAmp);f1(lProg,'uLineWaveSpeed',CONFIG.lineWaveSpeed);
-  f1(lProg,'uPulseSpacing',CONFIG.pulseSpacing*unit);f1(lProg,'uPulseGain',CONFIG.pulseGain);f1(lProg,'uLineBase',CONFIG.lineBase);
-  gl.bindVertexArray(lVAO);
-  /* the segments inside the window, for the strands this quality keeps (strands are interleaved per segment) */
-  const i0=Math.max(0,Math.floor(win0/length*SEG)-1),i1=Math.min(SEG,Math.ceil((win0+winLen)/length*SEG)+1);
-  gl.drawElements(gl.LINES,(i1-i0)*CONFIG.strands*2,gl.UNSIGNED_INT,i0*CONFIG.strands*2*4);
-  /* sparks */
-  setShared(pProg,t);
-  f1(pProg,'uFlowPx',CONFIG.flowPx*unit);f1(pProg,'uScrollPx',scrollPx);f1(pProg,'uWin0',win0);f1(pProg,'uWinLen',winLen);f1(pProg,'uSpray',CONFIG.spraySpread);f1(pProg,'uBokeh',CONFIG.bokehSpread);f1(pProg,'uDust',CONFIG.dustSpread);
-  f1(pProg,'uWobble',CONFIG.wobble);f1(pProg,'uSize',CONFIG.size);f1(pProg,'uScale',unit*dpr);f1(pProg,'uFocal',CONFIG.focal);f1(pProg,'uDof',CONFIG.dof);
-  f1(pProg,'uDofSize',CONFIG.dofSize);f1(pProg,'uTwinkle',CONFIG.twinkle);f1(pProg,'uAltShare',CONFIG.altShare);
-  gl.bindVertexArray(pVAO);
-  gl.drawArrays(gl.POINTS,0,Math.floor(PG.count*Math.min(1,winLen/length)*QUAL[q].parts*(tier==='low'?CONFIG.lowShare:1)));
-  gl.disable(gl.BLEND);
-
-  /* bloom: bright pass → mip chain, each level blurred both ways */
-  gl.bindVertexArray(quadVAO);
-  let src=sceneRT.t,sw=sceneRT.w,sh=sceneRT.h;
-  levels.forEach((L,i)=>{
-    gl.bindFramebuffer(gl.FRAMEBUFFER,L.a.f);gl.viewport(0,0,L.a.w,L.a.h);
-    const pr=i===0?bright:down;gl.useProgram(pr);bindTex(0,src);gl.uniform1i(pr.u('uTex'),0);
-    gl.uniform2f(pr.u('uTexel'),.5/sw,.5/sh);gl.uniform2f(pr.u('uSize'),L.a.w,L.a.h);if(i===0)f1(pr,'uThresh',CONFIG.bloomThresh);
-    gl.drawArrays(gl.TRIANGLES,0,3);
-    gl.useProgram(blur);gl.uniform1i(blur.u('uTex'),0);gl.uniform2f(blur.u('uSize'),L.a.w,L.a.h);
-    gl.bindFramebuffer(gl.FRAMEBUFFER,L.b.f);bindTex(0,L.a.t);gl.uniform2f(blur.u('uDir'),1/L.a.w,0);gl.drawArrays(gl.TRIANGLES,0,3);
-    gl.bindFramebuffer(gl.FRAMEBUFFER,L.a.f);bindTex(0,L.b.t);gl.uniform2f(blur.u('uDir'),0,1/L.a.h);gl.drawArrays(gl.TRIANGLES,0,3);
-    src=L.a.t;sw=L.a.w;sh=L.a.h});
-  gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,cv.width,cv.height);
-  gl.useProgram(comp);
-  bindTex(0,sceneRT.t);gl.uniform1i(comp.u('uScene'),0);
-  levels.forEach((L,i)=>{bindTex(1+i,L.a.t);gl.uniform1i(comp.u('uB'+i),1+i)});
-  gl.uniform2f(comp.u('uSize'),cv.width,cv.height);f1(comp,'uStr',CONFIG.bloomStr);f1(comp,'uFade',Math.max(1,fadePx*dpr));
-  gl.drawArrays(gl.TRIANGLES,0,3);
-  if(!live){live=true;document.documentElement.classList.add('gl-stream-on')}}
-
-/* ── drive ── */
-function onScroll(){
-  const y=sy=window.scrollY;
-  if(!Number.isNaN(lastScroll))scrollPx+=Math.abs(y-lastScroll)*CONFIG.scrollFlow;lastScroll=y}
-let raf=0,running=false,onScreen=true,lastDraw=-1;
-function loop(t){
-  raf=requestAnimationFrame(loop);
-  if(FRAME_MS&&lastDraw>=0&&t-lastDraw<FRAME_MS-4)return;   /* phones: draw every other frame */
-  const gap=lastDraw<0?0:t-lastDraw;lastDraw=t;
-  render(t);
-  if(warm++<(LOW?24:90)||gap>250||gap===0)return;      /* ignore the compile frames and tab wake-ups */
-  slow=gap>(LOW?48:21)?slow+1:Math.max(0,slow-1);
-  if(slow>(LOW?18:60)&&q<QUAL.length-1){q++;slow=0;warm=0;sizeBuffers()}}
-function still(){requestAnimationFrame(t=>{if(onScreen)render(t)})}
-function sync(){
-  const run=onScreen&&!document.hidden&&!REDUCE.matches;
-  if(run&&!running){running=true;lastT=-1;lastDraw=-1;raf=requestAnimationFrame(loop)}
-  else if(!run&&running){running=false;cancelAnimationFrame(raf);raf=0}
-  if(REDUCE.matches)still()}
+function build(){
+  const W=box.parentElement.clientWidth,HH=hero.offsetHeight,H=Math.round(HH*(1+CONFIG.tail));
+  box.style.setProperty('--fs-h',H+'px');
+  const c=course(W,HH),smin=phone?CONFIG.sizeMinPhone:CONFIG.sizeMin,smax=phone?CONFIG.sizeMaxPhone:CONFIG.sizeMax,spread=phone?CONFIG.spreadPhone:CONFIG.spread;
+  const was=items.map(it=>it.run?it.run.currentTime:null);
+  items.forEach(it=>{it.run&&it.run.cancel();it.bob&&it.bob.cancel();it.el.remove()});
+  items=cast.map((m,i)=>{
+    const w=Math.round((smin+(smax-smin)*m.z)*m.f[1]),op=CONFIG.farOpacity+(1-CONFIG.farOpacity)*m.z,off=m.side*spread*(.4+.6*m.z);
+    const el=document.createElement('div');el.className='fs-i';el.style.width=w+'px';
+    const inner=document.createElement('span'),img=document.createElement('img');
+    img.src=`images/stream/${m.f[0]}.svg`;img.alt='';img.decoding='async';img.width=w;
+    /* depth by shade, not see-through: painted once into the item's own layer, never per frame */
+    const sh=CONFIG.farShade+(1-CONFIG.farShade)*m.z;if(sh<.99)img.style.filter=`brightness(${sh.toFixed(2)}) saturate(${(.75+.25*m.z).toFixed(2)})`;
+    inner.appendChild(img);el.appendChild(inner);box.appendChild(el);
+    const S=48,frames=[];
+    for(let k=0;k<=S;k++){const t=k/S,[x,y,nx,ny]=at(c,t*c.total),fade=Math.min(1,t/.05,(1-t)/.1);
+      frames.push({offset:t,opacity:+(op*Math.max(0,fade)).toFixed(3),
+        transform:`translate3d(${(x+nx*off-w/2).toFixed(1)}px,${(y+ny*off-w/2).toFixed(1)}px,0) rotate(${(m.turn0+m.spin*CONFIG.spin*t).toFixed(1)}deg)`})}
+    const dur=c.total/(CONFIG.speed*(.75+.5*m.z)*m.speedJ)*1000;
+    if(REDUCE){const fr=frames[Math.round(m.phase*S)];el.style.transform=fr.transform;el.style.opacity=fr.opacity;return{el}}
+    const run=el.animate(frames,{duration:dur,iterations:Infinity,easing:'linear'});
+    run.currentTime=was[i]!=null?was[i]%dur:m.phase*dur;
+    const b=CONFIG.bob*(.6+.4*m.z),r=CONFIG.bobTurn;
+    const bob=inner.animate([{transform:`translate3d(0,${-b}px,0) rotate(${-r}deg)`},{transform:`translate3d(0,${b}px,0) rotate(${r}deg)`}],
+      {duration:m.bobD,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});
+    bob.currentTime=m.bobP*m.bobD;
+    if(!visible){run.pause();bob.pause()}
+    return{el,run,bob};
+  });
+  key=[W,HH].join(',');
+}
+function sync(){items.forEach(it=>{if(!it.run)return;if(visible&&!document.hidden){it.run.play();it.bob.play()}else{it.run.pause();it.bob.pause()}})}
 function start(){
-  resize();sy=window.scrollY;lastScroll=NaN;onScroll();
-  headStart=performance.now();
-  addEventListener('scroll',onScroll,{passive:true});
-  let rt=0;const relayout=()=>{clearTimeout(rt);rt=setTimeout(()=>{
-    VH=innerHeight;
-    if(geomOf()!==geomKey||Math.abs(cv.clientWidth-W)>1)resize();
-    if(REDUCE.matches)still()},150)};
+  build();
+  requestAnimationFrame(()=>box.classList.add('on'));
+  let t=0;const relayout=()=>{clearTimeout(t);t=setTimeout(()=>{if([box.parentElement.clientWidth,hero.offsetHeight].join(',')!==key)build()},180)};
+  new ResizeObserver(relayout).observe(hero);
   addEventListener('resize',relayout);
-  new ResizeObserver(relayout).observe(document.getElementById('top'));
-  if(matchMedia('(hover:hover) and (pointer:fine)').matches)addEventListener('pointermove',e=>{pointer.x=e.clientX/innerWidth*2-1;pointer.y=e.clientY/innerHeight*2-1},{passive:true});
-  document.addEventListener('visibilitychange',sync);REDUCE.addEventListener('change',sync);
-  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);running=false;cv.remove()});
-  new IntersectionObserver(([e])=>{onScreen=e.isIntersecting;sync()},{rootMargin:'80px 0px'}).observe(cv);
-  sync()}
-/* compile without blocking, then build and run; anything that fails leaves the hero as it is without the stream */
-const fail=e=>{console.warn('[stream]',e&&e.message||e);cancelAnimationFrame(raf);cv.remove()};
-function boot(){
-  try{pProg=program(POINTS_VERT,POINTS_FRAG);lProg=program(LINES_VERT,LINES_FRAG);bright=program(QUAD_VERT,BRIGHT_FRAG);down=program(QUAD_VERT,DOWN_FRAG);blur=program(QUAD_VERT,BLUR_FRAG);comp=program(QUAD_VERT,COMP_FRAG)}
-  catch(e){fail(e);return}
-  const wait=()=>{
-    try{if(![pProg,lProg,bright,down,blur,comp].every(compiled)){requestAnimationFrame(wait);return}setup();start()}
-    catch(e){fail(e)}};
-  wait()}
-/* start as soon as the markup is parsed — it grows in under the loader, so it is already running when the page opens */
-if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
+  new IntersectionObserver(([e])=>{visible=e.isIntersecting;sync()},{rootMargin:'60px 0px'}).observe(box);
+  document.addEventListener('visibilitychange',sync);
+}
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTimeout(start,0),{once:true});else setTimeout(start,0);
 })();
 
 
@@ -2855,14 +2505,16 @@ if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTi
   }
   function build(){
     const fam=getComputedStyle(txt).fontFamily;
-    const c=document.createElement('canvas'),k=4,cx=c.getContext('2d');
+    /* only the one row of pixels just above the baseline is ever read, so the canvas is that one row tall, and it is
+       a CPU canvas: reading pixels back from a GPU canvas stalls a phone for a long moment */
+    const c=document.createElement('canvas'),k=4,cx=c.getContext('2d',{willReadFrequently:true});
     cx.font=`800 ${FS*k}px ${fam}`;
     const label=txt.textContent.toUpperCase(),m=cx.measureText(label);
     const w=Math.ceil(m.width/k)+PAD*2,asc=(m.actualBoundingBoxAscent||72*k)/k;
-    c.width=w*k;c.height=(BASE+20)*k;
-    cx.font=`800 ${FS*k}px ${fam}`;cx.fillStyle='#000';cx.textBaseline='alphabetic';cx.fillText(label,PAD*k,BASE*k);
+    c.width=w*k;c.height=1;
+    cx.font=`800 ${FS*k}px ${fam}`;cx.fillStyle='#000';cx.textBaseline='alphabetic';cx.fillText(label,PAD*k,4*k);
     txt.setAttribute('x',PAD);
-    const row=cx.getImageData(0,(BASE-4)*k,c.width,1).data;
+    const row=cx.getImageData(0,0,c.width,1).data;
     /* runs of solid paint along the feet */
     const runs=[];let st=-1;
     for(let i=0;i<c.width;i++){const on=row[i*4+3]>140;if(on&&st<0)st=i;if(!on&&st>=0){runs.push([st/k,i/k]);st=-1}}

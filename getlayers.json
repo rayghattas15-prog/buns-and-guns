@@ -17,22 +17,27 @@
   },
   "assets": [
     {
-      "id": "hearth",
-      "variant": "hearth-008",
-      "type": "gradient",
-      "preview": "https://www.getlayers.ai/?layer=hearth",
-      "placed": "#top hero, canvas.gl-hearth, full-bleed behind the copy, the photo and the neon marks",
-      "how": "roll merged over source CONFIG, then palette keys tinted; shader verbatim",
-      "media": "none (pure fragment shader)"
-    },
-    {
-      "id": "clinker",
-      "variant": "clinker-008",
-      "type": "gradient",
-      "preview": "https://www.getlayers.ai/?layer=clinker",
-      "placed": "footer band, canvas.gl-clinker, behind the 'You wanna burger me?' display line; scrim under the columns",
-      "how": "roll merged over source CONFIG, then palette keys tinted; shader verbatim; built lazily near the footer",
-      "media": "none (pure fragment shader)"
+      "id": "food-stream",
+      "type": "scene",
+      "made_with": "getlayers_scene_lab, references only: ink-ticker (comic-ink look: flat colour, one heavy ink line, cream die-cut edge) and brewns (motion: beans drifting weightless behind the cup)",
+      "previews": [
+        "https://www.getlayers.ai/?layer=ink-ticker",
+        "https://www.getlayers.ai/?layer=brewns"
+      ],
+      "placed": "#top hero, div.foodstream first in <main> (z-index -1, behind every word); runs 26% past the hero's foot, then fades",
+      "how": "cartoon SVG stickers in images/stream (burger, double, fries, ring, soda, fry) as <img>; Web Animations on transform and opacity only, 48 keyframes along a Catmull-Rom river, plus a slow bob; seeded cast, so the same river on every load; all knobs in the food stream CONFIG",
+      "palette": {
+        "ink": "#1A0F0C",
+        "edge": "#FFF3E8",
+        "amber": "#F5A63A",
+        "patty": "#6E3A21",
+        "cheese": "#FFC52E",
+        "lettuce": "#7CC242",
+        "red": "#E3202F",
+        "redHot": "#FF2D3F"
+      },
+      "replaces": "the WebGL light stream (red lines), removed October 2026 because it lagged on phones",
+      "media": "6 SVGs, 0.4-1.8 KB each"
     },
     {
       "id": "loader-loopstack",
@@ -56,8 +61,12 @@
     }
   ],
   "rules": {
-    "aboveTheFold": "one gradient only (hearth); blurred-photo .heroglow kept as the no-WebGL2 fallback",
-    "reducedMotion": "no loader; each gradient draws one still frame and never loops; hero marks stop spinning",
-    "phones": "gradients at half resolution and ~30 fps; adaptive step-down, then freeze, if frames stay over 45ms"
-  }
+    "aboveTheFold": "no WebGL anywhere; the hero's moving layer is the food stream, run by the compositor",
+    "reducedMotion": "no loader; the food holds still where it lies; the ticker stands still",
+    "phones": "18 smaller items instead of 28; the stream pauses when the hero is off screen or the tab is hidden; the page's frame loop sleeps when the page is still, so idle at the top there is no main-thread work at all"
+  },
+  "removed": [
+    "hearth-008 (hero gradient) and clinker-008 (footer gradient): no longer on the page, only old comments mention them",
+    "WebGL hero light stream: replaced by food-stream"
+  ]
 }
