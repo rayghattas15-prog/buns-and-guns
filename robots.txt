@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://buns-and-guns.vercel.app/sitemap.xml

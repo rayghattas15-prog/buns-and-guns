@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy · Buns &amp; Guns</title>
+<meta name="description" content="How the Buns & Guns website handles information about you: no sign-up, no forms, no cookies.">
+<meta name="theme-color" content="#110D0C">
+<link rel="alternate" hreflang="en" href="https://buns-and-guns.vercel.app/privacy.html">
+<link rel="alternate" hreflang="el" href="https://buns-and-guns.vercel.app/privacy.html?lang=el">
+<link rel="alternate" hreflang="x-default" href="https://buns-and-guns.vercel.app/privacy.html">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-v1.woff2" crossorigin>
+<script>
+/* the same language rule as the main page: ?lang=, then the visitor's last choice, then the browser's language */
+(function(){var l=null;try{var q=new URLSearchParams(location.search).get('lang');if(q){l=/^(el|gr)/i.test(q)?'gr':/^en/i.test(q)?'en':null;if(l)localStorage.setItem('bg-lang',l)}if(!l)l=localStorage.getItem('bg-lang')}catch(e){}
+  if(l!=='gr'&&l!=='en')l=/^el\b/i.test(navigator.language||'')?'gr':'en';
+  window.__bgLang=l;document.documentElement.lang=l==='gr'?'el':'en';document.documentElement.dataset.l=l})();
+</script>
+<style>
+@font-face{font-family:"Unbounded";src:url("fonts/unbounded-latin-v1.woff2") format("woff2");font-weight:700 900;font-display:swap}
+@font-face{font-family:"BG Display Greek";src:url("fonts/bg-display-greek-v1.woff2") format("woff2");font-weight:700 900;font-display:swap;unicode-range:U+0370-03FF}
+@font-face{font-family:"Inter";src:url("fonts/inter-latin-v1.woff2") format("woff2");font-weight:400 600;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";src:url("fonts/inter-greek-v1.woff2") format("woff2");font-weight:400 600;font-display:swap;unicode-range:U+0370-03FF}
+:root{--bg:#110D0C;--bg-2:#1A1311;--line:#35271F;--tx:#FFF3E8;--mu:#B9A396;--di:#93806F;--red:#FF2D3F;--red-ui:#E3202F;
+  --disp:"Unbounded","BG Display Greek",system-ui,sans-serif;--ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--ui);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(640px 500px at 88% 0%,rgba(255,45,63,.14),rgba(255,45,63,0) 70%)}
+a{color:inherit}
+.wrap{width:min(760px,calc(100vw - 40px));margin:0 auto;padding:28px 0 80px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:clamp(40px,7vw,72px)}
+.back{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--mu)}
+.back img{width:38px;height:38px;border-radius:11px}
+.back:hover{color:var(--tx)}
+.lang{display:flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{font:inherit;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mu);background:none;border:0;height:38px;padding:0 12px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--red-ui);color:#fff}
+.kicker{margin:0 0 18px;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#E8B9A0}
+h1{margin:0;font-family:var(--disp);font-weight:700;font-size:clamp(40px,7vw,72px);line-height:1;letter-spacing:-.035em}
+.lede{margin:22px 0 0;font-size:clamp(17px,2vw,19px);color:var(--mu);max-width:60ch}
+h2{margin:44px 0 10px;font-family:var(--ui);font-weight:600;font-size:19px;letter-spacing:-.01em}
+section p{margin:0;color:var(--mu);max-width:66ch}
+.upd{margin-top:48px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;color:var(--di)}
+:focus-visible{outline:1.5px solid var(--tx);outline-offset:4px;border-radius:6px}
+[data-l="en"] article[lang="el"],[data-l="gr"] article[lang="en"]{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" id="back" href="./"><img src="images/logo-96.webp" width="38" height="37" alt=""><span class="t-en">Back to Buns &amp; Guns</span><span class="t-el" lang="el">Πίσω στο Buns &amp; Guns</span></a>
+    <div class="lang" id="langGroup" role="group" aria-label="Language"><button type="button" data-set="en" lang="en" aria-label="EN, English">EN</button><button type="button" data-set="gr" lang="el" aria-label="GR, Ελληνικά">GR</button></div>
+  </div>
+
+  <article lang="en">
+    <p class="kicker">Buns &amp; Guns · Pyla</p>
+    <h1>Privacy</h1>
+    <p class="lede">This website is the menu and front door of Buns &amp; Guns, a burger restaurant in Pyla, Larnaca. It doesn't ask you to sign up, it has no contact forms and it doesn't use cookies. Here is everything it does with information about you.</p>
+    <section><h2>Who is responsible</h2><p>Buns &amp; Guns, Pierias, Pyla, Larnaca 7080, Cyprus. Phone <a href="tel:+35799403810">+357 99 403810</a>.</p></section>
+    <section><h2>Ordering on WhatsApp</h2><p>The order builder writes your message on your own phone or computer and hands it to WhatsApp. Nothing you type is sent to this website. When you send it, we receive it in WhatsApp like any other message and use it only to prepare and confirm your order. WhatsApp is run by WhatsApp Ireland Ltd (Meta) under its own privacy policy.</p></section>
+    <section><h2>What your browser keeps</h2><p>Your browser stores three small things on your device, for this site only: the language you chose, a copy of the menu (so the page opens quickly next time) and a note that you have already seen the opening animation during this visit. They are not cookies, they never leave your device, and you can clear them in your browser's settings.</p></section>
+    <section><h2>Visitor counts</h2><p>We use Vercel Web Analytics to count visits and which buttons are used — for example, how many people tap Order or Directions. It doesn't use cookies and doesn't identify you: it only works with anonymous, combined numbers.</p></section>
+    <section><h2>Hosting</h2><p>The site is hosted by Vercel Inc. Like every web server, theirs briefly processes your IP address to deliver the pages and keep the service secure.</p></section>
+    <section><h2>Other services the page uses</h2><p>The menu and prices load from a Google Sheet the restaurant keeps, so your browser contacts Google's servers when the page opens. On computers with a mouse, a small open-source smooth-scrolling script loads from unpkg.com. Google Maps only loads if you tap “Show the map”, and may then set its own cookies. The buttons to Foody, Instagram, Google, Tripadvisor and WhatsApp take you to those services, which have their own privacy policies.</p></section>
+    <section><h2>Your rights</h2><p>Under the GDPR you can ask us what information we hold about you (in practice, only WhatsApp messages you sent us), ask us to correct or delete it, and object to how it is used. Call us on <a href="tel:+35799403810">+357 99 403810</a>. You can also complain to the Office of the Commissioner for Personal Data Protection in Cyprus (<a href="https://www.dataprotection.gov.cy" target="_blank" rel="noopener">dataprotection.gov.cy</a>).</p></section>
+    <p class="upd">Last updated 12 October 2026.</p>
+  </article>
+
+  <article lang="el">
+    <p class="kicker">Buns &amp; Guns · Πύλα</p>
+    <h1>Απόρρητο</h1>
+    <p class="lede">Αυτή η ιστοσελίδα είναι ο κατάλογος και η εξώπορτα του Buns &amp; Guns, ενός μπεργκεράδικου στην Πύλα, Λάρνακα. Δεν σας ζητά εγγραφή, δεν έχει φόρμες επικοινωνίας και δεν χρησιμοποιεί cookies. Ακολουθεί ό,τι κάνει με πληροφορίες που σας αφορούν.</p>
+    <section><h2>Ποιος είναι υπεύθυνος</h2><p>Buns &amp; Guns, Πιερίας, Πύλα, Λάρνακα 7080, Κύπρος. Τηλέφωνο <a href="tel:+35799403810">+357 99 403810</a>.</p></section>
+    <section><h2>Παραγγελίες στο WhatsApp</h2><p>Η φόρμα παραγγελίας γράφει το μήνυμά σας στη δική σας συσκευή και το παραδίδει στο WhatsApp. Τίποτα από όσα γράφετε δεν αποστέλλεται σε αυτή την ιστοσελίδα. Όταν το στείλετε, το λαμβάνουμε στο WhatsApp όπως κάθε άλλο μήνυμα και το χρησιμοποιούμε μόνο για να ετοιμάσουμε και να επιβεβαιώσουμε την παραγγελία σας. Το WhatsApp λειτουργεί από την WhatsApp Ireland Ltd (Meta) με τη δική της πολιτική απορρήτου.</p></section>
+    <section><h2>Τι κρατά το πρόγραμμα περιήγησης</h2><p>Το πρόγραμμα περιήγησής σας αποθηκεύει τρία μικρά πράγματα στη συσκευή σας, μόνο για αυτή την ιστοσελίδα: τη γλώσσα που διαλέξατε, ένα αντίγραφο του καταλόγου (για να ανοίγει γρήγορα η σελίδα την επόμενη φορά) και μια σημείωση ότι έχετε ήδη δει την εισαγωγική κίνηση σε αυτή την επίσκεψη. Δεν είναι cookies, δεν φεύγουν ποτέ από τη συσκευή σας και μπορείτε να τα διαγράψετε από τις ρυθμίσεις του προγράμματος περιήγησης.</p></section>
+    <section><h2>Μέτρηση επισκέψεων</h2><p>Χρησιμοποιούμε το Vercel Web Analytics για να μετράμε τις επισκέψεις και ποια κουμπιά χρησιμοποιούνται — για παράδειγμα, πόσοι πατούν Παραγγελία ή Οδηγίες. Δεν χρησιμοποιεί cookies και δεν σας αναγνωρίζει: δουλεύει μόνο με ανώνυμους, συγκεντρωτικούς αριθμούς.</p></section>
+    <section><h2>Φιλοξενία</h2><p>Η ιστοσελίδα φιλοξενείται από τη Vercel Inc. Όπως κάθε διακομιστής, επεξεργάζεται για λίγο τη διεύθυνση IP σας για να σας στείλει τις σελίδες και να κρατά την υπηρεσία ασφαλή.</p></section>
+    <section><h2>Άλλες υπηρεσίες που χρησιμοποιεί η σελίδα</h2><p>Ο κατάλογος και οι τιμές φορτώνουν από ένα υπολογιστικό φύλλο Google που διατηρεί το μαγαζί, οπότε το πρόγραμμα περιήγησής σας επικοινωνεί με τους διακομιστές της Google όταν ανοίγει η σελίδα. Σε υπολογιστές με ποντίκι φορτώνει επίσης ένα μικρό πρόγραμμα ομαλής κύλισης ανοιχτού κώδικα από το unpkg.com. Το Google Maps φορτώνει μόνο αν πατήσετε «Εμφάνιση χάρτη» και τότε μπορεί να αποθηκεύσει δικά του cookies. Τα κουμπιά προς Foody, Instagram, Google, Tripadvisor και WhatsApp σας μεταφέρουν σε αυτές τις υπηρεσίες, που έχουν τις δικές τους πολιτικές απορρήτου.</p></section>
+    <section><h2>Τα δικαιώματά σας</h2><p>Σύμφωνα με τον Γενικό Κανονισμό για την Προστασία Δεδομένων (ΓΚΠΔ) μπορείτε να μας ρωτήσετε ποιες πληροφορίες έχουμε για εσάς (στην πράξη, μόνο τα μηνύματα WhatsApp που μας στείλατε), να ζητήσετε διόρθωση ή διαγραφή τους και να αντιταχθείτε στη χρήση τους. Καλέστε μας στο <a href="tel:+35799403810">+357 99 403810</a>. Μπορείτε επίσης να υποβάλετε καταγγελία στο Γραφείο του Επιτρόπου Προστασίας Δεδομένων Προσωπικού Χαρακτήρα (<a href="https://www.dataprotection.gov.cy" target="_blank" rel="noopener">dataprotection.gov.cy</a>).</p></section>
+    <p class="upd">Τελευταία ενημέρωση: 12 Οκτωβρίου 2026.</p>
+  </article>
+</div>
+<script>
+(function(){
+  var d=document.documentElement,T={en:'Privacy · Buns & Guns',gr:'Απόρρητο · Buns & Guns'},G={en:'Language',gr:'Γλώσσα'},
+    md=document.querySelector('meta[name=description]'),D={en:md.content,gr:'Πώς χειρίζεται η ιστοσελίδα του Buns & Guns πληροφορίες που σας αφορούν: χωρίς εγγραφή, χωρίς φόρμες, χωρίς cookies.'};
+  var en=document.querySelector('.t-en'),el=document.querySelector('.t-el');
+  function set(l,byUser){
+    d.dataset.l=l;d.lang=l==='gr'?'el':'en';document.title=T[l];md.content=D[l];document.getElementById('langGroup').setAttribute('aria-label',G[l]);
+    en.hidden=l==='gr';el.hidden=l!=='gr';
+    document.getElementById('back').href='./'+(l==='gr'?'?lang=el':'');
+    document.querySelectorAll('[data-set]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.set===l)});
+    if(byUser){try{localStorage.setItem('bg-lang',l);var u=new URL(location.href);if(l==='gr')u.searchParams.set('lang','el');else u.searchParams.delete('lang');history.replaceState(null,'',u.pathname+u.search)}catch(e){}}
+  }
+  document.querySelectorAll('[data-set]').forEach(function(b){b.onclick=function(){set(b.dataset.set,true)}});
+  set(window.__bgLang||'en');
+})();
+</script>
+</body>
+</html>

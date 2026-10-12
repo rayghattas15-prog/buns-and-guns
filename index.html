@@ -15,20 +15,55 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://buns-and-guns.vercel.app/">
 <meta property="og:site_name" content="Buns &amp; Guns">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="el_GR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Buns &amp; Guns — Smash Burgers · Pyla, Larnaca">
 <meta name="twitter:description" content="Black Angus smashed to order. Pierias, Pyla, Larnaca.">
 <meta name="twitter:image" content="https://buns-and-guns.vercel.app/images/og-image.jpg">
+<!-- the Greek page is the same page with ?lang=el: Google indexes both and shows each to its own language -->
+<link rel="alternate" hreflang="en" href="https://buns-and-guns.vercel.app/">
+<link rel="alternate" hreflang="el" href="https://buns-and-guns.vercel.app/?lang=el">
+<link rel="alternate" hreflang="x-default" href="https://buns-and-guns.vercel.app/">
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="images/icon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- fonts load without blocking the first paint: preloaded, applied on load, text shows in the fallback until then (display=swap) -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&family=Sofia+Sans+Extra+Condensed:wght@800&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&family=Sofia+Sans+Extra+Condensed:wght@800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&family=Unbounded:wght@700;900&family=Manrope:wght@400;600;700;800&family=Noto+Serif+Display:ital,wght@1,300&family=Sofia+Sans+Extra+Condensed:wght@800&display=swap"></noscript>
+<!-- fonts are served from this site (no Google Fonts request): the two the first screen needs are preloaded -->
+<link rel="preload" as="image" href="images/burger-bags.webp" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" href="fonts/unbounded-latin-v1.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/manrope-latin-v1.woff2" crossorigin>
+<script>
+/* language, before anything paints: ?lang= in the address, else the visitor's last choice, else Greek
+   for a phone or browser set to Greek, else English. The Greek fonts are fetched early for Greek visitors,
+   and the page waits (at most 1.2 s) for the Greek text so an English flash never shows. */
+(function(){
+  var d=document.documentElement,l=null;
+  try{var q=new URLSearchParams(location.search).get('lang');
+    if(q){l=/^(el|gr)/i.test(q)?'gr':/^en/i.test(q)?'en':null;if(l)localStorage.setItem('bg-lang',l)}
+    if(!l)l=localStorage.getItem('bg-lang')}catch(e){}
+  if(l!=='gr'&&l!=='en')l=/^el\b/i.test(navigator.language||'')?'gr':'en';
+  window.__bgLang=l;
+  var c=document.createElement('link');c.rel='canonical';c.href=location.origin+location.pathname+(l==='gr'?'?lang=el':'');document.head.appendChild(c);
+  if(l==='gr'){
+    d.lang='el';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1200);
+    ['bg-display-greek-v1','manrope-greek-v1'].forEach(function(f){var p=document.createElement('link');p.rel='preload';p.as='font';p.type='font/woff2';p.crossOrigin='anonymous';p.href='fonts/'+f+'.woff2';document.head.appendChild(p)});
+  }
+})();
+</script>
 <style>
+/* ── fonts (subsets of the Google Fonts families, see fonts/LICENSE.txt). Unbounded has no Greek letters,
+      so Greek in the display face comes from a wide, heavy cut of Roboto Flex made to sit beside it ── */
+@font-face{font-family:"Unbounded";src:url("fonts/unbounded-latin-v1.woff2") format("woff2");font-weight:700 900;font-style:normal;font-display:swap}
+@font-face{font-family:"BG Display Greek";src:url("fonts/bg-display-greek-v1.woff2") format("woff2");font-weight:700 900;font-style:normal;font-display:swap;unicode-range:U+0370-03FF}
+@font-face{font-family:"Manrope";src:url("fonts/manrope-latin-v1.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Manrope";src:url("fonts/manrope-greek-v1.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0370-03FF}
+@font-face{font-family:"Inter Tight";src:url("fonts/intertight-latin-v1.woff2") format("woff2");font-weight:400 600;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+2605,U+2713,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter Tight";src:url("fonts/intertight-greek-v1.woff2") format("woff2");font-weight:400 600;font-style:normal;font-display:swap;unicode-range:U+0370-03FF}
+@font-face{font-family:"Inter";src:url("fonts/inter-latin-v1.woff2") format("woff2");font-weight:400 600;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+2605,U+2713,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";src:url("fonts/inter-greek-v1.woff2") format("woff2");font-weight:400 600;font-style:normal;font-display:swap;unicode-range:U+0370-03FF}
+@font-face{font-family:"Sofia Sans Extra Condensed";src:url("fonts/sofia-xcond-caps-v1.woff2") format("woff2");font-weight:800;font-style:normal;font-display:swap}
+/* Greek visitors: the page holds for its Greek text (see the head script; never longer than 1.2 s) */
+html.i18n-wait :is(#hd,main,footer,.mbar){visibility:hidden}
 /* ─────────────────────────────────────────────────────────────
    Buns & Guns · v6
    One flat ground, hairlines, one accent. Nothing on the page
@@ -50,7 +85,7 @@
   --ok:#5BE38B;
   --gl:0 0 8px rgba(255,45,63,.85),0 0 26px rgba(255,45,63,.55),0 0 60px rgba(255,45,63,.3);
   /* v4 type and easing, used only by the header and hero */
-  --v4disp:"Unbounded","Manrope",system-ui,sans-serif;
+  --v4disp:"Unbounded","BG Display Greek","Manrope",system-ui,sans-serif;
   --v4body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --v4e:cubic-bezier(.16,.84,.26,1);
   --disp:"Inter Tight","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -184,7 +219,7 @@ header.hide{transform:translateY(-100%)}
 #top p{max-width:50ch;color:#e6d8ce;font-size:clamp(16px,1.6vw,19px);line-height:1.66;margin:24px 0 0}
 #top .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 .herometa{display:flex;gap:26px;flex-wrap:wrap;margin-top:34px;padding-top:26px;border-top:1px solid rgba(255,243,232,.14)}
-.herometa div span{display:block;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--mu);margin-bottom:5px}
+.herometa div>span{display:block;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--mu);margin-bottom:5px}
 .herometa div b{font-family:var(--v4disp);font-weight:700;font-size:15px}
 .scrollcue{position:absolute;left:50%;bottom:20px;z-index:3;translate:-50% 0;width:22px;height:36px;border:1.5px solid rgba(255,243,232,.3);border-radius:999px}
 .scrollcue:after{content:"";position:absolute;left:50%;top:7px;translate:-50% 0;width:3px;height:7px;border-radius:2px;background:var(--tx);animation:cue 1.9s var(--v4e) infinite}
@@ -393,7 +428,7 @@ header.hide{transform:translateY(-100%)}
 .hours tr.today td:first-child{display:flex;align-items:center;gap:10px}
 .hours tr.today td:first-child:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red)}
 .kv{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:15px 0;border-bottom:1px solid var(--line)}
-.kv span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--di);flex:none}
+.kv>span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--di);flex:none}
 .kv b{font-family:var(--disp);font-weight:500;font-size:16px;text-align:right;letter-spacing:-.01em}
 .kv a{transition:color .3s}
 .kv a:hover{color:var(--red)}
@@ -616,8 +651,10 @@ html.ld.gl-ready :is(.scrollcue,.marq){animation:gl-fade 1s var(--e) .9s both}
 /* ── clinker-008 behind the footer band ── its contract: behind display type, not
       paragraphs — so the fire burns under the big line and goes dark under the columns */
 footer{isolation:isolate;overflow:hidden}
-/* the whole page's background: the Relay-style stream — filaments and sparks winding down the page, drawn in as you scroll */
-.gl-stream{position:fixed;left:0;top:0;width:100%;height:100lvh;z-index:0;display:block;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity .6s ease}
+/* the stream behind the hero: a canvas fixed to the PAGE, not the screen, so it scrolls with the page itself
+   (on a phone the scroll never has to wait for it); drawn transparent over the page's ground, no blend mode,
+   fading out under the hero */
+.gl-stream{position:absolute;left:0;top:0;width:100%;height:var(--gl-h,100vh);z-index:-1;display:block;pointer-events:none;opacity:0;transition:opacity .6s ease}
 html.gl-stream-on .gl-stream{opacity:1}
 /* writing sits on its own dark panel: every section after the hero is a glass slab, the veins run in the gaps and margins around it */
 main>section:not(#top){isolation:isolate}
@@ -695,7 +732,6 @@ header[data-theme="light"] .tbrand img{box-shadow:0 0 0 1px var(--line)}
   --mu:#B9A396;--di:#93806F;--r:12px;--pad:clamp(76px,9vw,128px)}
 body{background:var(--bg)}
 .glowfield{display:none}
-html.gl-stream-off .gl-stream{opacity:0}
 
 /* sections: full width, alternating tone, one hairline between */
 main>section:not(#top):before{display:none}
@@ -779,7 +815,7 @@ header.solid{background:rgba(17,13,12,.9)}
 /* footer: the neon sign the big line quotes, dim behind it */
 footer{border-top:1px solid var(--line);background:var(--bg)}
 .fbg{position:absolute;inset:0 0 auto 0;height:min(78%,720px);z-index:-2;pointer-events:none;
-  background:url("images/gallery-3.webp") 50% 35%/cover no-repeat;opacity:.32;filter:saturate(1.15) blur(1.5px);
+  background:50% 35%/cover no-repeat;opacity:.32;filter:saturate(1.15) blur(1.5px);
   -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent);mask-image:linear-gradient(180deg,#000 30%,transparent)}
 .fline{font-family:var(--v4disp);font-weight:900;font-size:clamp(40px,7vw,112px);letter-spacing:-.045em}
 
@@ -793,20 +829,24 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
   height:calc(var(--dmw) * var(--dmr,.16));margin:clamp(14px,1.6vw,26px) auto calc(var(--dmw) * var(--dmg,.02))}
 .dripmark svg{position:absolute;left:0;top:0;display:block;width:100%;height:auto;overflow:visible}
 .dm-g{opacity:.34}
-.dm-drops circle{fill:none;stroke:#FF2D3F;stroke-width:1.5px;vector-effect:non-scaling-stroke}
+/* the falling drops are plain HTML circles over the drawing: they move on the compositor and never make the
+   outlined name redraw (anything that moves inside the SVG re-runs its outline filter every frame) */
+.dm-dropbox{position:absolute;left:0;top:0;width:100%;pointer-events:none;opacity:.34}
+.dm-dropbox i{position:absolute;display:block;aspect-ratio:1;border:1.5px solid #FF2D3F;border-radius:50%;translate:-50% -50%;opacity:0}
 .dm-t{font-family:"Sofia Sans Extra Condensed","Arial Narrow",Impact,system-ui,sans-serif;font-weight:800;text-transform:uppercase}
 .dripmark.arm .dm-rise{opacity:0}
 .dm-drip{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(.12)}
 .dripmark.in .dm-drip{animation:dm-grow 1.5s cubic-bezier(.3,.75,.25,1) var(--dd,0s) both,dm-ooze var(--od,6s) ease-in-out calc(var(--dd,0s) + 1.5s) infinite alternate}
 @keyframes dm-grow{from{transform:scaleY(.12)}to{transform:scaleY(1)}}
 @keyframes dm-ooze{from{transform:scaleY(1)}to{transform:scaleY(1.12)}}
-.dm-drop{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
-.dripmark.in .dm-drop{animation:dm-fall var(--fd,5s) cubic-bezier(.5,0,.9,.4) var(--fl,3s) infinite}
-@keyframes dm-fall{0%,58%{opacity:0;transform:translateY(0) scale(.5)}62%{opacity:1;transform:translateY(1px) scale(1)}100%{opacity:0;transform:translateY(var(--fall,20px)) scale(.85)}}
-.dripmark:not(.run) :is(.dm-drip,.dm-drop){animation-play-state:paused}
+.dripmark.in .dm-dropbox i{animation:dm-fall var(--fd,5s) cubic-bezier(.5,0,.9,.4) var(--fl,3s) infinite}
+@keyframes dm-fall{0%,58%{opacity:0;transform:translateY(0) scale(.5)}62%{opacity:1;transform:translateY(8%) scale(1)}100%{opacity:0;transform:translateY(var(--fall,180%)) scale(.85)}}
+.dripmark:not(.run) :is(.dm-drip,.dm-dropbox i){animation-play-state:paused}
+/* phones and tablets: the drips grow in once and hold (the slow ooze would redraw the outlined name every frame) */
+@media(pointer:coarse){.dripmark.in .dm-drip{animation:dm-grow 1.5s cubic-bezier(.3,.75,.25,1) var(--dd,0s) both}}
 @media(prefers-reduced-motion:reduce){
   .dm-drip{transform:none!important;animation:none!important}
-  .dm-drop{display:none}
+  .dm-dropbox{display:none}
 }
 
 @media(max-width:960px){
@@ -825,9 +865,73 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
 @media(max-width:760px){
   .gal .gcap{font-size:13px;padding:30px 12px 11px}
 }
+
+/* ═════════════════════════════════════════════════════════════
+   October 2026 update · lighter on phones, all of it in Greek, and the missing pieces
+   (order-request wording, allergens, privacy, map on tap, reviews, contrast, keyboard)
+   ═════════════════════════════════════════════════════════════ */
+html{scroll-padding-top:88px}
+.nw{white-space:nowrap}
+/* phones and tablets: no frosted glass over the moving stream (that blur is redrawn on every frame);
+   the same panels, a touch more opaque, look the same */
+@media(pointer:coarse),(max-width:900px){
+  header.solid{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(17,13,12,.95)}
+  .mbar{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(23,19,26,.96)}
+  .pill{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(8,7,10,.74)}
+}
+/* white words on a red button: this slightly deeper red reads at 4.6:1 (AA); the neon red stays for glows and type */
+:root{--red-ui:#E3202F;--red-ui-2:#C41726}
+.btn,.tb:not(.out),.mbar .a1{background:var(--red-ui)}
+.btn:before{background:var(--red-ui-2)}
+.lang button[aria-pressed="true"],.chips button[aria-pressed="true"],.seg.red .ind{background:var(--red-ui)}
+.t-stamp,.t-foot,.tl span{color:rgba(42,26,21,.72)}
+.t-empty{color:rgba(42,26,21,.66)}
+
+/* keyboard: a skip link, first thing on the page */
+.skip{position:fixed;left:12px;top:12px;z-index:130;padding:12px 18px;border-radius:999px;background:var(--tx);color:var(--bg);font-size:14px;font-weight:600;transform:translateY(-220%);transition:transform .3s var(--e)}
+.skip:focus{transform:none}
+
+/* the order request: what it is, when the shop is shut, and a way out if WhatsApp does not open */
+.send-closed{margin:0 0 16px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,45,63,.35);background:rgba(255,45,63,.07);font-size:14px;line-height:1.5;color:#F6C9C2;max-width:60ch}
+.send-note{margin:12px 0 0;font-size:13.5px;line-height:1.55;color:var(--di);max-width:58ch}
+.send-msg a{color:var(--tx);border-bottom:1px solid var(--line-2)}
+.send #b-copy[hidden]{display:none}
+.tl.price b{font-variant-numeric:tabular-nums}
+
+/* allergens, linked from under the board */
+.menufoot .allg{color:var(--tx);border-bottom:1px solid var(--line-2);transition:border-color .3s}
+.menufoot .allg:hover{border-color:var(--tx)}
+
+/* the room: more on Instagram */
+.igcta{display:flex;justify-content:flex-end;margin:clamp(18px,2.2vw,28px) 0 0}
+.igcta a{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--mu);transition:color .3s}
+.igcta a:hover{color:var(--tx)}
+.igcta svg{flex:none}
+
+/* reviews: read them where they were written */
+.revlinks{display:flex;flex-wrap:wrap;gap:8px 22px;margin:18px 0 0;font-size:14px}
+.revlinks a{color:var(--mu);border-bottom:1px solid var(--line-2);padding-bottom:2px;transition:color .3s,border-color .3s}
+.revlinks a:hover{color:var(--tx);border-color:var(--tx)}
+
+/* the map loads only when asked for (Google Maps is heavy on a phone and sets its own cookies) */
+.mapph{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:14px;padding:28px;text-align:center;
+  background:radial-gradient(58% 52% at 50% 44%,rgba(255,45,63,.17),rgba(255,45,63,0) 70%),
+    repeating-linear-gradient(28deg,rgba(255,236,220,0) 0 46px,rgba(255,236,220,.05) 46px 48px),
+    repeating-linear-gradient(-62deg,rgba(255,236,220,0) 0 72px,rgba(255,236,220,.045) 72px 74px),var(--card)}
+.mappin{width:44px;height:44px;color:var(--red);filter:drop-shadow(0 0 14px rgba(255,45,63,.75))}
+.mapaddr{margin:0;font-family:var(--disp);font-size:clamp(17px,1.5vw,20px);font-weight:600;letter-spacing:-.01em}
+.mapnote{margin:0;font-size:12.5px;color:var(--di)}
+
+/* the footer's neon photo is fetched when the footer comes near, not with the first screen */
+footer.near .fbg{background-image:url("images/gallery-3.webp")}
+/* footer: privacy */
+.fbot a{color:var(--di);transition:color .3s}
+.fbot a:hover{color:var(--tx)}
+.flinks{display:flex;gap:18px;flex-wrap:wrap}
 </style>
 </head>
 <body>
+<a class="skip" href="#menu" data-i18n="skipMenu">Skip to the menu</a>
 
 <!-- loader: a burger stacks itself layer by layer in red strokes, then the panel lifts away.
      Once per browser session; never under reduced motion; gone 2.3s after navigation start. -->
@@ -859,62 +963,60 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
 
 <div id="prog"></div>
 <div class="glowfield" aria-hidden="true"></div>
-<canvas class="gl-stream" aria-hidden="true"></canvas>
 
 <header id="hd">
   <div class="wrap tbar">
-    <button class="tbrand" type="button" data-go="top" aria-label="Back to top">
-      <img src="images/logo-96.webp" width="42" height="41" alt="Buns and Guns logo">
-      <span><b>Buns &amp; Guns</b><i>Pyla · Larnaca</i></span>
+    <button class="tbrand" type="button" data-go="top" aria-label="Back to top" data-i18n-aria="backTop">
+      <img src="images/logo-96.webp" width="42" height="41" alt="Buns and Guns logo" data-i18n-alt="altLogo">
+      <span><b>Buns &amp; Guns</b><i data-i18n="placeShort">Pyla · Larnaca</i></span>
     </button>
-    <nav id="nav" aria-label="Sections">
+    <nav id="nav" aria-label="Sections" data-i18n-aria="navSections">
       <button type="button" data-go="menu" data-i18n="navMenu">Menu</button>
       <button type="button" data-go="shop" data-i18n="navRoom">The Shop</button>
       <button type="button" data-go="signature" data-i18n="navSignature">Signature</button>
       <button type="button" data-go="words" data-i18n="navReviews">Reviews</button>
-      <button type="button" data-go="faq">FAQ</button>
+      <button type="button" data-go="faq" data-i18n="navFaq">FAQ</button>
       <button type="button" data-go="visit" data-i18n="findUs">Find Us</button>
     </nav>
     <div class="hbtns">
-      <div class="lang" id="lang" role="group" aria-label="Language" data-i18n-aria="langToggleLabel"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="gr" aria-pressed="false">GR</button></div>
-      <a class="tb out sm" href="tel:+35799403810">99 403810</a>
-      <a class="icobtn" href="https://www.instagram.com/bunsandguns.cy/" target="_blank" rel="noopener" aria-label="Buns and Guns on Instagram" data-i18n-aria="navIgLabel" title="Instagram">
+      <div class="lang" id="lang" role="group" aria-label="Language" data-i18n-aria="langToggleLabel"><button type="button" data-lang="en" lang="en" aria-label="EN, English" aria-pressed="true" data-track="language" data-where="en">EN</button><button type="button" data-lang="gr" lang="el" aria-label="GR, Ελληνικά" aria-pressed="false" data-track="language" data-where="gr">GR</button></div>
+      <a class="tb out sm" href="tel:+35799403810" data-track="call" data-where="header">99 403810</a>
+      <a class="icobtn" href="https://www.instagram.com/bunsandguns.cy/" target="_blank" rel="noopener" aria-label="Buns and Guns on Instagram" data-i18n-aria="navIgLabel" title="Instagram" data-track="instagram" data-where="header">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"></rect>
           <circle cx="12" cy="12" r="4.1"></circle>
           <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"></circle>
         </svg>
       </a>
-      <a class="tb sm" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="order">Order</a>
+      <a class="tb sm" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="order" data-track="order_foody" data-where="header">Order</a>
     </div>
   </div>
 </header>
 
 <main>
+<!-- the stream behind the hero (see "the page stream" below): first in <main>, under everything in it -->
+<canvas class="gl-stream" aria-hidden="true"></canvas>
 <!-- ══ hero (as v4) ══ -->
 <div class="hero" id="top" data-header-theme="dark">
   <div class="wrap herogrid">
     <div class="herocopy">
       <div class="pill" id="status"><span class="dot"></span><span id="statusText">Tuesday to Sunday · 5:30–10 pm</span></div>
-      <h1>
-        <span><i>Smashed</i></span>
-        <span><i>to <em>order.</em></i></span>
-      </h1>
-      <p data-i18n="lead">Smash and wagyu burgers, chicken fingers and truffle fries in Pyla, Larnaca. A full meal for about €10–15.</p>
+      <h1 data-i18n="heroTitle"><span><i>Smashed</i></span><span><i>to <em>order.</em></i></span></h1>
+      <p data-i18n="lead">Smash and wagyu burgers, chicken fingers and truffle fries in Pyla, Larnaca. A full meal for about <span class="nw">€10–15</span>.</p>
       <div class="cta">
         <button class="tb" type="button" data-go="menu" data-i18n="seeMenu">See the menu</button>
-        <a class="tb out" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderDeliveryFoody">Order delivery</a>
+        <a class="tb out" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderDeliveryFoody" data-track="order_foody" data-where="hero">Order delivery</a>
       </div>
       <div class="herometa">
-        <div><span data-i18n="lblAddress">Address</span><b>Pierias, Pyla</b></div>
-        <div><span data-i18n="lblSpend">Average spend</span><b>€10–15 a head</b></div>
+        <div><span data-i18n="lblAddress">Address</span><b data-i18n="addrShort">Pierias, Pyla</b></div>
+        <div><span data-i18n="lblSpend">Average spend</span><b data-i18n="spendHead"><span class="nw">€10–15</span> a head</b></div>
         <div><span data-i18n="lblClosed">Closed</span><b data-i18n="mondays">Mondays</b></div>
         <div><span data-i18n="lblRated">Rated</span><b data-i18n="ratedGoogle">4.8 ★ on Google</b></div>
       </div>
     </div>
     <div class="heroart">
       <figure class="heroframe" id="heroShot">
-        <img src="images/burger-bags.webp" width="722" height="914" alt="A Buns and Guns smash burger with cheese, onion and pickles in front of branded takeaway bags" fetchpriority="high" decoding="async">
+        <img src="images/burger-bags.webp" width="722" height="914" alt="A Buns and Guns smash burger with cheese, onion and pickles in front of branded takeaway bags" data-i18n-alt="altHero" fetchpriority="high" decoding="async">
       </figure>
     </div>
   </div>
@@ -926,8 +1028,8 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
 <!-- ══ stats ══ -->
 <div class="stats">
   <div class="wrap">
-    <div class="stat rv"><b><span class="cu" data-to="4">4</span></b><span data-i18n="statSizes">Patty sizes</span></div>
-    <div class="stat rv" style="--d:.08s"><b><span class="cu" data-to="108">108</span><sup>g</sup></b><span data-i18n="statProtein">Protein in the Buff Burger</span></div>
+    <div class="stat rv"><b><span class="cu" data-to="4">4</span></b><span data-i18n="statSizes">Patties to choose from</span></div>
+    <div class="stat rv" style="--d:.08s"><b><span class="cu" data-to="108">108</span><sup data-i18n="unitG">g</sup></b><span data-i18n="statProtein">Protein in the Buff Burger</span></div>
     <div class="stat rv" style="--d:.16s"><b><span class="cu" data-to="4.8" data-dec="1">4.8</span><sup>★</sup></b><span data-i18n="statReviews">From 311 Google reviews</span></div>
     <div class="stat rv" style="--d:.24s"><b><span class="cu" data-to="6">6</span></b><span data-i18n="statDays">Nights a week, Tuesday to Sunday</span></div>
   </div>
@@ -943,31 +1045,31 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
         <p class="kicker"><span data-i18n="menuKicker">The board</span></p>
         <h2 data-i18n="menuTitle2">Pick your patty.<br>The board follows.</h2>
       </div>
-      <p class="lede rv" style="--d:.1s" data-i18n="menuLede">Every burger is built on one of four patties — single 100 g, double 200 g, classic 200 g or wagyu 200 g. Choose one and every price on the board moves with it.</p>
+      <p class="lede rv" style="--d:.1s" data-i18n="menuLede">Every burger comes on one of four patties — a single smash (100 g), a double smash (2 × 100 g), a classic (200 g) or a wagyu (200 g). Pick one and every price on the board moves with it.</p>
       </div>
-      <button class="mheadpic" type="button" data-src="images/burger-tray.webp" aria-label="Open photograph"><figure class="frame"><img src="images/burger-tray.webp" width="1058" height="638" alt="Four burgers on a red checked tray with fries, sweet potato fries and dipping sauces" loading="lazy"></figure></button>
+      <button class="mheadpic" type="button" data-src="images/burger-tray.webp"><figure class="frame"><img src="images/burger-tray.webp" width="1058" height="638" alt="Four burgers on a red checked tray with fries, sweet potato fries and dipping sauces" data-i18n-alt="altTray" loading="lazy"></figure></button>
     </div>
 
     <div class="controls rv">
-      <div class="seg" id="tabs" role="tablist" aria-label="Menu">
+      <div class="seg" id="tabs" role="tablist" aria-label="Menu" data-i18n-aria="navMenu">
         <span class="ind" aria-hidden="true"></span>
-        <button type="button" class="on" data-f="burgers" data-i18n="tabBurgers">Burgers</button>
-        <button type="button" data-f="sides" data-i18n="tabSides">Fries &amp; sides</button>
-        <button type="button" data-f="protein" data-i18n="tabProtein">Protein &amp; dessert</button>
-        <button type="button" data-f="drinks" data-i18n="tabDrinks">Drinks</button>
+        <button type="button" class="on" role="tab" id="tab-burgers" aria-selected="true" aria-controls="menuBox" data-f="burgers" data-i18n="tabBurgers">Burgers</button>
+        <button type="button" role="tab" id="tab-sides" aria-selected="false" aria-controls="menuBox" tabindex="-1" data-f="sides" data-i18n="tabSides">Fries &amp; sides</button>
+        <button type="button" role="tab" id="tab-protein" aria-selected="false" aria-controls="menuBox" tabindex="-1" data-f="protein" data-i18n="tabProtein">Protein &amp; dessert</button>
+        <button type="button" role="tab" id="tab-drinks" aria-selected="false" aria-controls="menuBox" tabindex="-1" data-f="drinks" data-i18n="tabDrinks">Drinks</button>
       </div>
       <div class="sizewrap" id="sizewrap">
         <span data-i18n="labelPatty">Patty</span>
-        <div class="seg red" id="sizebar" aria-label="Patty"><span class="ind" aria-hidden="true"></span></div>
+        <div class="seg red" id="sizebar" role="group" aria-label="Patty" data-i18n-aria="labelPatty"><span class="ind" aria-hidden="true"></span></div>
       </div>
     </div>
 
-    <div id="menuBox" class="rv"></div>
+    <div id="menuBox" class="rv" role="tabpanel" aria-labelledby="tab-burgers" tabindex="0"></div>
 
     <div class="build rv" id="build">
       <div class="build-head">
         <h3 data-i18n="buildTitle">Build it your way</h3>
-        <p data-i18n="buildIntro">Pick your burger and extras, add a note, then send it with your order.</p>
+        <p data-i18n="buildIntro">Pick your burger and extras, add a note, and send it to us as an order request on WhatsApp.</p>
       </div>
 
       <div class="build-form">
@@ -978,7 +1080,7 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
         <label><span data-i18n="labelPatty">Patty</span>
           <select id="b-size">
             <option value="" data-i18n="choosePatty">Choose a patty</option>
-            <option data-i18n="pattySingle">Single smash 100g</option><option data-i18n="pattyDouble">Double smash 200g</option><option data-i18n="pattyClassic">Classic patty 200g</option><option data-i18n="pattyWagyu">Wagyu patty 200g</option>
+            <option data-i18n="pattySingle">Single smash · 100 g</option><option data-i18n="pattyDouble">Double smash · 2 × 100 g</option><option data-i18n="pattyClassic">Classic patty · 200 g</option><option data-i18n="pattyWagyu">Wagyu patty · 200 g</option>
           </select>
         </label>
       </div>
@@ -999,7 +1101,7 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
       </div>
 
       <label class="note-label" for="b-note" data-i18n="labelSpecialRequests">Special requests</label>
-      <textarea id="b-note" rows="3" maxlength="300" data-i18n-ph="notePlaceholder" placeholder="For example: no sauce, no onion, well done, sauce on the side"></textarea>
+      <textarea id="b-note" rows="3" maxlength="300" data-i18n-ph="notePlaceholder" placeholder="For example: no onion, well done, sauce on the side, allergic to sesame"></textarea>
       </div>
 
       <!-- the slip: what Send on WhatsApp will send, printed as it is built (visual only) -->
@@ -1009,21 +1111,24 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
         <div class="t-rule"></div>
         <div class="t-lines" id="ticketLines"></div>
         <div class="t-rule"></div>
-        <p class="t-foot">Pierias, Pyla · 99 403810</p>
+        <p class="t-foot"><span data-i18n="addrShort">Pierias, Pyla</span> · 99 403810</p>
       </div>
 
       <div class="build-send">
+        <p class="send-closed" id="b-closed" role="note" hidden></p>
         <div class="send">
           <button type="button" class="btn" id="b-wa" data-i18n="sendWhatsapp">Send on WhatsApp</button>
+          <button type="button" class="btn ghost" id="b-copy" data-i18n="copyOrder" data-track="copy_order" hidden>Copy order</button>
           <button type="button" class="btn ghost" id="b-clear" data-i18n="clearBtn">Clear</button>
         </div>
         <p class="send-msg" id="b-msg" role="status"></p>
+        <p class="send-note" data-i18n="orderNote">This sends an order request, not a payment: your order is confirmed when we reply on WhatsApp. The price on the slip is the menu price; extras are added when we confirm.</p>
       </div>
     </div>
 
     <div class="menufoot rv">
-      <p><span data-i18n="pricesNote">Prices in euros and may change.</span> <span data-i18n="allergyWarning">Please tell our staff about any allergies.</span></p>
-      <a class="btn light sm" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody">Order on Foody</a>
+      <p><span data-i18n="pricesNote">Prices in euros and may change.</span> <span data-i18n="allergyWarning">Allergies or intolerances? Please tell our staff before you order — they can tell you exactly what is in every dish.</span> <a class="allg" href="#faq" data-faq="allergens" data-i18n="allergyMore">Allergen information</a></p>
+      <a class="btn light sm" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody" data-track="order_foody" data-where="menu">Order on Foody</a>
     </div>
   </div>
 </section>
@@ -1039,19 +1144,20 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
       <p class="lede rv" style="--d:.1s" data-i18n="insideText">Brick walls, red neon and an astronaut serving burgers across the galaxy. Grab a table and stay a while.</p>
     </div>
     <div class="gal">
-      <button type="button" data-src="images/gallery-2.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-2.webp" width="621" height="510" alt="Tables under the red Buns and Guns neon logo" loading="lazy"></figure><span class="gcap" data-i18n="orbCap1">Under the neon</span></button>
-      <button type="button" data-src="images/gallery-1.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-1.webp" width="680" height="510" alt="Dining room with a mural of an astronaut holding a burger" loading="lazy"></figure><span class="gcap" data-i18n="orbCap2">The astronaut</span></button>
-      <button type="button" data-src="images/gallery-4.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-4.webp" width="680" height="510" alt="Wide view of the restaurant with red booth seating" loading="lazy"></figure><span class="gcap" data-i18n="orbCap5">The room</span></button>
-      <button type="button" data-src="images/gallery-3.webp" aria-label="Open photograph"><figure class="frame"><img src="images/gallery-3.webp" width="680" height="317" alt="Neon sign reading You wanna burger me above Buns and Guns t-shirts" loading="lazy"></figure><span class="gcap" data-i18n="orbCap4">You wanna burger me?</span></button>
+      <button type="button" data-src="images/gallery-2.webp"><figure class="frame"><img src="images/gallery-2.webp" width="621" height="510" alt="Tables under the red Buns and Guns neon logo" data-i18n-alt="altGal2" loading="lazy"></figure><span class="gcap" data-i18n="orbCap1">Under the neon</span></button>
+      <button type="button" data-src="images/gallery-1.webp"><figure class="frame"><img src="images/gallery-1.webp" width="680" height="510" alt="Dining room with a mural of an astronaut holding a burger" data-i18n-alt="altGal1" loading="lazy"></figure><span class="gcap" data-i18n="orbCap2">The astronaut</span></button>
+      <button type="button" data-src="images/gallery-4.webp"><figure class="frame"><img src="images/gallery-4.webp" width="680" height="510" alt="Wide view of the restaurant with red booth seating" data-i18n-alt="altGal4" loading="lazy"></figure><span class="gcap" data-i18n="orbCap5">The room</span></button>
+      <button type="button" data-src="images/gallery-3.webp"><figure class="frame"><img src="images/gallery-3.webp" width="680" height="317" alt="Neon sign reading You wanna burger me above Buns and Guns t-shirts" data-i18n-alt="altGal3" loading="lazy"></figure><span class="gcap" data-i18n="orbCap4">You wanna burger me?</span></button>
     </div>
+    <p class="igcta rv"><a href="https://www.instagram.com/bunsandguns.cy/" target="_blank" rel="noopener" data-track="instagram" data-where="room"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"></circle></svg><span data-i18n="igMore">More from the shop on Instagram · @bunsandguns.cy</span></a></p>
   </div>
 </section>
 
 <section id="signature" data-header-theme="dark">
   <div class="wrap">
     <div class="sig">
-      <figure class="frame sigimg" data-t3d="swivel" data-hover>
-        <div class="par" data-par=".07"><img src="images/dish-og.webp" width="340" height="510" alt="Smash burger with cheese, red onion and pickles" loading="lazy"></div>
+      <figure class="frame sigimg" data-hover>
+        <div class="par" data-par=".07"><img src="images/dish-og.webp" width="340" height="510" alt="Smash burger with cheese, red onion and pickles" data-i18n-alt="altOg" loading="lazy"></div>
       </figure>
       <div>
         <div class="rv">
@@ -1061,7 +1167,7 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
         </div>
         <div class="pts">
           <div class="pti rv"><span class="n">01</span><div><h4>Gun Sauce</h4><p data-i18n="sigGunText">The house sauce. It is also on the Burger Salad and the Animal Style.</p></div></div>
-          <div class="pti rv" style="--d:.08s"><span class="n">02</span><div><h4 data-i18n="sigWays">Four ways to order it</h4><p data-i18n="sigWaysText">Single 100 g, double 200 g, classic 200 g or wagyu 200 g — from <span data-fact="ogMin">€8.50</span> to <span data-fact="ogMax">€16</span>.</p></div></div>
+          <div class="pti rv" style="--d:.08s"><span class="n">02</span><div><h4 data-i18n="sigWays">Four ways to order it</h4><p data-i18n="sigWaysText">Single smash (100 g), double smash (2 × 100 g), classic (200 g) or wagyu (200 g) — from <span data-fact="ogMin">€8.50</span> to <span data-fact="ogMax">€16</span>.</p></div></div>
           <div class="pti rv" style="--d:.16s"><span class="n">03</span><div><h4 data-i18n="sigLoad">Load it up</h4><p data-i18n="sigLoadText">Extra smash or classic patty, egg, bacon or cheese from the add-ons.</p></div></div>
         </div>
         <div class="cta rv"><button class="btn" type="button" data-go="menu"><span data-i18n="seeMenu">See the menu</span><span class="ar" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button></div>
@@ -1069,12 +1175,12 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
     </div>
 
     <div class="duo">
-      <button class="dish" type="button" data-src="images/dish-sweet-fries.webp" aria-label="Open photograph" data-t3d="rise" data-side="-1" data-hover>
-        <figure class="frame"><div class="par" data-par=".04"><img src="images/dish-sweet-fries.webp" width="680" height="382" alt="Sweet potato fries" loading="lazy"></div></figure>
+      <button class="dish" type="button" data-src="images/dish-sweet-fries.webp" data-hover>
+        <figure class="frame"><div class="par" data-par=".04"><img src="images/dish-sweet-fries.webp" width="680" height="382" alt="Sweet potato fries" data-i18n-alt="altSweetFries" loading="lazy"></div></figure>
         <div class="cap"><b data-i18n="sideSweetFries">Sweet Fries</b><span data-fact="price:Sweet Fries">€4.50</span></div>
       </button>
-      <button class="dish" type="button" data-src="images/dish-chicken-fingers.webp" aria-label="Open photograph" data-t3d="rise" data-side="1" data-hover>
-        <figure class="frame"><div class="par" data-par=".04"><img src="images/dish-chicken-fingers.webp" width="680" height="382" alt="Buttermilk fried chicken strips with fries" loading="lazy"></div></figure>
+      <button class="dish" type="button" data-src="images/dish-chicken-fingers.webp" data-hover>
+        <figure class="frame"><div class="par" data-par=".04"><img src="images/dish-chicken-fingers.webp" width="680" height="382" alt="Buttermilk fried chicken strips with fries" data-i18n-alt="altChickenFingers" loading="lazy"></div></figure>
         <div class="cap"><b data-i18n="nameChickenFingers">Chicken Fingers</b><span data-fact="price:Chicken Fingers">€9.50</span></div>
       </button>
     </div>
@@ -1088,7 +1194,7 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
 <section id="words" data-header-theme="dark">
   <div class="wrap">
     <div class="rev">
-      <button class="revpic" type="button" data-src="images/burger-hands.webp" aria-label="Open photograph"><figure class="frame"><img src="images/burger-hands.webp" width="800" height="1046" alt="Two hands holding a smash burger over a tray of fries" loading="lazy"></figure></button>
+      <button class="revpic" type="button" data-src="images/burger-hands.webp"><figure class="frame"><img src="images/burger-hands.webp" width="800" height="1046" alt="Two hands holding a smash burger over a tray of fries" data-i18n-alt="altHands" loading="lazy"></figure></button>
       <div class="revtext">
       <div class="rv">
         <p class="kicker"><span data-i18n="navReviews">Reviews</span></p>
@@ -1097,13 +1203,14 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
         </div>
         <p class="lede" data-i18n="revCount">From 311 reviews on Google.</p>
+        <p class="revlinks"><a href="https://search.google.com/local/reviews?placeid=ChIJi1mdFgAv3hQRJ_eoJPYbcK0" target="_blank" rel="noopener" data-i18n="readGoogle" data-track="reviews_read" data-where="google">Read them on Google</a><a href="https://www.tripadvisor.com/Restaurant_Review-g1904143-d32859239-Reviews-Buns_Guns_Pyla-Pyla_Larnaca_Larnaka_District.html" target="_blank" rel="noopener" data-i18n="readTripadvisor" data-track="reviews_read" data-where="tripadvisor">Read them on Tripadvisor</a></p>
       </div>
       <div class="revcard rv" style="--d:.1s">
         <h3 data-i18n="revAsk">Eaten here?</h3>
         <p data-i18n="revAskText">Leave a word where the next table will read it. It takes a minute.</p>
         <div class="row-btns">
-          <a class="btn sm" href="https://search.google.com/local/writereview?placeid=ChIJi1mdFgAv3hQRJ_eoJPYbcK0" target="_blank" rel="noopener" data-i18n="reviewGoogle">Review on Google</a>
-          <a class="btn ghost sm" href="https://www.tripadvisor.com/UserReview-g1904143-d32859239-Buns_Guns_Pyla-Pyla_Larnaca_Larnaka_District.html" target="_blank" rel="noopener" data-i18n="reviewTripadvisor">Review on Tripadvisor</a>
+          <a class="btn sm" href="https://search.google.com/local/writereview?placeid=ChIJi1mdFgAv3hQRJ_eoJPYbcK0" target="_blank" rel="noopener" data-i18n="reviewGoogle" data-track="review_write" data-where="google">Review on Google</a>
+          <a class="btn ghost sm" href="https://www.tripadvisor.com/UserReview-g1904143-d32859239-Buns_Guns_Pyla-Pyla_Larnaca_Larnaka_District.html" target="_blank" rel="noopener" data-i18n="reviewTripadvisor" data-track="review_write" data-where="tripadvisor">Review on Tripadvisor</a>
         </div>
       </div>
       </div>
@@ -1117,7 +1224,7 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
     <div class="rv">
       <p class="kicker"><span data-i18n="faqKicker">Good to know</span></p>
       <h2 data-i18n="faqTitle">Before you order.</h2>
-      <button class="faqpic" type="button" data-src="images/hero.webp" aria-label="Open photograph"><figure class="frame"><img src="images/hero.webp" width="382" height="510" alt="Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign" loading="lazy"></figure></button>
+      <button class="faqpic" type="button" data-src="images/hero.webp"><figure class="frame"><img src="images/hero.webp" width="382" height="510" alt="Three burgers, sweet potato fries and dipping sauces under the Buns and Guns neon sign" data-i18n-alt="altFaq" loading="lazy"></figure></button>
     </div>
     <div class="rv" style="--d:.1s" id="faqBox"></div>
   </div>
@@ -1129,26 +1236,31 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
     <div class="head">
       <div class="rv">
         <p class="kicker"><span data-i18n="findUs">Find us</span></p>
-        <h2>Pierias, <em>Pyla</em>.</h2>
+        <h2 data-i18n="visitTitle">Pierias, <em>Pyla</em>.</h2>
       </div>
       <p class="lede rv" style="--d:.1s" data-i18n="visitLede">Grab a table under the neon, or get it delivered through Foody.</p>
     </div>
     <div class="visit">
       <div class="rv">
         <table class="hours"><tbody id="hoursBody"></tbody></table>
-        <div class="kv"><span data-i18n="lblAddress">Address</span><b>Pierias, Pyla, Larnaca 7080</b></div>
-        <div class="kv"><span data-i18n="lblPhone">Phone</span><b><a href="tel:+35799403810">99 403810</a></b></div>
-        <div class="kv"><span data-i18n="lblSpend">Average spend</span><b data-i18n="perPerson">About €10–15 per person</b></div>
-        <div class="kv" style="border:0"><span data-i18n="lblDelivery">Delivery</span><b><a href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener">Foody</a></b></div>
+        <div class="kv"><span data-i18n="lblAddress">Address</span><b data-i18n="addrFull">Pierias, Pyla, Larnaca 7080</b></div>
+        <div class="kv"><span data-i18n="lblPhone">Phone</span><b><a href="tel:+35799403810" data-track="call" data-where="visit">99 403810</a></b></div>
+        <div class="kv"><span data-i18n="lblSpend">Average spend</span><b data-i18n="perPerson">About <span class="nw">€10–15</span> per person</b></div>
+        <div class="kv" style="border:0"><span data-i18n="lblDelivery">Delivery</span><b><a href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-track="order_foody" data-where="visit">Foody</a></b></div>
         <div class="row-btns" style="margin-top:28px">
-          <a class="btn sm" href="https://www.google.com/maps/search/?api=1&query=XMWP%2BX6V%20Pyla%2C%20Cyprus" target="_blank" rel="noopener" data-i18n="getDirections">Directions</a>
+          <a class="btn sm" href="https://www.google.com/maps/search/?api=1&query=XMWP%2BX6V%20Pyla%2C%20Cyprus" target="_blank" rel="noopener" data-i18n="getDirections" data-track="directions" data-where="visit">Directions</a>
           <button class="btn ghost sm" type="button" id="copyBtn" data-i18n="copyAddress">Copy address</button>
           <button class="btn ghost sm" type="button" id="shareBtn" data-i18n="share">Share</button>
         </div>
       </div>
-      <div class="map rv" style="--d:.1s">
-        <iframe title="Map showing Buns and Guns in Pyla" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=XMWP%2BX6V%20Pyla%2C%20Cyprus&z=16&output=embed"></iframe>
+      <!-- the map is a picture of where we are until it is asked for; then Google Maps loads in its place -->
+      <div class="map rv" style="--d:.1s" id="map">
+        <div class="mapph" id="mapPh">
+          <svg class="mappin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c-4.1 0-7.4 3.2-7.4 7.3 0 5.4 6.5 11.6 6.8 11.9.3.3.9.3 1.2 0 .3-.3 6.8-6.5 6.8-11.9 0-4.1-3.3-7.3-7.4-7.3zm0 10.1a2.8 2.8 0 1 1 0-5.6 2.8 2.8 0 0 1 0 5.6z"/></svg>
+          <p class="mapaddr" data-i18n="addrFull">Pierias, Pyla, Larnaca 7080</p>
+          <button class="btn sm" type="button" id="mapBtn" data-i18n="showMap" data-track="map_load">Show the map</button>
+          <p class="mapnote" data-i18n="mapNote">The map loads from Google Maps.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1161,37 +1273,37 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
     <p class="fline rv" data-i18n="footLine">You wanna burger me?</p>
     <div class="fcols">
       <div class="fcol">
-        <div class="brand" style="pointer-events:none"><img src="images/logo-96.webp" width="42" height="41" alt="" loading="lazy" decoding="async"><span><b>Buns &amp; Guns</b><i>Pyla · Larnaca</i></span></div>
+        <div class="brand" style="pointer-events:none"><img src="images/logo-96.webp" width="42" height="41" alt="" loading="lazy" decoding="async"><span><b>Buns &amp; Guns</b><i data-i18n="placeShort">Pyla · Larnaca</i></span></div>
       </div>
       <div class="fcol">
         <h5 data-i18n="footVisit">Visit</h5>
-        <p>Pierias, Pyla<br>Larnaca 7080, Cyprus</p>
-        <a href="tel:+35799403810">+357 99 403810</a>
-        <a href="https://www.google.com/maps/search/?api=1&query=XMWP%2BX6V%20Pyla%2C%20Cyprus" target="_blank" rel="noopener" data-i18n="getDirections">Directions</a>
+        <p data-i18n="addrFoot">Pierias, Pyla<br>Larnaca 7080, Cyprus</p>
+        <a href="tel:+35799403810" data-track="call" data-where="footer">+357 99 403810</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=XMWP%2BX6V%20Pyla%2C%20Cyprus" target="_blank" rel="noopener" data-i18n="getDirections" data-track="directions" data-where="footer">Directions</a>
       </div>
       <div class="fcol">
         <h5 data-i18n="footOrder">Order</h5>
-        <a href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener">Foody</a>
-        <a href="https://www.instagram.com/bunsandguns.cy/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-track="order_foody" data-where="footer">Foody</a>
+        <a href="https://www.instagram.com/bunsandguns.cy/" target="_blank" rel="noopener" data-track="instagram" data-where="footer">Instagram</a>
         <p data-i18n="footHours">Tuesday to Sunday · 5:30–10 pm</p>
       </div>
     </div>
     <div class="fbot">
       <div>© <span id="yr"></span> Buns &amp; Guns</div>
-      <div>Pyla · Larnaca · Cyprus</div>
+      <div class="flinks"><a href="privacy.html" id="privacyLink" data-i18n="privacyLink">Privacy</a><span data-i18n="placeLong">Pyla · Larnaca · Cyprus</span></div>
     </div>
   </div>
 </footer>
 
-<button id="totop" type="button" data-go="top" aria-label="Back to top">
+<button id="totop" type="button" data-go="top" aria-label="Back to top" data-i18n-aria="backTop">
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 13V3M4 7l4-4 4 4"/></svg>
 </button>
 <div class="mbar" id="mbar">
-  <a class="a1" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody">Order on Foody</a>
-  <a class="a2" href="tel:+35799403810" aria-label="Call Buns and Guns on 99 403810" data-i18n="callBtn">Call</a>
+  <a class="a1" href="https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378" target="_blank" rel="noopener" data-i18n="orderFoody" data-track="order_foody" data-where="bar">Order on Foody</a>
+  <a class="a2" href="tel:+35799403810" aria-label="Call Buns and Guns, 99 403810" data-i18n-aria="callAria" data-i18n="callBtn" data-track="call" data-where="bar">Call</a>
 </div>
 
-<div class="lb" id="lb" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Photograph">
+<div class="lb" id="lb" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Photograph" data-i18n-aria="lbLabel">
   <img id="lbImg" src="" alt="" draggable="false">
   <button class="x" type="button" aria-label="Close" data-i18n-aria="lbClose"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
   <button class="nv prev" type="button" aria-label="Previous photograph" data-i18n-aria="lbPrev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg></button>
@@ -1201,16 +1313,20 @@ footer{border-top:1px solid var(--line);background:var(--bg)}
 <div id="cur" aria-hidden="true"><span data-i18n="curView">View</span></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
+<!-- what Google reads about the shop. No star rating here on purpose: Google does not allow a business to mark up
+     ratings taken from Google or Tripadvisor on its own site (it can count as structured-data spam). -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"Buns & Guns","servesCuisine":"Burgers","priceRange":"€€",
-"image":"https://buns-and-guns.vercel.app/images/hero.jpg","telephone":"+357 99 403810","url":"https://www.instagram.com/bunsandguns.cy/",
+{"@context":"https://schema.org","@type":"Restaurant","@id":"https://buns-and-guns.vercel.app/#restaurant","name":"Buns & Guns",
+"url":"https://buns-and-guns.vercel.app/","servesCuisine":["Burgers","Smash burgers"],"priceRange":"€10–15",
+"image":["https://buns-and-guns.vercel.app/images/hero.jpg","https://buns-and-guns.vercel.app/images/og-image.jpg","https://buns-and-guns.vercel.app/images/gallery-2.jpg"],
+"logo":"https://buns-and-guns.vercel.app/images/logo.jpg","telephone":"+35799403810",
 "address":{"@type":"PostalAddress","streetAddress":"Pierias","addressLocality":"Pyla","addressRegion":"Larnaca","postalCode":"7080","addressCountry":"CY"},
 "geo":{"@type":"GeoCoordinates","latitude":34.9972453,"longitude":33.6854376},
-"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"311"},
+"hasMap":"https://www.google.com/maps/search/?api=1&query=XMWP%2BX6V%20Pyla%2C%20Cyprus",
+"hasMenu":"https://buns-and-guns.vercel.app/#menu",
+"sameAs":["https://www.instagram.com/bunsandguns.cy/","https://www.foody.com.cy/delivery/larnaka/buns-and-guns-2000723378","https://www.tripadvisor.com/Restaurant_Review-g1904143-d32859239-Reviews-Buns_Guns_Pyla-Pyla_Larnaca_Larnaka_District.html"],
 "openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"17:30","closes":"22:00"}]}
 </script>
-
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script>
 /* ═══ config ═══
    ⚠ SWAP BEFORE GOING LIVE: +357 99 403810 is NOT on WhatsApp.
@@ -1220,8 +1336,8 @@ const CONFIG={
   whatsapp:"35799403810"   /* ⚠ PLACEHOLDER — not a WhatsApp number */
 };
 
-/* ═══ data — carried over from v4 / v5, unchanged ═══ */
-const SIZES=["Single 100g","Double 200g","Classic 200g","Wagyu 200g"];
+/* ═══ data — carried over from v4 / v5 (patty labels now say 2 × 100 g for the double) ═══ */
+const SIZES=["Single 100g","Double 2×100g","Classic 200g","Wagyu 200g"];
 const SK=["sizeSingle","sizeDouble","sizeClassic","sizeWagyu"];
 const PIC={"The OG":"images/dish-og.webp","Sweet Fries":"images/dish-sweet-fries.webp","Chicken Fingers":"images/dish-chicken-fingers.webp"};
 /* each photograph's own size and where its subject sits — properties of the shot, not design */
@@ -1276,32 +1392,173 @@ const MENU={
 };
 const FAQ=[
  ["Do you deliver?","Yes, through Foody — the Order buttons on this page go straight there."],
- ["What is the difference between the patty sizes?","Single is one 100 g smash patty and double is two (200 g). Classic is a 200 g classic patty, and wagyu is a 200 g wagyu patty."],
- ["What about allergies?","Please tell our staff about any allergies when you order."],
+ ["What is the difference between the patties?","Single is one 100 g smash patty and double is two of them (2 × 100 g). Classic is one 200 g patty that isn't smashed, and wagyu is one 200 g wagyu patty."],
+ ["What about allergies?","Please tell our staff about any allergy or intolerance before you order — they will tell you what is in each dish and how it is made. You can ask about any of the 14 allergens named in EU law, such as gluten, milk, eggs, sesame, mustard and soy. If you order on WhatsApp, write your allergy under Special requests."],
  ["Can I order high protein?","The Burger Salad and the Buff Burger — fifty and a hundred and eight grams of protein respectively."],
  ["When are you closed?","Mondays. Otherwise Tuesday to Sunday, half past five until ten at night."]
 ];
+const FAQ_ID=["delivery","patties","allergens","protein","hours"];
 
-/* ═══ Greek — live-site strings plus the v4/v5 additions, unchanged ═══ */
-const GR={"langToggleLabel":"Γλώσσα","navMenu":"Μενού","navIgLabel":"Buns and Guns στο Instagram","orderFoody":"Παραγγελία στο Foody","lead":"Smash και wagyu μπέργκερ, chicken fingers και truffle fries στην Πύλα, Λάρνακα. Ένα πλήρες γεύμα για περίπου €10–15.","orderDeliveryFoody":"Παραγγελία delivery στο Foody","seeMenu":"Δείτε το μενού","menuTitle":"Μενού","tabBurgers":"Μπέργκερ","tabSides":"Συνοδευτικά","tabProtein":"Πρωτεΐνη & επιδόρπια","tabDrinks":"Ποτά","labelPatty":"Μπιφτέκι","pricesNote":"Οι τιμές είναι σε ευρώ και ενδέχεται να αλλάξουν.","allergyWarning":"Παρακαλούμε ενημερώστε το προσωπικό μας για τυχόν αλλεργίες.","insideTitle":"Φάτε κάτω από τα νέον","insideText":"Τούβλινοι τοίχοι, κόκκινο νέον και ένας αστροναύτης που σερβίρει μπέργκερ σε όλο τον γαλαξία. Πιάστε ένα τραπέζι και μείνετε λίγο.","reviewGoogle":"Κριτική στο Google","reviewTripadvisor":"Κριτική στο TripAdvisor","getDirections":"Οδηγίες στο Google Maps","callBtn":"Κλήση","groupAddons":"Πρόσθετα","addExtraSmash":"Επιπλέον μπιφτέκι smash 100γρ","addExtraClassic":"Επιπλέον κλασικό μπιφτέκι 200γρ","addEgg":"Αυγό","addBacon":"Μπέικον","addCheese":"Τυρί","groupFries":"Πατάτες","sideFries":"Πατάτες","sideSweetFries":"Γλυκοπατάτες","sideLoaded":"Φορτωμένες πατάτες","sideTruffleFries":"Πατάτες με τρούφα","groupMoreSides":"Περισσότερα συνοδευτικά","groupProtein":"Πρωτεΐνη","groupDesserts":"Επιδόρπια","drinkSoft":"Αναψυκτικά","drinkBottledSoft":"Εμφιαλωμένα αναψυκτικά","drinkJuice":"Χυμός","drinkWater":"Νερό","groupSpecials":"Σπέσιαλ","drinkMilkshakes":"Μιλκσέικ","drinkLemonades":"Stetes Lemonades","drinkDraft":"Draft Pivo / IPA","sizeSingle":"Μονό 100γρ","sizeDouble":"Διπλό 200γρ","sizeClassic":"Κλασικό 200γρ","sizeWagyu":"Wagyu 200γρ","hoursClosed":"Κλειστά","hoursRange":"17:30 – 22:00","days":["Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο"],"tomorrow":"αύριο","statusOpenNow":"Ανοιχτά τώρα έως τις 22:00","statusOpensToday":"Ανοίγει σήμερα στις 17:30","statusClosedOpens":"Κλειστά τώρα. Ανοίγει {day} στις 17:30"};
-/* Greek written for v4/v5 — not owner-supplied: have a native speaker check it. */
-Object.assign(GR,{"lblAddress":"Διεύθυνση","lblPhone":"Τηλέφωνο","lblSpend":"Μέσο κόστος","lblDelivery":"Delivery","lblClosed":"Κλειστά","lblRated":"Βαθμολογία","ratedGoogle":"4.8 ★ στο Google","faqKicker":"Καλό να ξέρετε","faqTitle":"Πριν παραγγείλετε.","revCount":"Από 311 κριτικές στο Google.","revAsk":"Φάγατε εδώ;","revAskText":"Αφήστε μια κριτική εκεί που θα τη διαβάσει το επόμενο τραπέζι. Παίρνει μόνο ένα λεπτό.","sigKicker":"Η σπεσιαλιτέ μας","sigGunText":"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Animal Style.","sigWays":"Τέσσερις τρόποι να το παραγγείλετε","sigWaysText":"Μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ — από <span data-fact='ogMin'>€8.50</span> έως <span data-fact='ogMax'>€16</span>.","sigLoad":"Φόρτωσέ το","sigLoadText":"Επιπλέον smash ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.","statSizes":"Μεγέθη μπιφτεκιού","statProtein":"Πρωτεΐνη στο Buff Burger","statReviews":"Από 311 κριτικές στο Google","statDays":"Βράδια την εβδομάδα, Τρίτη έως Κυριακή","ticker":"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ · SMASH ΚΑΙ WAGYU ΜΠΕΡΓΚΕΡ · GUN SAUCE · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · PIERIAS, PYLA · "});
-Object.assign(GR,{"nameCheeseburger":"Τσίζμπεργκερ","nameChickenBurger":"Μπέργκερ κοτόπουλο","nameChickenFingers":"Φιλετάκια κοτόπουλου","nameBurgerSalad":"Σαλάτα μπέργκερ","nameSkilletCookie":"Μπισκότο στο τηγανάκι","nameFrenchToast":"Αυγόφετες","metaBurgerSalad":"420 θερμίδες · 50γρ πρωτεΐνη","metaBuffBurger":"620 θερμίδες · 108γρ πρωτεΐνη","findUs":"Βρείτε μας","visitLede":"Πιάστε ένα τραπέζι κάτω από τα νέον ή παραγγείλετε delivery μέσω Foody.","perPerson":"Περίπου €10–15 το άτομο","copyAddress":"Αντιγραφή διεύθυνσης","share":"Κοινοποίηση","toastAddress":"Η διεύθυνση αντιγράφηκε","toastLink":"Ο σύνδεσμος αντιγράφηκε","toastCopyFailed":"Η αντιγραφή απέτυχε"});
-/* build-it-your-way strings, as they were on the first site (e509849) */
-Object.assign(GR,{"buildTitle":"Φτιάξ' το με τον τρόπο σου","buildIntro":"Επιλέξτε το μπέργκερ και τα extra σας, προσθέστε ένα σημείωμα και στείλτε την παραγγελία σας.","labelBurger":"Μπέργκερ","anyBurger":"Οποιοδήποτε μπέργκερ","choosePatty":"Επιλέξτε μπιφτέκι","pattySingle":"Μονό smash 100γρ","pattyDouble":"Διπλό smash 200γρ","pattyClassic":"Κλασικό μπιφτέκι 200γρ","pattyWagyu":"Μπιφτέκι wagyu 200γρ","legendToppings":"Επικαλύψεις","topTomato":"Ντομάτα","topLettuce":"Μαρούλι","topOnion":"Κρεμμύδι","topCrispyOnion":"Τραγανό κρεμμύδι","topPickles":"Αγγουράκια τουρσί","topBacon":"Μπέικον","topJalapenos":"Χαλαπένιο","legendSauces":"Σάλτσες","sauceGun":"Gun Sauce","sauceHoneyMustard":"Μουστάρδα μελιού","sauceBbq":"Μπάρμπεκιου","sauceMayo":"Μαγιονέζα","sauceKetchup":"Κέτσαπ","sauceMustard":"Μουστάρδα","labelSpecialRequests":"Ειδικά αιτήματα","notePlaceholder":"Για παράδειγμα: χωρίς σάλτσα, χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι","sendWhatsapp":"Αποστολή στο WhatsApp","clearBtn":"Καθαρισμός","msgPickSomething":"Επιλέξτε κάτι ή γράψτε ένα αίτημα πρώτα.","msgOpeningWhatsapp":"Άνοιγμα WhatsApp.","msgBurger":"Μπέργκερ","msgPatty":"Μπιφτέκι","msgToppings":"Επικαλύψεις","msgSauces":"Σάλτσες","msgSpecialRequest":"Ειδικό αίτημα","waGreeting":"Γεια σας Buns and Guns!"});
-Object.assign(GR,{"curView":"Προβολή","lbClose":"Κλείσιμο","lbPrev":"Προηγούμενη φωτογραφία","lbNext":"Επόμενη φωτογραφία"});
-Object.assign(GR,{"order":"Παραγγελία","navSignature":"Σπεσιαλιτέ","navRoom":"Ο χώρος","navReviews":"Κριτικές","mondays":"Δευτέρα","menuKicker":"Ο κατάλογος","menuTitle2":"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.","menuLede":"Κάθε μπέργκερ χτίζεται σε ένα από τέσσερα μπιφτέκια — μονό 100γρ, διπλό 200γρ, κλασικό 200γρ ή wagyu 200γρ. Διαλέξτε ένα και όλες οι τιμές προσαρμόζονται.","roomKicker":"Ο χώρος","footLine":"Θες να σε κάνω μπέργκερ;","footVisit":"Επισκεφθείτε μας","footOrder":"Παραγγελία","footHours":"Τρίτη έως Κυριακή · 17:30 – 22:00","orbCap1":"Κάτω από το νέον","orbCap2":"Ο αστροναύτης","orbCap3":"Στο τραπέζι","orbCap4":"Θες να σε κάνω μπέργκερ;","orbCap5":"Η σάλα"});
-const FAQ_GR=[["Κάνετε delivery;","Ναι, μέσω Foody — τα κουμπιά παραγγελίας σε αυτή τη σελίδα σας πηγαίνουν κατευθείαν εκεί."],["Ποια είναι η διαφορά ανάμεσα στα μπιφτέκια;","Το μονό είναι ένα smash μπιφτέκι 100γρ και το διπλό είναι δύο (200γρ). Το κλασικό είναι ένα κλασικό μπιφτέκι 200γρ και το wagyu ένα μπιφτέκι wagyu 200γρ."],["Τι γίνεται με τις αλλεργίες;","Παρακαλούμε ενημερώστε το προσωπικό μας για τυχόν αλλεργίες όταν παραγγέλνετε."],["Υπάρχουν επιλογές με πολλή πρωτεΐνη;","Η σαλάτα μπέργκερ και το Buff Burger — πενήντα και εκατόν οκτώ γραμμάρια πρωτεΐνης αντίστοιχα."],["Πότε είστε κλειστά;","Τις Δευτέρες. Κατά τα άλλα, Τρίτη έως Κυριακή, από τις 17:30 έως τις 22:00."]];
+/* ═══ Greek ═══
+   Every word the page can show, in one place: the live-site strings, the v4/v5 additions and the October 2026 pass that
+   finished the job (alt text, labels, order request, hours, menu descriptions). Written for the site, not
+   supplied by the owners: worth a read by a native speaker before it is final.
+   Kept in Latin letters on purpose: the shop's name, brands, dish names that are names on their own menu
+   (The OG, Truffle, Whiskey Business, Mr. Hot Shot, Animal Style, Buff Burger) and smash / wagyu, which Greek
+   menus write in Latin too. Prices and decimals follow Greek style: 8,50 €, 4,8. */
+const GR={
+ /* page */
+ docTitle:"Buns & Guns — Smash μπέργκερ · Πύλα, Λάρνακα",
+ docDesc:"Οικογενειακό μπεργκεράδικο στην Πύλα, Λάρνακα. Black Angus ψημένο τη στιγμή, wagyu, φιλετάκια κοτόπουλου και πατάτες με τρούφα για περίπου 10–15 € το άτομο. Ανοιχτά Τρίτη έως Κυριακή, 17:30–22:00. Διανομή μέσω Foody.",
+ skipMenu:"Μετάβαση στο μενού",
+ /* header */
+ backTop:"Επιστροφή στην κορυφή",altLogo:"Λογότυπο Buns and Guns",placeShort:"Πύλα · Λάρνακα",placeLong:"Πύλα · Λάρνακα · Κύπρος",
+ navSections:"Ενότητες",navMenu:"Μενού",navRoom:"Ο χώρος",navSignature:"Σπεσιαλιτέ",navReviews:"Κριτικές",navFaq:"Ερωτήσεις",findUs:"Βρείτε μας",
+ langToggleLabel:"Γλώσσα",navIgLabel:"Το Buns and Guns στο Instagram",order:"Παραγγελία",
+ /* hero */
+ heroTitle:"<span><i>Ψήνεται</i></span><span><i><em>τη στιγμή.</em></i></span>",
+ lead:"Smash και wagyu μπέργκερ, φιλετάκια κοτόπουλου και πατάτες με τρούφα στην Πύλα, Λάρνακα. Ένα πλήρες γεύμα για περίπου <span class=\"nw\">10–15 €</span>.",
+ seeMenu:"Δείτε το μενού",orderDeliveryFoody:"Παραγγελία για διανομή",
+ lblAddress:"Διεύθυνση",addrShort:"Πιερίας, Πύλα",lblSpend:"Μέσο κόστος",spendHead:"<span class=\"nw\">10–15 €</span> το άτομο",lblClosed:"Κλειστά",mondays:"Κάθε Δευτέρα",lblRated:"Βαθμολογία",ratedGoogle:"4,8 ★ στο Google",
+ altHero:"Ένα smash μπέργκερ του Buns and Guns με τυρί, κρεμμύδι και αγγουράκια τουρσί, μπροστά σε σακούλες πακέτου με το λογότυπο του μαγαζιού",
+ ticker:"ΘΕΣ ΝΑ ΣΕ ΚΑΝΩ ΜΠΕΡΓΚΕΡ; · BLACK ANGUS ΨΗΜΕΝΟ ΤΗ ΣΤΙΓΜΗ · GUN SAUCE · ΠΑΤΑΤΕΣ ΜΕ ΤΡΟΥΦΑ · ΠΙΕΡΙΑΣ, ΠΥΛΑ · ",
+ /* numbers */
+ statSizes:"Μπιφτέκια για να διαλέξετε",unitG:"γρ",statProtein:"Πρωτεΐνη στο Buff Burger",statReviews:"Από 311 κριτικές στο Google",statDays:"Βράδια την εβδομάδα, Τρίτη έως Κυριακή",
+ /* the board */
+ menuKicker:"Ο κατάλογος",menuTitle2:"Διαλέξτε μπιφτέκι.<br>Ο κατάλογος ακολουθεί.",
+ menuLede:"Κάθε μπέργκερ έρχεται με ένα από τέσσερα μπιφτέκια — μονό smash (100γρ), διπλό smash (2 × 100γρ), κλασικό (200γρ) ή wagyu (200γρ). Διαλέξτε ένα και όλες οι τιμές του καταλόγου αλλάζουν μαζί του.",
+ altTray:"Τέσσερα μπέργκερ σε κόκκινο καρό δίσκο με πατάτες, γλυκοπατάτες και σάλτσες",openPhoto:"Άνοιγμα φωτογραφίας",
+ tabBurgers:"Μπέργκερ",tabSides:"Πατάτες & συνοδευτικά",tabProtein:"Πρωτεΐνη & επιδόρπια",tabDrinks:"Ποτά",labelPatty:"Μπιφτέκι",
+ sizeSingle:"Μονό 100γρ",sizeDouble:"Διπλό 2×100γρ",sizeClassic:"Κλασικό 200γρ",sizeWagyu:"Wagyu 200γρ",
+ groupAddons:"Πρόσθετα",addExtraSmash:"Επιπλέον smash μπιφτέκι 100γρ",addExtraClassic:"Επιπλέον κλασικό μπιφτέκι 200γρ",addEgg:"Αυγό",addBacon:"Μπέικον",addCheese:"Τυρί",
+ groupFries:"Πατάτες",sideFries:"Πατάτες",sideSweetFries:"Γλυκοπατάτες",sideLoaded:"Φορτωμένες πατάτες",sideTruffleFries:"Πατάτες με τρούφα",groupMoreSides:"Άλλα συνοδευτικά",
+ groupProtein:"Πρωτεΐνη",groupDesserts:"Επιδόρπια",groupSpecials:"Σπέσιαλ",
+ drinkSoft:"Αναψυκτικά",drinkBottledSoft:"Αναψυκτικά σε μπουκάλι",drinkJuice:"Χυμός",drinkWater:"Νερό",drinkMilkshakes:"Μιλκσέικ",drinkLemonades:"Stetes Lemonades",drinkDraft:"Βαρελίσια Pivo / IPA",
+ nameCheeseburger:"Τσίζμπεργκερ",nameChickenBurger:"Μπέργκερ κοτόπουλο",nameChickenFingers:"Φιλετάκια κοτόπουλου",nameBurgerSalad:"Σαλάτα μπέργκερ",nameSkilletCookie:"Μπισκότο στο τηγανάκι",nameFrenchToast:"Αυγόφετες",
+ metaBurgerSalad:"420 θερμίδες · 50γρ πρωτεΐνη",metaBuffBurger:"620 θερμίδες · 108γρ πρωτεΐνη",
+ pricesNote:"Οι τιμές είναι σε ευρώ και μπορεί να αλλάξουν.",
+ allergyWarning:"Αλλεργίες ή δυσανεξίες; Ενημερώστε το προσωπικό μας πριν παραγγείλετε — θα σας πει ακριβώς τι περιέχει κάθε πιάτο.",
+ allergyMore:"Πληροφορίες για αλλεργιογόνα",orderFoody:"Παραγγελία στο Foody",
+ /* build it your way */
+ buildTitle:"Φτιάξτε το όπως το θέλετε",
+ buildIntro:"Διαλέξτε μπέργκερ και έξτρα, προσθέστε ένα σημείωμα και στείλτε μας το ως αίτημα παραγγελίας στο WhatsApp.",
+ labelBurger:"Μπέργκερ",anyBurger:"Οποιοδήποτε μπέργκερ",choosePatty:"Επιλέξτε μπιφτέκι",
+ pattySingle:"Μονό smash · 100γρ",pattyDouble:"Διπλό smash · 2 × 100γρ",pattyClassic:"Κλασικό μπιφτέκι · 200γρ",pattyWagyu:"Μπιφτέκι wagyu · 200γρ",
+ legendToppings:"Υλικά",topTomato:"Ντομάτα",topLettuce:"Μαρούλι",topOnion:"Κρεμμύδι",topCrispyOnion:"Τραγανό κρεμμύδι",topPickles:"Αγγουράκια τουρσί",topBacon:"Μπέικον",topJalapenos:"Χαλαπένιο",
+ legendSauces:"Σάλτσες",sauceGun:"Gun Sauce",sauceHoneyMustard:"Μουστάρδα με μέλι",sauceBbq:"Μπάρμπεκιου",sauceMayo:"Μαγιονέζα",sauceKetchup:"Κέτσαπ",sauceMustard:"Μουστάρδα",
+ labelSpecialRequests:"Ειδικά αιτήματα",notePlaceholder:"Για παράδειγμα: χωρίς κρεμμύδι, καλοψημένο, σάλτσα στο πλάι, αλλεργία στο σουσάμι",
+ sendWhatsapp:"Αποστολή στο WhatsApp",copyOrder:"Αντιγραφή παραγγελίας",clearBtn:"Καθαρισμός",
+ msgPickSomething:"Επιλέξτε κάτι ή γράψτε ένα αίτημα πρώτα.",
+ msgOpeningWhatsapp:'Ανοίγει το WhatsApp… Αν δεν άνοιξε, καλέστε μας στο <a href="tel:+35799403810">99 403810</a> ή αντιγράψτε την παραγγελία σας.',
+ msgCopied:"Η παραγγελία αντιγράφηκε — επικολλήστε τη σε ένα μήνυμα προς το 99 403810.",
+ msgBurger:"Μπέργκερ",msgPatty:"Μπιφτέκι",msgToppings:"Υλικά",msgSauces:"Σάλτσες",msgSpecialRequest:"Ειδικό αίτημα",msgPrice:"Τιμή καταλόγου",msgFrom:"από {p}",
+ waGreeting:"Γεια σας, Buns and Guns!",waRequest:"Αίτημα παραγγελίας:",
+ orderNote:"Αυτό στέλνει αίτημα παραγγελίας, όχι πληρωμή: η παραγγελία σας επιβεβαιώνεται όταν σας απαντήσουμε στο WhatsApp. Η τιμή στο χαρτάκι είναι η τιμή του καταλόγου· τα έξτρα προστίθενται στην επιβεβαίωση.",
+ closedNotice:"Είμαστε κλειστά αυτή τη στιγμή — ανοίγουμε {when} στις 17:30. Μπορείτε να στείλετε το αίτημά σας και θα σας απαντήσουμε μόλις ανοίξουμε.",
+ /* the room */
+ roomKicker:"Ο χώρος",insideTitle:"Φάτε κάτω από τα νέον.",insideText:"Τούβλινοι τοίχοι, κόκκινο νέον και ένας αστροναύτης που σερβίρει μπέργκερ σε όλο τον γαλαξία. Πιάστε ένα τραπέζι και μείνετε λίγο.",
+ orbCap1:"Κάτω από το νέον",orbCap2:"Ο αστροναύτης",orbCap3:"Στο τραπέζι",orbCap4:"Θες να σε κάνω μπέργκερ;",orbCap5:"Η σάλα",
+ altGal2:"Τραπέζια κάτω από το κόκκινο λογότυπο νέον του Buns and Guns",altGal1:"Η σάλα με την τοιχογραφία ενός αστροναύτη που κρατά ένα μπέργκερ",
+ altGal4:"Γενική άποψη του μαγαζιού με κόκκινα σεπαρέ",altGal3:"Η επιγραφή νέον με το σύνθημα του μαγαζιού, πάνω από μπλουζάκια Buns and Guns",
+ igMore:"Περισσότερα από το μαγαζί στο Instagram · @bunsandguns.cy",
+ /* signature */
+ sigKicker:"Η σπεσιαλιτέ μας",sigGunText:"Η σάλτσα του μαγαζιού. Τη βρίσκετε επίσης στη σαλάτα μπέργκερ και στο Animal Style.",
+ sigWays:"Τέσσερις τρόποι να το παραγγείλετε",sigWaysText:"Μονό smash (100γρ), διπλό smash (2 × 100γρ), κλασικό (200γρ) ή wagyu (200γρ) — από <span data-fact='ogMin'>8,50 €</span> έως <span data-fact='ogMax'>16 €</span>.",
+ sigLoad:"Φορτώστε το",sigLoadText:"Επιπλέον smash ή κλασικό μπιφτέκι, αυγό, μπέικον ή τυρί από τα πρόσθετα.",
+ altOg:"Smash μπέργκερ με τυρί, κόκκινο κρεμμύδι και αγγουράκια τουρσί",altSweetFries:"Τηγανητές γλυκοπατάτες",altChickenFingers:"Τηγανητά φιλετάκια κοτόπουλου με πατάτες",
+ /* reviews */
+ revCount:"Από 311 κριτικές στο Google.",readGoogle:"Διαβάστε τες στο Google",readTripadvisor:"Διαβάστε τες στο Tripadvisor",
+ revAsk:"Φάγατε εδώ;",revAskText:"Αφήστε μια κριτική εκεί που θα τη διαβάσει το επόμενο τραπέζι. Παίρνει μόνο ένα λεπτό.",reviewGoogle:"Κριτική στο Google",reviewTripadvisor:"Κριτική στο Tripadvisor",
+ altHands:"Δύο χέρια κρατούν ένα smash μπέργκερ πάνω από έναν δίσκο με πατάτες",
+ /* faq */
+ faqKicker:"Καλό να ξέρετε",faqTitle:"Πριν παραγγείλετε.",altFaq:"Τρία μπέργκερ, γλυκοπατάτες και σάλτσες κάτω από την επιγραφή νέον του Buns and Guns",
+ /* visit */
+ visitTitle:"Πιερίας, <em>Πύλα</em>.",visitLede:"Πιάστε ένα τραπέζι κάτω από τα νέον ή παραγγείλτε μέσω Foody για διανομή στο σπίτι.",
+ addrFull:"Πιερίας, Πύλα, Λάρνακα 7080",lblPhone:"Τηλέφωνο",perPerson:"Περίπου <span class=\"nw\">10–15 €</span> το άτομο",lblDelivery:"Διανομή",
+ getDirections:"Οδηγίες",copyAddress:"Αντιγραφή διεύθυνσης",share:"Κοινοποίηση",
+ showMap:"Εμφάνιση χάρτη",mapNote:"Ο χάρτης φορτώνει από το Google Maps.",mapTitle:"Χάρτης με τη θέση του Buns and Guns στην Πύλα",
+ hoursClosed:"Κλειστά",hoursRange:"17:30 – 22:00",days:["Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο"],
+ daysOn:["την Κυριακή","τη Δευτέρα","την Τρίτη","την Τετάρτη","την Πέμπτη","την Παρασκευή","το Σάββατο"],tomorrow:"αύριο",todayWord:"σήμερα",
+ statusOpenNow:"Ανοιχτά τώρα έως τις 22:00",statusOpensToday:"Ανοίγουμε σήμερα στις 17:30",statusClosedOpens:"Κλειστά τώρα · ανοίγουμε {day} στις 17:30",
+ toastAddress:"Η διεύθυνση αντιγράφηκε",toastLink:"Ο σύνδεσμος αντιγράφηκε",toastCopyFailed:"Η αντιγραφή απέτυχε",
+ copyAddrText:"Πιερίας, Πύλα, Λάρνακα 7080, Κύπρος",shareTitle:"Buns & Guns, Πύλα",shareText:"Smash μπέργκερ με Black Angus, στην Πύλα",
+ /* footer */
+ footLine:"Θες να σε κάνω μπέργκερ;",footVisit:"Επισκεφθείτε μας",addrFoot:"Πιερίας, Πύλα<br>Λάρνακα 7080, Κύπρος",footOrder:"Παραγγελία",
+ footHours:"Τρίτη έως Κυριακή · 17:30 – 22:00",privacyLink:"Απόρρητο",
+ /* phone bar, lightbox, cursor */
+ callBtn:"Κλήση",callAria:"Κλήση στο Buns and Guns, 99 403810",lbLabel:"Φωτογραφία",lbClose:"Κλείσιμο",lbPrev:"Προηγούμενη φωτογραφία",lbNext:"Επόμενη φωτογραφία",curView:"Προβολή"
+};
+/* menu descriptions in Greek, matched on the English text. A sheet row's own description_gr always wins; a row whose
+   English was changed in the sheet (so no longer matches) shows its English until description_gr is filled in. */
+const DESC_GR={
+ "Brioche, Gun Sauce, tomato, lettuce, red onion, crispy onion, pickles and cheese.":"Ψωμάκι μπριός, Gun Sauce, ντομάτα, μαρούλι, κόκκινο κρεμμύδι, τραγανό κρεμμύδι, αγγουράκια τουρσί και τυρί.",
+ "Brioche, ketchup, mustard, pickles, red onions and cheese.":"Ψωμάκι μπριός, κέτσαπ, μουστάρδα, αγγουράκια τουρσί, κόκκινα κρεμμύδια και τυρί.",
+ "Brioche, black truffle garlic mayo, caramelised onions, crispy onions, lettuce and cheese.":"Ψωμάκι μπριός, μαγιονέζα σκόρδου με μαύρη τρούφα, καραμελωμένα κρεμμύδια, τραγανά κρεμμύδια, μαρούλι και τυρί.",
+ "Brioche, pineapple Jack Daniel's, tomato, red onion, crispy onion, lettuce, bacon and cheese.":"Ψωμάκι μπριός, ανανάς με Jack Daniel's, ντομάτα, κόκκινο κρεμμύδι, τραγανό κρεμμύδι, μαρούλι, μπέικον και τυρί.",
+ "Brioche, BJM sauce, buffalo sauce, tomato, lettuce, red onion, pickles, crispy onion, jalapeño and cheese.":"Ψωμάκι μπριός, σάλτσα BJM, σάλτσα μπάφαλο, ντομάτα, μαρούλι, κόκκινο κρεμμύδι, αγγουράκια τουρσί, τραγανό κρεμμύδι, χαλαπένιο και τυρί.",
+ "Brioche, buttermilk fried chicken breast, honey mustard, lettuce and pickles.":"Ψωμάκι μπριός, τηγανητό στήθος κοτόπουλου μαριναρισμένο σε βουτυρόγαλα, μουστάρδα με μέλι, μαρούλι και αγγουράκια τουρσί.",
+ "Fresh, locally sourced French fries.":"Φρέσκες τηγανητές πατάτες από ντόπια παραγωγή.",
+ "Fresh sweet potato fries.":"Φρέσκες τηγανητές γλυκοπατάτες.",
+ "Cheddar cheese, bacon and crispy onions.":"Τυρί τσένταρ, μπέικον και τραγανά κρεμμύδια.",
+ "Truffle mayo, garlic and parmesan.":"Μαγιονέζα τρούφας, σκόρδο και παρμεζάνα.",
+ "Smashed Black Angus beef patty, cheddar cheese, Gun Sauce, crispy onions.":"Smash μπιφτέκι Black Angus, τυρί τσένταρ, Gun Sauce, τραγανά κρεμμύδια.",
+ "Buttermilk fried chicken strips, fries and sauce.":"Τηγανητά φιλετάκια κοτόπουλου μαριναρισμένα σε βουτυρόγαλα, πατάτες και σάλτσα.",
+ "Shredded lettuce, tomato, red onions, pickles, two smashed patties with cheese, Gun Sauce.":"Ψιλοκομμένο μαρούλι, ντομάτα, κόκκινα κρεμμύδια, αγγουράκια τουρσί, δύο smash μπιφτέκια με τυρί, Gun Sauce.",
+ "Protein sweet potato pancakes, two egg whites, 20g lean bacon, 300g 95% lean beef, three high-protein cheese slices, 30g Philadelphia, ketchup, mustard, lettuce, tomato, red onions and pickles.":"Πανκέικ γλυκοπατάτας με πρωτεΐνη, δύο ασπράδια αυγού, 20γρ άπαχο μπέικον, 300γρ μοσχάρι 95% άπαχο, τρεις φέτες τυρί υψηλής πρωτεΐνης, 30γρ Philadelphia, κέτσαπ, μουστάρδα, μαρούλι, ντομάτα, κόκκινα κρεμμύδια και αγγουράκια τουρσί.",
+ "Triple chocolate brown butter cookie, baked to order, with vanilla ice cream.":"Μπισκότο τριπλής σοκολάτας με καβουρδισμένο βούτυρο, ψημένο τη στιγμή, με παγωτό βανίλια.",
+ "Japanese milk bread French toast, Nutella drizzle and vanilla ice cream.":"Αυγόφετες από ιαπωνικό ψωμί γάλακτος, με Nutella και παγωτό βανίλια."
+};
+const FAQ_GR=[
+ ["Κάνετε διανομή;","Ναι, μέσω Foody — τα κουμπιά παραγγελίας σε αυτή τη σελίδα σας πηγαίνουν κατευθείαν εκεί."],
+ ["Ποια είναι η διαφορά ανάμεσα στα μπιφτέκια;","Το μονό είναι ένα smash μπιφτέκι 100γρ και το διπλό δύο τέτοια (2 × 100γρ). Το κλασικό είναι ένα μπιφτέκι 200γρ που δεν πατιέται στη σχάρα και το wagyu ένα μπιφτέκι wagyu 200γρ."],
+ ["Τι γίνεται με τις αλλεργίες;","Ενημερώστε το προσωπικό μας για οποιαδήποτε αλλεργία ή δυσανεξία πριν παραγγείλετε — θα σας πει τι περιέχει κάθε πιάτο και πώς φτιάχνεται. Μπορείτε να ρωτήσετε για οποιοδήποτε από τα 14 αλλεργιογόνα που ορίζει η ευρωπαϊκή νομοθεσία, όπως η γλουτένη, το γάλα, τα αυγά, το σουσάμι, η μουστάρδα και η σόγια. Αν παραγγέλνετε στο WhatsApp, γράψτε την αλλεργία σας στα Ειδικά αιτήματα."],
+ ["Υπάρχουν επιλογές με πολλή πρωτεΐνη;","Η σαλάτα μπέργκερ και το Buff Burger — πενήντα και εκατόν οκτώ γραμμάρια πρωτεΐνης αντίστοιχα."],
+ ["Πότε είστε κλειστά;","Τις Δευτέρες. Κατά τα άλλα, Τρίτη έως Κυριακή, από τις 17:30 έως τις 22:00."]
+];
+
+/* ═══ analytics ═══ Vercel Web Analytics: no cookies, nothing personal, counts visits. Turn it on in Vercel →
+   the project → Analytics → Enable; until then the script simply is not there. The clicks that matter to the shop
+   (order, call, directions, WhatsApp, menu tabs, language…) are sent as named events: elements carry
+   data-track / data-where, and a few handlers call track() themselves. Nothing loads on a local preview. */
+window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};
+if(location.protocol==="https:"&&!/^(localhost|127\.|\[::1\])/.test(location.hostname)){
+  const sc=document.createElement('script');sc.defer=true;sc.src='/_vercel/insights/script.js';document.head.appendChild(sc);
+}
+function track(name,data){try{window.va('event',{name,data:Object.assign({lang:window.__bgLang},data||{})})}catch(_){}}
+document.addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('[data-track]');if(el)track(el.dataset.track,el.dataset.where?{where:el.dataset.where}:null)},true);
 
 /* ═══ state ═══ */
 const $=id=>document.getElementById(id);
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE='cubic-bezier(.22,1,.36,1)',EASE_IO='cubic-bezier(.65,0,.35,1)';
-let lang="en";try{if(localStorage.getItem("bg-lang")==="gr")lang="gr"}catch(_){}
+let lang=window.__bgLang==="gr"?"gr":"en";   /* chosen in <head>: ?lang=, the last choice, or the browser's language */
 const tr=(k,en)=>lang==="gr"&&k&&GR[k]!=null?GR[k]:en;
 let size=0,tab="burgers";
-const eur=n=>"€"+n.toFixed(2);
+/* prices and decimals: €8.50 in English, 8,50 € in Greek (the € kept on the number's line) */
+const NF_GR=new Intl.NumberFormat("el-GR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const num2=n=>lang==="gr"?NF_GR.format(n):n.toFixed(2);
+const eur=n=>lang==="gr"?num2(n)+"\u00a0€":"€"+num2(n);
+const eurRange=(a,b)=>lang==="gr"?num2(a)+"–"+num2(b)+"\u00a0€":"€"+num2(a)+"–"+num2(b);
+const decimal=(n,d)=>{const t=n.toFixed(d);return lang==="gr"?t.replace(".",","):t};
+/* a dish's description in the page's language (see DESC_GR) */
+const DESC_KEY=t=>String(t||"").replace(/[’‘]/g,"'").trim().replace(/\s+/g," ").replace(/\.$/,"").toLowerCase();
+const DESC_GR_N={};for(const k in DESC_GR)DESC_GR_N[DESC_KEY(k)]=DESC_GR[k];
+const descOf=it=>lang==="gr"?(it.desc_gr||DESC_GR_N[DESC_KEY(it.desc)]||it.desc||""):(it.desc||it.desc_gr||"");
+/* Greek set in capitals drops its accents (ΚΑΤΑΛΟΓΟΣ, never ΚΑΤΆΛΟΓΟΣ). CSS uppercase does it in some browsers
+   and not others, so the text of every capitalised label is cleaned here when the page is Greek */
+const UPPER_SEL='.kicker,.tbrand i,.pill,.herometa div>span,.marq span,.sizewrap>span,.gname,.picks label>span,.note-label,.build legend,.kv>span,.fcol h5,#cur,.t-stamp,.t-foot,.tl>span';
+const noTonos=t=>t.normalize("NFD").replace(/\u0344/g,"\u0308").replace(/\u0301/g,"").normalize("NFC");
+function capsGr(root){
+  if(lang!=="gr")return;
+  const clean=el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);for(let n;(n=w.nextNode());){const t=noTonos(n.nodeValue);if(t!==n.nodeValue)n.nodeValue=t}};
+  root=root||document;
+  if(root.matches&&root.matches(UPPER_SEL))clean(root);
+  root.querySelectorAll(UPPER_SEL).forEach(clean);
+}
 let mHalf=0; /* marquee loop width, re-measured whenever its text changes */
+/* what is near the screen; the frame loop only works on those (see "depth: setup") */
+const near=new Set();
+const nearIO=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?near.add(e.target):near.delete(e.target)),{rootMargin:"160px 0px"});
 
 /* split headings into words so they can rise one after another */
 function splitHeads(){
@@ -1339,10 +1596,10 @@ function placeAll(){[$('tabs'),$('sizebar'),$('lang'),$('nav')].forEach(b=>place
 /* ═══ patty selector ═══ */
 SIZES.forEach((s,i)=>{
   const b=document.createElement('button');
-  b.type="button";b.className=i===0?"on":"";b.textContent=s;b.dataset.i=i;
+  b.type="button";b.className=i===0?"on":"";b.textContent=s;b.dataset.i=i;b.setAttribute('aria-pressed',i===0);
   b.onclick=()=>{
     if(size===i)return;size=i;
-    $('sizebar').querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.i===i));
+    $('sizebar').querySelectorAll('button').forEach(x=>{x.classList.toggle('on',+x.dataset.i===i);x.setAttribute('aria-pressed',+x.dataset.i===i)});
     placeInd($('sizebar'),b);
     rollPrices();
   };
@@ -1363,12 +1620,13 @@ function rollPrices(){
 /* ═══ menu render ═══ */
 function priceHTML(it){
   if(it.prices)return `<span class="pv" data-p="[${it.prices}]">${eur(it.prices[size])}</span><span class="ps">${tr(SK[size],SIZES[size])}</span>`;
-  const v=Array.isArray(it.price)?eur(it.price[0])+"–"+it.price[1].toFixed(2):eur(it.price);
+  const v=Array.isArray(it.price)?eurRange(it.price[0],it.price[1]):eur(it.price);
   return `<span class="pv">${v}</span>`;
 }
 /* sheet rows carry their own Greek (name_gr, …); built-in rows go through GR keys */
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
 const txt=(gr,k,en)=>esc(lang==="gr"&&gr?gr:tr(k,en));
+const nameOf=it=>lang==="gr"&&it.name_gr?it.name_gr:tr(it.nk,it.name);   /* a dish's name as the board shows it */
 /* ═══ menu cards (after brewns' menu card) ═══
    An item with a real photograph is a bordered card: its index, the photo, name and price.
    The card rises in on a stagger as it enters the viewport; the photo inside lags a beat
@@ -1380,9 +1638,11 @@ const cardIO=new IntersectionObserver(es=>{
   es.forEach(x=>{if(!x.isIntersecting)return;x.target.style.setProperty('--o',k++);x.target.classList.add('in');cardIO.unobserve(x.target)});
 },{threshold:.18});
 function bindCards(){
+  CARDS.forEach(c=>{nearIO.unobserve(c.el);near.delete(c.el)});
   CARDS=[...$('menuBox').querySelectorAll('.mcard')].map(el=>({el,inner:el.querySelector('.mc-in'),lagEl:el.querySelector('.mc-lag'),lag:16,tx:0,ty:0,x:0,y:0}));
   CARDS.forEach(c=>{
     if(reduce){c.el.classList.add('in');return}
+    nearIO.observe(c.el);
     cardIO.observe(c.el);
     if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
     c.el.addEventListener('pointermove',e=>{const r=c.el.getBoundingClientRect();c.tx=Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1));c.ty=Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))});
@@ -1390,12 +1650,12 @@ function bindCards(){
   });
 }
 function cardHTML(it,idx){
-  const pic=PIC[it.name],[w,hgt,pos]=PIC_META[it.name]||[680,382,"50% 50%"],name=txt(it.name_gr,it.nk,it.name);
+  const pic=PIC[it.name],[w,hgt,pos]=PIC_META[it.name]||[680,382,"50% 50%"],name=esc(nameOf(it));
   return `<article class="mcard"><div class="mc-in">
     <p class="mc-idx">${String(idx+1).padStart(2,"0")}</p>
-    <button class="mc-pic" type="button" data-src="${pic}" aria-label="Open photograph"><span class="mc-lag"><img src="${pic}" alt="${name}" width="${w}" height="${hgt}" style="object-position:${pos}" loading="lazy" decoding="async"></span></button>
+    <button class="mc-pic" type="button" data-src="${pic}" aria-label="${esc(tr("openPhoto","Open photograph"))}: ${name}"><span class="mc-lag"><img src="${pic}" alt="${name}" width="${w}" height="${hgt}" style="object-position:${pos}" loading="lazy" decoding="async"></span></button>
     <div class="mc-head"><h3>${name}</h3><div class="mprice">${priceHTML(it)}</div></div>
-    ${it.desc||it.desc_gr?`<p class="desc">${txt(it.desc_gr,null,it.desc||it.desc_gr)}</p>`:""}
+    ${descOf(it)?`<p class="desc">${esc(descOf(it))}</p>`:""}
     ${it.meta?`<span class="meta">${txt(null,it.mk,it.meta)}</span>`:""}
   </div></article>`;
 }
@@ -1410,8 +1670,8 @@ function render(animate){
     rows.map(it=>{
       return `<div class="mrow${g.flat?" flat":""} nopic" style="--i:${n++}">
         <div>
-          <h3>${txt(it.name_gr,it.nk,it.name)}</h3>
-          ${it.desc||it.desc_gr?`<p class="desc">${txt(it.desc_gr,null,it.desc||it.desc_gr)}</p>`:""}
+          <h3>${esc(nameOf(it))}</h3>
+          ${descOf(it)?`<p class="desc">${esc(descOf(it))}</p>`:""}
           ${it.meta?`<span class="meta">${txt(null,it.mk,it.meta)}</span>`:""}
         </div>
         <div class="mprice">${priceHTML(it)}</div>
@@ -1429,7 +1689,7 @@ const findItem=name=>{
   for(const t in MENU)for(const g of MENU[t])for(const it of g.items)if(it.name.toLowerCase()===name.toLowerCase())return it;
   return null;
 };
-const whole=n=>"€"+(n%1?n.toFixed(2):n);   /* €16, €8.50 — the style of the prose */
+const whole=n=>n%1?eur(n):lang==="gr"?n+"\u00a0€":"€"+n;   /* €16, €8.50 (16 €, 8,50 € in Greek) — the style of the prose */
 function syncFacts(){
   /* "four ways to order it" is about The OG; without it, span every patty-priced burger */
   const og=findItem("The OG");
@@ -1440,10 +1700,10 @@ function syncFacts(){
     else if(key==="ogMax"&&ps.length)el.textContent=whole(Math.max(...ps));
     else if(key==="price"){
       const it=findItem(name);   /* dropped from the menu: show no price rather than an old one */
-      el.textContent=!it?"":it.prices?eur(Math.min(...it.prices)):Array.isArray(it.price)?eur(it.price[0])+"–"+it.price[1].toFixed(2):eur(it.price);
+      el.textContent=!it?"":it.prices?eur(Math.min(...it.prices)):Array.isArray(it.price)?eurRange(it.price[0],it.price[1]):eur(it.price);
     }else if(key==="desc"){
       const it=findItem(name);
-      if(it&&(it.desc||it.desc_gr))el.textContent=lang==="gr"&&it.desc_gr?it.desc_gr:it.desc||it.desc_gr;
+      if(it&&descOf(it))el.textContent=descOf(it);
     }
   });
 }
@@ -1461,9 +1721,11 @@ function switchTab(t){
   },220);
 }
 $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{
-  $('tabs').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  $('tabs').querySelectorAll('button').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1});
+  $('menuBox').setAttribute('aria-labelledby',b.id);
   placeInd($('tabs'),b);
   b.scrollIntoView({block:"nearest",inline:"nearest",behavior:reduce?"auto":"smooth"});
+  if(b.dataset.f!==tab)track('menu_tab',{tab:b.dataset.f});
   switchTab(b.dataset.f);
 });
 render(false);
@@ -1491,24 +1753,43 @@ document.querySelectorAll('.chips button').forEach(b=>
   b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=="true")));
 const picked=kind=>[...document.querySelectorAll(`.chips[data-kind="${kind}"] button[aria-pressed="true"]`)].map(b=>b.textContent.trim());
 
+/* the menu price of what is picked: the burger at its patty, or "from" its lowest patty price.
+   Read from the board, so it follows the sheet; extras are the shop's to add when it confirms */
+function pickedPrice(){
+  const it=burgerList().find(i=>i.name===bBurger.value);if(!it)return "";
+  if(it.prices){const k=bSize.selectedIndex-1;return k>=0&&it.prices[k]!=null?eur(it.prices[k]):tr("msgFrom","from {p}").replace("{p}",eur(Math.min(...it.prices)))}
+  return Array.isArray(it.price)?eurRange(it.price[0],it.price[1]):it.price!=null?eur(it.price):"";
+}
+/* the message, in the page's language, with the names exactly as the customer saw them */
 function buildMessage(){
-  const lines=[],patty=bSize.value?bSize.options[bSize.selectedIndex].text:"";
-  if(bBurger.value)lines.push(`${tr("msgBurger","Burger")}: ${bBurger.value}${patty?" ("+patty+")":""}`);
+  const lines=[],patty=bSize.value?bSize.options[bSize.selectedIndex].text:"",burger=bBurger.value?bBurger.options[bBurger.selectedIndex].text:"";
+  if(burger)lines.push(`${tr("msgBurger","Burger")}: ${burger}${patty?" ("+patty+")":""}`);
   else if(patty)lines.push(`${tr("msgPatty","Patty")}: ${patty}`);
   if(picked("toppings").length)lines.push(`${tr("msgToppings","Toppings")}: ${picked("toppings").join(", ")}`);
   if(picked("sauces").length)lines.push(`${tr("msgSauces","Sauces")}: ${picked("sauces").join(", ")}`);
   if(bNote.value.trim())lines.push(`${tr("msgSpecialRequest","Special request")}: ${bNote.value.trim()}`);
+  const pr=pickedPrice();if(pr&&lines.length)lines.push(`${tr("msgPrice","Menu price")}: ${pr}`);
   return lines.join("\n");
 }
+const fullMessage=m=>tr("waGreeting","Hi Buns and Guns!")+"\n"+tr("waRequest","Order request:")+"\n"+m;
 $('b-wa').addEventListener('click',()=>{
   const m=buildMessage();
   if(!m){bMsg.textContent=tr("msgPickSomething","Pick something or write a request first.");return}
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(tr("waGreeting","Hi Buns and Guns!")+"\n"+m)}`,"_blank","noopener");
-  bMsg.textContent=tr("msgOpeningWhatsapp","Opening WhatsApp.");
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(fullMessage(m))}`,"_blank","noopener");
+  /* WhatsApp may not open (not installed, a desktop without it, a blocked pop-up): say what to do instead */
+  bMsg.innerHTML=tr("msgOpeningWhatsapp",'Opening WhatsApp… If nothing opened, call us on <a href="tel:+35799403810">99 403810</a> or copy your order.');
+  $('b-copy').hidden=false;
+  track('whatsapp_send',{patty:bSize.selectedIndex,lines:m.split("\n").length});
+});
+$('b-copy').addEventListener('click',()=>{
+  const m=buildMessage();
+  if(!m){bMsg.textContent=tr("msgPickSomething","Pick something or write a request first.");return}
+  copyText(fullMessage(m),tr("msgCopied","Order copied — paste it into a message to 99 403810."));
+  bMsg.textContent=tr("msgCopied","Order copied — paste it into a message to 99 403810.");
 });
 $('b-clear').addEventListener('click',()=>{
   document.querySelectorAll('.chips button').forEach(b=>b.setAttribute('aria-pressed',"false"));
-  bBurger.value="";bSize.value="";bSize.disabled=false;bNote.value="";bMsg.textContent="";
+  bBurger.value="";bSize.value="";bSize.disabled=false;bNote.value="";bMsg.textContent="";$('b-copy').hidden=true;
 });
 
 /* ═══ menu from Google Sheets ═══
@@ -1637,10 +1918,19 @@ loadSheet();
 
 /* ═══ faq ═══ */
 function renderFaq(){
+  const was=[...$('faqBox').querySelectorAll('.q')].findIndex(q=>q.classList.contains('open'));   /* a language switch keeps the open answer open */
   $('faqBox').innerHTML=(lang==="gr"?FAQ_GR:FAQ).map(([q,a],i)=>
-    `<div class="q"><button type="button" aria-expanded="false" aria-controls="qa${i}">${q}<span class="pm" aria-hidden="true"></span></button><div class="a" id="qa${i}"><div><p>${a}</p></div></div></div>`).join("");
+    `<div class="q${i===was?" open":""}" data-id="${FAQ_ID[i]||i}"><button type="button" aria-expanded="${i===was}" aria-controls="qa${i}" id="qq${i}">${q}<span class="pm" aria-hidden="true"></span></button><div class="a" id="qa${i}" role="region" aria-labelledby="qq${i}"><div><p>${a}</p></div></div></div>`).join("");
 }
 renderFaq();
+/* "Allergen information" under the board: to the FAQ, with that answer open */
+document.querySelectorAll('[data-faq]').forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  const q=$('faqBox').querySelector(`.q[data-id="${a.dataset.faq}"]`);
+  if(q&&!q.classList.contains('open'))q.querySelector('button').click();
+  go('faq');
+  setTimeout(()=>q&&q.querySelector('button').focus({preventScroll:true}),reduce?0:900);
+}));
 $('faqBox').onclick=e=>{
   const b=e.target.closest('.q button');if(!b)return;
   const q=b.parentElement,open=q.classList.contains('open');
@@ -1651,13 +1941,20 @@ $('faqBox').onclick=e=>{
 /* ═══ utilities ═══ */
 let tid;
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tid);tid=setTimeout(()=>t.classList.remove('on'),2000)}
+/* copy, with the old textarea way for in-app browsers (Instagram, Facebook) that block the clipboard API */
 function copyText(t,m){
-  if(!navigator.clipboard){toast(tr("toastCopyFailed","Copy failed"));return}
-  navigator.clipboard.writeText(t).then(()=>toast(m),()=>toast(tr("toastCopyFailed","Copy failed")));
+  const fail=()=>{
+    try{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();toast(ok?m:tr("toastCopyFailed","Copy failed"))}
+    catch(_){toast(tr("toastCopyFailed","Copy failed"))}
+  };
+  if(!navigator.clipboard||!window.isSecureContext){fail();return}
+  navigator.clipboard.writeText(t).then(()=>toast(m),fail);
 }
-$('copyBtn').onclick=()=>copyText('Pierias, Pyla, Larnaca 7080, Cyprus',tr('toastAddress','Address copied'));
+$('copyBtn').onclick=()=>copyText(tr('copyAddrText','Pierias, Pyla, Larnaca 7080, Cyprus'),tr('toastAddress','Address copied'));
 $('shareBtn').onclick=()=>{
-  const d={title:"Buns & Guns, Pyla",text:"Black Angus smashed to order, in Pyla",url:location.href};
+  const d={title:tr("shareTitle","Buns & Guns, Pyla"),text:tr("shareText","Black Angus smashed to order, in Pyla"),url:location.href};
+  track('share',{native:!!navigator.share});
   navigator.share?navigator.share(d).catch(()=>{}):copyText(location.href,tr("toastLink","Link copied"));
 };
 
@@ -1750,6 +2047,12 @@ addEventListener('keydown',e=>{
   if(e.key==="Escape")closeLb();
   else if(e.key==="ArrowRight")lbStep(1);
   else if(e.key==="ArrowLeft")lbStep(-1);
+  else if(e.key==="Tab"){   /* keyboard focus stays inside the open photo */
+    const f=[...lb.querySelectorAll('button')].filter(b=>getComputedStyle(b).display!=="none");
+    if(!f.length)return;
+    const i=f.indexOf(document.activeElement),n=e.shiftKey?(i<=0?f.length-1:i-1):(i<0||i===f.length-1?0:i+1);
+    f[n].focus();e.preventDefault();
+  }
 });
 
 /* menu: arrow keys move along the tabs, and a sideways swipe on the board changes tab */
@@ -1785,13 +2088,19 @@ function hours(){
   const openToday=!CLOSED.includes(today),open=openToday&&hNow>=OPEN&&hNow<CLOSE;
   $('status').classList.toggle('shut',!open);
   const st=$('statusText');
+  let when="";   /* when we open next, for the note in the order builder: today / tomorrow / on Tuesday */
   if(open)st.textContent=tr("statusOpenNow","Open now until 10 pm");
-  else if(openToday&&hNow<OPEN)st.textContent=tr("statusOpensToday","Opens today at 5:30 pm");
+  else if(openToday&&hNow<OPEN){st.textContent=tr("statusOpensToday","Opens today at 5:30 pm");when=tr("todayWord","today")}
   else{
     let n=(today+1)%7;while(CLOSED.includes(n))n=(n+1)%7;
-    const when=n===(today+1)%7?tr("tomorrow","tomorrow"):D[n];
-    st.textContent=lang==="gr"?GR.statusClosedOpens.replace("{day}",when):"Closed now · opens "+when+" at 5:30 pm";
+    const tmr=n===(today+1)%7;
+    when=tmr?tr("tomorrow","tomorrow"):lang==="gr"?GR.daysOn[n]:"on "+DAYS[n];
+    st.textContent=lang==="gr"?GR.statusClosedOpens.replace("{day}",when):"Closed now · opens "+(tmr?"tomorrow":DAYS[n])+" at 5:30 pm";
   }
+  /* sending an order request while we are shut is fine, but the customer should know it waits till we open */
+  const c=$('b-closed');
+  if(c){c.hidden=open;if(!open)c.textContent=tr("closedNotice","We're closed right now — we open {when} at 5:30 pm. You can still send your request and we'll reply as soon as we open.").replace("{when}",when)}
+  capsGr($('status'));
 }
 hours();
 setTimeout(()=>{hours();setInterval(hours,60000)},60000-Date.now()%60000);
@@ -1805,14 +2114,23 @@ function ticker(){
   mHalf=0;
 }
 
-/* ═══ language ═══ */
-function setLang(l){
-  lang=l;try{localStorage.setItem("bg-lang",l)}catch(_){}
-  document.documentElement.lang=l==="gr"?"el":"en";
+/* ═══ language ═══
+   Everything with data-i18n / -aria / -ph / -alt swaps; the board, builder, hours, FAQ and ticker redraw; the tab
+   title, description and canonical follow; a choice made with the toggle is remembered and put in the address
+   (?lang=el), so a shared link opens in the same language. */
+const META_EN={t:document.title,d:(document.querySelector('meta[name=description]')||{}).content||""};
+const mapSrc=()=>"https://maps.google.com/maps?q=XMWP%2BX6V%20Pyla%2C%20Cyprus&z=16&output=embed&hl="+(lang==="gr"?"el":"en");
+function syncUrl(){try{const u=new URL(location.href);if(lang==="gr")u.searchParams.set("lang","el");else u.searchParams.delete("lang");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}catch(_){}}
+let langReady=false;
+function setLang(l,byUser){
+  lang=l;window.__bgLang=l;
+  if(byUser){try{localStorage.setItem("bg-lang",l)}catch(_){}syncUrl()}
+  const root=document.documentElement,h1=document.querySelector('#top h1'),h1Was=h1.innerHTML;
+  root.lang=l==="gr"?"el":"en";
   document.querySelectorAll('#lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===l));
   document.querySelectorAll('[data-i18n]').forEach(el=>{
-    el._en??=el.innerHTML;const g=tr(el.dataset.i18n,null);
-    el.innerHTML=g!=null?g:el._en;
+    el._en??=el.innerHTML;const g=tr(el.dataset.i18n,null),next=g!=null?g:el._en;
+    if(el.innerHTML!==next)el.innerHTML=next;
   });
   document.querySelectorAll('[data-i18n-aria]').forEach(el=>{
     el._enA??=el.getAttribute('aria-label');el.setAttribute('aria-label',tr(el.dataset.i18nAria,el._enA));
@@ -1820,11 +2138,30 @@ function setLang(l){
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
     el._enP??=el.placeholder;el.placeholder=tr(el.dataset.i18nPh,el._enP);
   });
+  document.querySelectorAll('[data-i18n-alt]').forEach(el=>{
+    el._enAlt??=el.getAttribute('alt');el.setAttribute('alt',tr(el.dataset.i18nAlt,el._enAlt));
+  });
+  /* every photo that opens says so, and which photo it is */
+  document.querySelectorAll('button[data-src]:not(.mc-pic)').forEach(b=>{const im=b.querySelector('img');b.setAttribute('aria-label',tr("openPhoto","Open photograph")+(im&&im.alt?": "+im.alt:""))});
   $('sizebar').querySelectorAll('button').forEach((b,i)=>b.textContent=tr(SK[i],SIZES[i]));
-  render(false);fillBurgers();bMsg.textContent="";hours();renderFaq();ticker();splitHeads();
+  document.title=tr("docTitle",META_EN.t);
+  const md=document.querySelector('meta[name=description]');if(md)md.content=tr("docDesc",META_EN.d);
+  const can=document.querySelector('link[rel=canonical]');if(can)can.href=location.origin+location.pathname+(l==="gr"?"?lang=el":"");
+  const pl=$('privacyLink');if(pl)pl.href="privacy.html"+(l==="gr"?"?lang=el":"");
+  const mf=document.querySelector('#map iframe');if(mf){mf.title=tr("mapTitle","Map showing Buns and Guns in Pyla");if(mf.src!==mapSrc())mf.src=mapSrc()}
+  document.querySelectorAll('.cu').forEach(el=>{if(el._done&&!el._run)el.textContent=decimal(+el.dataset.to,+(el.dataset.dec||0))});
+  render(false);fillBurgers();bMsg.textContent="";hours();renderFaq();ticker();splitHeads();capsGr();
+  root.classList.remove('i18n-wait');
   requestAnimationFrame(placeAll);
+  /* the headline rises again in the new language (its line masks back on until it lands) */
+  if(langReady&&h1.innerHTML!==h1Was&&!reduce){
+    h1.classList.remove('risen');
+    const free=()=>h1.classList.add('risen'),last=h1.querySelector('span:last-child i');
+    if(last)last.addEventListener('animationend',free,{once:true});setTimeout(free,1700);
+  }
+  langReady=true;
 }
-document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang,true)});
 setLang(lang);
 
 /* ═══ scrolling ═══ */
@@ -1834,71 +2171,45 @@ function go(id){
   if(lenis)lenis.scrollTo(top,{duration:1.5});
   else scrollTo({top,behavior:reduce?'auto':'smooth'});
 }
+/* smooth wheel scrolling (Lenis) for a mouse or trackpad only. A phone scrolls natively and never downloads it */
+const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 function startLenis(){
-  if(reduce||!window.Lenis||lenis)return;
+  if(reduce||!fine||lenis)return;
   if(document.documentElement.classList.contains('ld-lock')){setTimeout(startLenis,150);return}   /* scroll waits for the loader */
+  if(!window.Lenis){
+    if(!startLenis.asked){startLenis.asked=true;const sc=document.createElement('script');sc.src='https://unpkg.com/lenis@1.1.13/dist/lenis.min.js';sc.async=true;sc.onload=startLenis;document.head.appendChild(sc)}
+    return;
+  }
   lenis=new Lenis({lerp:.085,smoothWheel:true,wheelMultiplier:1});
   (function raf(t){lenis.raf(t);requestAnimationFrame(raf)})(performance.now());
 }
-document.addEventListener('DOMContentLoaded',startLenis);
-addEventListener('load',startLenis);
+if(document.readyState==='complete')startLenis();else addEventListener('load',startLenis);
 
 /* nav hover follows the pointer, rests on the current section */
 $('nav').querySelectorAll('button').forEach(b=>b.addEventListener('mouseenter',()=>placeInd($('nav'),b)));
 $('nav').addEventListener('mouseleave',()=>placeInd($('nav'),current($('nav'))));
 
-/* ═══ depth: setup ═══ */
+/* ═══ depth: setup ═══
+   October 2026: the frame loop only touches what is near the screen (IntersectionObservers keep the list), reads every
+   position before it writes any, and never writes a transform that has not changed. The 3D tilt, the cursor disc
+   and the glare that v7 switched off in CSS no longer run at all. */
 const hd=$('hd'),prog=$('prog'),pars=[...document.querySelectorAll('[data-par]')];
-const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 const clamp=(v,a,b)=>v<a?a:v>b?b:v;
-const heroEl=$('top'),heroImg=$('heroShot'),heroPic=heroImg.querySelector('img'),heroTx=document.querySelector('.herocopy');
-const hp={tx:0,ty:0,x:0,y:0};
-const T3=[...document.querySelectorAll('[data-t3d]')].map(el=>({el,kind:el.dataset.t3d,side:+(el.dataset.side||0),tx:0,ty:0,x:0,y:0}));
+const heroImg=$('heroShot'),heroPic=heroImg.querySelector('img'),heroTx=document.querySelector('.herocopy');
+let heroFrameH=heroImg.offsetHeight;
+new ResizeObserver(()=>{heroFrameH=heroImg.offsetHeight}).observe(heroImg);
 const marq=document.querySelector('.marq'),tk=$('tk');
 let mx=0,mv=1,mDir=1,mSk=0,mSlow=1;
 if(!reduce)marq.classList.add('js');
-const ptis=[...document.querySelectorAll('.pti')];
-
-/* photo cursor */
-const cur=$('cur');let cx=-200,cy=-200,px=-200,py=-200;
-const useCur=fine&&!reduce;
-if(useCur){
-  document.documentElement.classList.add('has-cur');
-  addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;if(cx<-100){cx=px;cy=py}},{passive:true});
-  document.addEventListener('pointerover',e=>{
-    cur.classList.toggle('on',!!e.target.closest('[data-src]')&&!lb.classList.contains('on'));
-  });
-  document.documentElement.addEventListener('pointerleave',()=>cur.classList.remove('on'));
-}
-
-/* a soft light that follows the pointer across each photograph */
-document.querySelectorAll('[data-hover],#heroShot').forEach(el=>{
-  const f=el.classList.contains('frame')||el.id==="heroShot"?el:el.querySelector('.frame');
-  if(f)f.insertAdjacentHTML('beforeend','<span class="glare" aria-hidden="true"></span>');
-});
-const setGlare=(el,e)=>{const r=el.getBoundingClientRect();el.style.setProperty('--gx',(e.clientX-r.left).toFixed(0)+'px');el.style.setProperty('--gy',(e.clientY-r.top).toFixed(0)+'px');return r};
+pars.forEach(p=>nearIO.observe(p));
+nearIO.observe(marq);
+/* signature: each point lights as you read down to it */
+const ptiIO=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('act',e.isIntersecting||e.boundingClientRect.top<0)),{rootMargin:"0px 0px -36% 0px"});
+document.querySelectorAll('.pti').forEach(el=>ptiIO.observe(el));
 
 if(fine&&!reduce){
-  heroEl.addEventListener('pointermove',e=>{
-    const r=heroEl.getBoundingClientRect();
-    hp.tx=clamp((e.clientX-r.left)/r.width*2-1,-1,1);
-    hp.ty=clamp((e.clientY-r.top)/r.height*2-1,-1,1);
-    setGlare(heroImg,e);
-  });
-  heroEl.addEventListener('pointerenter',()=>heroEl.classList.add('pt-on'));
-  heroEl.addEventListener('pointerleave',()=>{hp.tx=hp.ty=0;heroEl.classList.remove('pt-on')});
-  T3.forEach(o=>{
-    if(!o.el.hasAttribute('data-hover'))return;
-    o.el.addEventListener('pointermove',e=>{
-      const r=setGlare(o.el,e);
-      o.tx=clamp((e.clientX-r.left)/r.width*2-1,-1,1);
-      o.ty=clamp((e.clientY-r.top)/r.height*2-1,-1,1);
-    });
-    o.el.addEventListener('pointerleave',()=>{o.tx=o.ty=0});
-  });
-  document.querySelectorAll('.revcard,.menufoot').forEach(el=>el.addEventListener('pointermove',e=>setGlare(el,e)));
   /* buttons lean gently toward the cursor */
-  document.querySelectorAll('.btn,.ico,#totop').forEach(el=>{
+  document.querySelectorAll('.btn,#totop').forEach(el=>{
     el.addEventListener('pointermove',e=>{
       const r=el.getBoundingClientRect();
       const dx=clamp((e.clientX-r.left-r.width/2)*.22,-8,8),dy=clamp((e.clientY-r.top-r.height/2)*.3,-6,6);
@@ -1911,92 +2222,66 @@ if(fine&&!reduce){
 }
 addEventListener('resize',()=>{mHalf=0});
 
-/* ═══ frame loop: header, progress, parallax, depth, marquee ═══ */
+/* ═══ frame loop: header, progress, parallax, menu cards, marquee ═══ */
 function setT(el,s){if(el._t!==s){el._t=s;el.style.transform=s}}
+const totop=$('totop'),mbar=$('mbar');
 let lastY=scrollY,lastT=performance.now();
 (function tick(now){
   now=now||performance.now();
   const dt=clamp((now-lastT)/16.667,.25,3);lastT=now;
-  const y=scrollY,vh=innerHeight,max=document.documentElement.scrollHeight-vh,dy=y-lastY;
-  hd.classList.toggle('solid',y>30);
-  if(y>lastY+6&&y>400)hd.classList.add('hide');
-  else if(y<lastY-6||y<400)hd.classList.remove('hide');
+  const y=scrollY,vh=innerHeight,dy=y-lastY;
+  if(dy||!tick.once){
+    tick.once=true;
+    hd.classList.toggle('solid',y>30);
+    if(y>lastY+6&&y>400)hd.classList.add('hide');
+    else if(y<lastY-6||y<400)hd.classList.remove('hide');
+    const max=document.documentElement.scrollHeight-vh;
+    setT(prog,`scaleX(${(max>0?y/max:0).toFixed(4)})`);
+    totop.classList.toggle('on',y>1000);
+    mbar.classList.toggle('on',y>360);
+  }
   lastY=y;
-  prog.style.transform=`scaleX(${max>0?y/max:0})`;
-  $('totop').classList.toggle('on',y>1000);
-  $('mbar').classList.toggle('on',y>360);
-  for(const el of ptis){const r=el.getBoundingClientRect();el.classList.toggle('act',r.top<vh*.64)}
   if(!reduce){
-    for(const p of pars){
-      const r=p.parentElement.getBoundingClientRect();
-      if(r.bottom<-100||r.top>vh+100)continue;
-      const lim=r.height*.06,off=Math.max(-lim,Math.min(lim,(r.top+r.height/2-vh/2)*-(+p.dataset.par)));
-      p.style.transform=`translate3d(0,${off.toFixed(1)}px,0)`;
+    /* read every position first */
+    const pr=[],cr=[];
+    for(const p of pars)if(near.has(p))pr.push([p,p.parentElement.getBoundingClientRect()]);
+    for(const c of CARDS)if(near.has(c.el))cr.push([c,c.el.getBoundingClientRect()]);
+    /* then write */
+    for(const [p,r] of pr){
+      const lim=r.height*.06,off=clamp((r.top+r.height/2-vh/2)*-(+p.dataset.par),-lim,lim);
+      setT(p,`translate3d(0,${off.toFixed(1)}px,0)`);
     }
     const k=1-Math.pow(1-.075,dt);
-
-    /* hero: on desktop the sign leans toward the cursor (a few degrees, on a damped follow)
-       and lies back as you scroll away; on a phone the photograph drifts inside its frame */
-    hp.x+=(hp.tx-hp.x)*k;hp.y+=(hp.ty-hp.y)*k;
+    /* hero: on desktop the copy lifts and fades as you scroll away; on a phone the photograph drifts in its frame */
     if(y<vh*1.3){
-      const wide=innerWidth>980;
-      if(wide){
-        const p=clamp(y/(vh*.9),0,1);
-        setT(heroImg,`perspective(1100px) translate3d(0,${(p*40).toFixed(1)}px,0) rotateX(${(p*9-hp.y*4).toFixed(2)}deg) rotateY(${(hp.x*5).toFixed(2)}deg) scale(${(1-p*.05).toFixed(4)})`);
-        heroTx.style.transform=`translate3d(0,${(p*-44).toFixed(1)}px,0)`;heroTx.style.opacity=(1-p*.6).toFixed(3);
-      }else{
-        setT(heroImg,"none");
-        setT(heroPic,`translate3d(0,${clamp(y*.14,0,heroImg.offsetHeight*.07).toFixed(1)}px,0) scale(1.08)`);
-      }
+      if(innerWidth>980){
+        const p=clamp(y/(vh*.9),0,1),o=(1-p*.6).toFixed(3);
+        setT(heroTx,`translate3d(0,${(p*-44).toFixed(1)}px,0)`);
+        if(heroTx._o!==o){heroTx._o=o;heroTx.style.opacity=o}
+      }else setT(heroPic,`translate3d(0,${clamp(y*.14,0,heroFrameH*.07).toFixed(1)}px,0) scale(1.08)`);
     }
-
-    /* the cursor disc trails the pointer a touch, so it feels weighted */
-    if(useCur){
-      const kc=1-Math.pow(1-.2,dt);
-      cx+=(px-cx)*kc;cy+=(py-cy)*kc;
-      cur.style.transform=`translate3d(${cx.toFixed(1)}px,${cy.toFixed(1)}px,0)`;
-    }
-
-    /* photographs stand up out of the page as they arrive */
-    for(const o of T3){
-      o.x+=(o.tx-o.x)*k;o.y+=(o.ty-o.y)*k;
-      const r=o.el.getBoundingClientRect();
-      if(r.bottom<-200||r.top>vh+200)continue;
-      let s;
-      if(o.kind==="swivel"){
-        const t=clamp((r.top+r.height/2-vh/2)/(vh*.8),-1,1);
-        s=`perspective(1400px) rotateY(${(t*-10+o.x*7).toFixed(2)}deg) rotateX(${(t*5-o.y*6).toFixed(2)}deg)`;
-      }else{
-        const p=clamp((vh-r.top)/(vh*.7),0,1),q=Math.pow(1-p,3);
-        s=`perspective(1400px) translate3d(0,${(q*80).toFixed(1)}px,0) rotateX(${(q*18-o.y*5).toFixed(2)}deg) rotateY(${(o.side*q*9+o.x*6).toFixed(2)}deg) scale(${(1-q*.08).toFixed(4)})`;
-      }
-      setT(o.el,s);
-    }
-
-    /* menu cards: the photo eases from 16px behind to rest as the card climbs to mid-screen
-       (on a slower follow than the card, so they part and close up); the card leans on a
-       damped follow toward the pointer, a few degrees at most */
+    /* menu cards: the photo eases from 16px behind to rest as the card climbs to mid-screen; on a mouse the card
+       leans a few degrees toward the pointer */
     const kc=1-Math.pow(1-.06,dt);
-    for(const c of CARDS){
-      const r=c.el.getBoundingClientRect();
-      if(r.bottom<-50||r.top>vh+50)continue;
+    for(const [c,r] of cr){
       const want=16*clamp((r.top+r.height/2-vh/2)/(vh/2),0,1);
       c.lag+=(want-c.lag)*kc;
-      c.lagEl.style.transform=`translate3d(0,${c.lag.toFixed(2)}px,0)`;
+      setT(c.lagEl,`translate3d(0,${c.lag.toFixed(2)}px,0)`);
       c.x+=(c.tx-c.x)*k;c.y+=(c.ty-c.y)*k;
       if(Math.abs(c.x)+Math.abs(c.y)>.001||c.inner._t)setT(c.inner,`rotateY(${(c.x*5).toFixed(2)}deg) rotateX(${(-c.y*5).toFixed(2)}deg)`);
     }
-
-    /* marquee runs with the scroll: faster as you scroll, reverses when you scroll up */
-    if(!mHalf)mHalf=tk.scrollWidth/2;
-    const v=dy/dt;
-    if(v>.3)mDir=1;else if(v<-.3)mDir=-1;
-    const target=(.9+Math.min(Math.abs(v)*.5,14))*mDir*mSlow;
-    mv+=(target-mv)*(1-Math.pow(1-.08,dt));
-    mx-=mv*dt;
-    if(mHalf){if(mx<=-mHalf)mx+=mHalf;else if(mx>0)mx-=mHalf}
-    mSk+=(clamp(v*.35,-7,7)-mSk)*(1-Math.pow(1-.1,dt));
-    tk.style.transform=`translate3d(${mx.toFixed(2)}px,0,0) skewX(${(-mSk).toFixed(2)}deg)`;
+    /* marquee runs with the scroll: faster as you scroll, reverses when you scroll up (only while it is in view) */
+    if(near.has(marq)){
+      if(!mHalf)mHalf=tk.scrollWidth/2;
+      const v=dy/dt;
+      if(v>.3)mDir=1;else if(v<-.3)mDir=-1;
+      const target=(.9+Math.min(Math.abs(v)*.5,14))*mDir*mSlow;
+      mv+=(target-mv)*(1-Math.pow(1-.08,dt));
+      mx-=mv*dt;
+      if(mHalf){if(mx<=-mHalf)mx+=mHalf;else if(mx>0)mx-=mHalf}
+      mSk+=(clamp(v*.35,-7,7)-mSk)*(1-Math.pow(1-.1,dt));
+      tk.style.transform=`translate3d(${mx.toFixed(2)}px,0,0) skewX(${(-mSk).toFixed(2)}deg)`;
+    }
   }
   requestAnimationFrame(tick);
 })();
@@ -2014,15 +2299,15 @@ document.querySelectorAll('.rv,.frame:not(.heroimg)').forEach(e=>io.observe(e));
 function countUp(el){
   if(el._done)return;el._done=true;
   const to=+el.dataset.to,dec=+(el.dataset.dec||0);
-  if(reduce){el.textContent=to.toFixed(dec);return}
-  const t0=performance.now(),d=1600;
+  if(reduce){el.textContent=decimal(to,dec);return}
+  const t0=performance.now(),d=1600;el._run=true;
   (function f(t){
     const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,4);
-    el.textContent=(to*e).toFixed(dec);
-    if(k<1)requestAnimationFrame(f);
+    el.textContent=decimal(to*e,dec);   /* 4.8 in English, 4,8 in Greek */
+    if(k<1)requestAnimationFrame(f);else el._run=false;
   })(t0);
 }
-document.querySelectorAll('.cu').forEach(el=>el.textContent=(0).toFixed(+(el.dataset.dec||0)));
+document.querySelectorAll('.cu').forEach(el=>el.textContent=decimal(0,+(el.dataset.dec||0)));
 
 /* section spy for the nav indicator */
 const spy=new IntersectionObserver(en=>en.forEach(x=>{
@@ -2053,14 +2338,19 @@ setTimeout(()=>document.body.classList.add('ready'),1500);
 </script>
 <script>
 /* ═══ the page stream ═══════════════════════════════════════════════════
-   After GetLayers' Relay template (its page-long particle stream): a ribbon of glowing
-   filaments and sparks that winds down the whole page in wide S-curves, drawn in raw
-   WebGL2 (no library, no build). The ribbon lives in PAGE coordinates, so it scrolls with
-   the page; its spine is baked into a float texture and every shader reads it. Strands are
-   additive lines carrying light pulses; the sparks are additive soft points whose size and
-   softness grow away from the focal plane; a small mip-blur bloom lifts the glow.
-   Here the ribbon also GROWS: its head runs ahead of the scroll, a little below the bottom
+   After GetLayers' Relay template (its page-long particle stream): a ribbon of glowing filaments and sparks that
+   winds down behind the hero in wide S-curves, drawn in raw WebGL2 (no library, no build). The ribbon lives in PAGE
+   coordinates; its spine is baked into a float texture and every shader reads it. Strands are additive lines carrying
+   light pulses; the sparks are additive soft points whose size and softness grow away from the focal plane; a small
+   mip-blur bloom lifts the glow. The ribbon also GROWS: its head runs ahead of the scroll, a little below the bottom
    of the screen, and burns brighter than the stream behind it.
+   October 2026, for phones (same look, much less work):
+   · the canvas is pinned to the PAGE, not the screen: the browser scrolls it like a photo, so the stream can never
+     lag behind your finger and nothing is redrawn because you scrolled;
+   · it is drawn with its own transparency instead of a CSS blend mode (a blend over the whole screen is costly);
+   · phones and tablets draw it at 30 frames a second (the page itself still scrolls at full rate), with a cap on the
+     number of pixels; a device that still cannot keep up steps down a quality level;
+   · it stops completely whenever it is off screen, and its shaders compile without freezing the page.
    Colour comes only from COLORS (red tint of this site). Look knobs are in CONFIG. */
 (()=>{
 const cv=document.querySelector('.gl-stream');if(!cv)return;
@@ -2071,26 +2361,29 @@ const CONFIG={particles:36000,lowShare:.45,strands:44,flowPx:90,scrollFlow:1.25,
   lineWaveAmp:.12,lineWaveSpeed:.25,pulseSpacing:1130,pulseSpeed:205,pulseGain:1.4,pulseSharp:9,parallax:.22,
   headGlow:1.6,headWidth:150,headLead:1.05,
   bloomStr:.52,bloomThresh:.07};
-/* phones and tablets: same stream, a lighter build of it — about a third of the filament geometry and
-   fewer sparks, drawn at a lower resolution. The look (colours, shape, pulses, head glow) is unchanged. */
+/* phones and tablets: same stream, a lighter build of it — about a third of the filament geometry and fewer sparks,
+   drawn at a lower resolution and 30 fps. The look (colours, shape, pulses, head glow) is unchanged. */
 const LOW=matchMedia('(pointer:coarse)').matches||innerWidth<=900;
 if(LOW)Object.assign(CONFIG,{strands:18,lowShare:.3,size:2.4});
+const FRAME_MS=LOW?1000/30:0;
+const PIX_BUDGET=LOW?3.6e5:3.2e6;   /* most pixels the canvas may have, whatever the screen */
 const COLORS={main:'#FF2D3F',alt:'#FF7A3D',core:'#FFC9B0',deep:'#6B0F1A',spark:'#FFF3E8'};
 /* waypoints: [section selector, x share of the page width, y share of the section's height, depth, pinch] — every one lower than the last */
 const PATH=[
   ['#top',1.12,-0.45,-2.6,0],['#top',.86,.02,-1.8,0],['#top',.5,.38,-.9,0],['#top',.14,.82,0,1],['#top',-.4,1.12,0,0]];
 const SAMPLES=4096,SEG=LOW?1300:4200,CAM_Z=6,FOV=35,HALF_H=CAM_Z*Math.tan(FOV/2*Math.PI/180),REVEALED=1e7;
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)');
-const gl=cv.getContext('webgl2',{alpha:false,antialias:false,depth:false,stencil:false,powerPreference:'high-performance'});
+const gl=cv.getContext('webgl2',{alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,powerPreference:'high-performance'});
 if(!gl){cv.remove();return}
 const floatRT=!!gl.getExtension('EXT_color_buffer_float');
+const KPC=gl.getExtension('KHR_parallel_shader_compile');   /* compile off the main thread where the browser can */
 const rng=s=>()=>{s|=0;s=s+0x6d2b79f5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
 const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255].map(v=>Math.pow(v,2.2))};
 
 /* ── shaders ── */
 const CURVE=`
 uniform sampler2D uCurve;
-uniform float uHalfH,uCamZ,uPx,uLen,uTurnHold,uBreath,uBreathWave,uBreathSpeed,uTimeS,uHelixR,uHelixWave,uWideFrom,uWideRamp,uWideK,uSpinA;
+uniform float uHalfH,uCamZ,uPx,uPxZ,uLen,uTurnHold,uBreath,uBreathWave,uBreathSpeed,uTimeS,uHelixR,uHelixWave,uWideFrom,uWideRamp,uWideK,uSpinA;
 uniform vec3 uView;
 /* the room is a sticky stage: the stretch of spine inside its run is drawn in the stage's own frame,
    folded into one screen by fPin (natural speed at both ends, evenly compressed in between), and the
@@ -2114,7 +2407,7 @@ vec3 onSpine(float u,vec2 o,float hx){
   /* where the helix is wound, its axis is the room's vertical centre line */
   if(hx>0.0){p.x=mix(p.x,uPinCX,hx);n=normalize(mix(n,vec2(-1.0,0.0),hx));}
   vec2 page=vec2(p.x,pinY(p.y))+n*o.x*uPx*uView.y;
-  return vec3((page.x-uView.x)/uView.y,(uView.y-(page.y-uView.z))/uView.y,p.z+o.y*uPx);}
+  return vec3((page.x-uView.x)/uView.y,(uView.y-(page.y-uView.z))/uView.y,p.z+o.y*uPxZ);}
 float widthAt(float u,float pinch,float narrow,float wide){
   float a=u*uLen;
   float swell=1.0+uBreath*sin(a/uBreathWave*6.2831-uTimeS*uBreathSpeed);
@@ -2235,19 +2528,23 @@ void main(){vec2 uv=gl_FragCoord.xy/uSize;
   c+=texture(uTex,uv+uDir*1.3846).rgb*0.316216+texture(uTex,uv-uDir*1.3846).rgb*0.316216;
   c+=texture(uTex,uv+uDir*3.2308).rgb*0.070270+texture(uTex,uv-uDir*3.2308).rgb*0.070270;
   o=vec4(c,1.0);}`;
+/* the last pass writes light with its own transparency (premultiplied: alpha = the brightest channel), so the
+   page shows through the dark and no CSS blend mode is needed; it fades to nothing toward the canvas's bottom edge */
 const COMP_FRAG=`#version 300 es
-precision highp float;uniform sampler2D uScene,uB0,uB1,uB2,uB3;uniform vec2 uSize;uniform float uStr;out vec4 o;
+precision highp float;uniform sampler2D uScene,uB0,uB1,uB2,uB3;uniform vec2 uSize;uniform float uStr,uFade;out vec4 o;
 void main(){vec2 uv=gl_FragCoord.xy/uSize;
   vec3 c=texture(uScene,uv).rgb;
   c+=(texture(uB0,uv).rgb*1.0+texture(uB1,uv).rgb*0.85+texture(uB2,uv).rgb*0.7+texture(uB3,uv).rgb*0.55)*uStr;
-  o=vec4(pow(clamp(c,0.0,1.0),vec3(1.0/2.2)),1.0);}`;
+  c=pow(clamp(c,0.0,1.0),vec3(1.0/2.2))*smoothstep(0.0,uFade,gl_FragCoord.y);
+  o=vec4(c,max(c.r,max(c.g,c.b)));}`;
 
 function program(vs,fs){
-  const p=gl.createProgram();
-  for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);
-    if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(sh));gl.attachShader(p,sh)}
-  gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(p));
+  const p=gl.createProgram();p.sh=[];
+  for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);gl.attachShader(p,sh);p.sh.push(sh)}
+  gl.linkProgram(p);
   const L={};p.u=n=>n in L?L[n]:(L[n]=gl.getUniformLocation(p,n));return p}
+const compiled=p=>!KPC||gl.getProgramParameter(p,KPC.COMPLETION_STATUS_KHR);
+function checked(p){if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(p.sh.map(x=>gl.getShaderInfoLog(x)||'').join(' ')+(gl.getProgramInfoLog(p)||''));return p}
 const f1=(p,n,v)=>gl.uniform1f(p.u(n),v);
 
 /* ── geometry ── */
@@ -2267,42 +2564,36 @@ function buildLines(){
 const buf=(data,target=gl.ARRAY_BUFFER)=>{const b=gl.createBuffer();gl.bindBuffer(target,b);gl.bufferData(target,data,gl.STATIC_DRAW);return b};
 const attr=(p,name,b,size)=>{const l=gl.getAttribLocation(p,name);if(l<0)return;gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,size,gl.FLOAT,false,0,0)};
 
-let pProg,lProg,bright,down,blur,comp;
-try{pProg=program(POINTS_VERT,POINTS_FRAG);lProg=program(LINES_VERT,LINES_FRAG);bright=program(QUAD_VERT,BRIGHT_FRAG);down=program(QUAD_VERT,DOWN_FRAG);blur=program(QUAD_VERT,BLUR_FRAG);comp=program(QUAD_VERT,COMP_FRAG)}
-catch(e){console.warn('[stream]',e.message);cv.remove();return}
-const PG=buildPoints(),LG=buildLines();
-const pVAO=gl.createVertexArray();gl.bindVertexArray(pVAO);
-attr(pProg,'aZ',buf(PG.z),1);attr(pProg,'aU',buf(PG.u),1);attr(pProg,'aSeed',buf(PG.seed),1);attr(pProg,'aSize',buf(PG.size),1);attr(pProg,'aKind',buf(PG.kind),1);attr(pProg,'aOff',buf(PG.off),2);
-const lVAO=gl.createVertexArray();gl.bindVertexArray(lVAO);
-attr(lProg,'aU',buf(LG.u),1);attr(lProg,'aStrand',buf(LG.st),4);buf(LG.idx,gl.ELEMENT_ARRAY_BUFFER);
-const quadVAO=gl.createVertexArray();
-gl.bindVertexArray(null);
-
-/* spine texture: row 0 = page x, y, depth, pinch · row 1 = in-page normal (x,y) + turn radius */
+let pProg,lProg,bright,down,blur,comp,PG,LG,pVAO,lVAO,quadVAO,curveTex;
 const curveData=new Float32Array(SAMPLES*2*4);
-const curveTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,curveTex);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+/* spine texture: row 0 = x, y (in the canvas's own page box), depth, pinch · row 1 = in-page normal (x,y) + turn radius + helix */
+function setup(){
+  [pProg,lProg,bright,down,blur,comp].forEach(checked);
+  PG=buildPoints();LG=buildLines();
+  pVAO=gl.createVertexArray();gl.bindVertexArray(pVAO);
+  attr(pProg,'aZ',buf(PG.z),1);attr(pProg,'aU',buf(PG.u),1);attr(pProg,'aSeed',buf(PG.seed),1);attr(pProg,'aSize',buf(PG.size),1);attr(pProg,'aKind',buf(PG.kind),1);attr(pProg,'aOff',buf(PG.off),2);
+  lVAO=gl.createVertexArray();gl.bindVertexArray(lVAO);
+  attr(lProg,'aU',buf(LG.u),1);attr(lProg,'aStrand',buf(LG.st),4);buf(LG.idx,gl.ELEMENT_ARRAY_BUFFER);
+  quadVAO=gl.createVertexArray();
+  gl.bindVertexArray(null);
+  curveTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,curveTex);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+}
 
-let W=1,H=1,unit=1,dpr=1,tier='full',pathPts=[],length=1,sampleY=new Float32Array(SAMPLES),scrollY=0,lastScroll=NaN,scrollPx=0;
-let heroEnd=1e9,streamOff=false,pinOn=false,pinR0=0,pinR1=0,pinHs=1,pinL=1,pinE=1,pinC=1,pinCX=0,footY=1e9,helixZone=[0,0],head=0,headStart=0,pointer={x:0,y:0},look={x:0,y:0},lastT=-1,live=false,win0=0,winLen=1;
-/* quality steps: a machine that cannot hold ~50 fps drops one step (resolution, sparks) instead of lagging */
-const QUAL=LOW?[{dpr:.85,parts:1},{dpr:.7,parts:.65},{dpr:.55,parts:.4}]:[{dpr:1.15,parts:1},{dpr:1,parts:.6},{dpr:.8,parts:.35}];let q=0,slow=0,warm=0;
-/* the sticky room: its stage sits at stageTop() on screen. fPin folds the run into the stage (same curve as the
-   shader's); pageAtScreen() is the page height that is drawn at a screen height; pinProgress() is 0→1 while pinned */
-const stageTop=()=>Math.max(pinR0-scrollY,Math.min(0,pinR1-pinHs-scrollY));
-const fPin=x=>{x=Math.min(pinL,Math.max(0,x));const u=Math.min(x/pinE,1),v=Math.min(1,Math.max(0,(x-(pinL-pinE))/pinE));
-  const E1=x<pinE?x-pinE*(u**3-.5*u**4):.5*pinE,E2=pinE*(v**3-.5*v**4);return pinC*x+(1-pinC)*(E1+E2)};
-const fPinInv=s=>{let lo=0,hi=pinL;for(let i=0;i<30;i++){const m=(lo+hi)/2;if(fPin(m)<s)lo=m;else hi=m}return(lo+hi)/2};
-const pinProgress=()=>pinOn?Math.min(1,Math.max(0,(scrollY-pinR0)/Math.max(1,pinL-pinHs))):0;
-const pageAtScreen=s=>{
-  if(!pinOn)return scrollY+s;
-  const sT=stageTop();
-  if(s<sT)return pinR0+(s-sT);                       /* above the room: hangs off the stage's top edge */
-  if(s<=sT+pinHs)return pinR0+fPinInv(s-sT);         /* inside the stage */
-  return pinR1+(s-sT-pinHs)};                        /* below it: hangs off the bottom edge */
+/* W,H: the canvas in CSS px (as wide as the page, as tall as the hero plus a tail); VH: the viewport's height;
+   cvTop: where the canvas starts on the page; sy: the page's scroll */
+let W=1,H=1,VH=innerHeight,cvTop=0,fadePx=200,unit=1,dpr=1,tier='full',pathPts=[],length=1,sampleY=new Float32Array(SAMPLES),sy=0,lastScroll=NaN,scrollPx=0;
+let geomKey='',footY=1e9,head=0,headStart=0,pointer={x:0,y:0},look={x:0,y:0},lastT=-1,live=false,win0=0,winLen=1;
+/* quality steps: a device that cannot hold the stream's rate drops one step (resolution, sparks) instead of lagging */
+const QUAL=LOW?[{dpr:.75,parts:1},{dpr:.62,parts:.65},{dpr:.5,parts:.4}]:[{dpr:1.15,parts:1},{dpr:1,parts:.6},{dpr:.8,parts:.35}];let q=0,slow=0,warm=0;
+const docTop=el=>{let y=0;for(let n=el;n;n=n.offsetParent instanceof HTMLElement?n.offsetParent:null)y+=n.offsetTop;return y};
+/* a screen height → the matching height in the canvas's own coordinates */
+const pageAtScreen=s=>sy-cvTop+s;
 const arcAtY=y=>{if(y<=sampleY[0])return 0;if(y>=sampleY[SAMPLES-1])return length;let lo=0,hi=SAMPLES-1;while(lo<hi){const m=lo+hi>>1;if(sampleY[m]>=y)hi=m;else lo=m+1}return lo/(SAMPLES-1)*length};
 const TURN_BASE=12,TURN_HOLD=28,TURN_SMOOTH=48,TURN_OPEN=1e4;
+/* the dormant sticky-room helix of an earlier version: kept in the shaders, switched off here */
+const pinOn=false,pinR0=0,pinR1=0;
 
 /* centripetal Catmull-Rom (Barry–Goldman), resampled to equal arc length */
 function spline(P){
@@ -2324,19 +2615,20 @@ function spline(P){
     const f=(s-cum[j])/Math.max(1e-6,cum[j+1]-cum[j]);out.push(mix(dense[j],dense[j+1],1-f,f))}
   return{pts:out,total}}
 
+/* the canvas covers the hero and a tail below it (the ribbon's end runs off past the hero's bottom edge) */
+function layoutCanvas(){
+  const hero=document.getElementById('top'),hh=hero?hero.offsetHeight:innerHeight;
+  const tail=Math.round(Math.min(320,Math.max(180,hh*.26)));
+  cv.style.setProperty('--gl-h',(hh+tail)+'px');
+  fadePx=tail+hh*.06;
+}
 function resolvePath(){
-  const main=document.querySelector('main'),col=main.getBoundingClientRect(),pts=[];
-  const docTop=el=>{let y=0;for(let n=el;n;n=n.offsetParent instanceof HTMLElement?n.offsetParent:null)y+=n.offsetTop;return y};
+  const main=document.querySelector('main'),col=main.getBoundingClientRect(),cr=cv.getBoundingClientRect(),pts=[];
+  cvTop=docTop(cv);
   let lastY=-1e9;
   for(const[sel,x,y,z,pinch]of PATH){const el=document.querySelector(sel);if(!el)continue;
-    let py=docTop(el)+y*el.offsetHeight;if(py<=lastY)py=lastY+40;lastY=py;
-    pts.push({x:col.left+(sel==='#shop'&&innerWidth<860?.5:x)*col.width,y:py,z,pinch})}
-  const run=document.querySelector('.orbit-run'),stg=run&&run.querySelector('.orbit-stage');
-  helixZone=run?[docTop(run),docTop(run)+run.offsetHeight]:[0,0];
-  pinOn=!!(stg&&!REDUCE.matches&&getComputedStyle(stg).position==='sticky'&&run.offsetHeight>stg.offsetHeight+10);
-  if(pinOn){pinR0=helixZone[0];pinR1=helixZone[1];pinHs=stg.offsetHeight;pinL=pinR1-pinR0;pinE=.1*pinL;pinC=(pinHs-pinE)/(pinL-pinE);pinCX=col.left+.5*col.width}
-  const ft=document.querySelector('footer');footY=ft?docTop(ft):1e9;
-  const tp=document.getElementById('top');heroEnd=tp?docTop(tp)+tp.offsetHeight:1e9;
+    let py=docTop(el)-cvTop+y*el.offsetHeight;if(py<=lastY)py=lastY+40;lastY=py;
+    pts.push({x:col.left-cr.left+x*col.width,y:py,z,pinch})}
   return pts}
 
 function bake(){
@@ -2378,11 +2670,19 @@ function allocTargets(){
 
 function resize(){
   tier=(matchMedia('(pointer:coarse)').matches||innerWidth<=900)?'low':'full';
+  VH=innerHeight;
+  layoutCanvas();
   W=Math.max(1,cv.clientWidth);H=Math.max(1,cv.clientHeight);
-  dpr=Math.min(devicePixelRatio||1,tier==='low'?1.1:QUAL[q].dpr,QUAL[q].dpr);
   unit=Math.min(1,Math.max(.5,innerWidth/1440));
-  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
-  allocTargets();pathPts=resolvePath();bake()}
+  sizeBuffers();pathPts=resolvePath();bake();
+  geomKey=geomOf()}
+/* the drawing buffer and the bloom targets only (a quality step changes nothing else) */
+function sizeBuffers(){
+  dpr=Math.min(devicePixelRatio||1,QUAL[q].dpr,Math.sqrt(PIX_BUDGET/(W*H)));
+  cv.width=Math.max(1,Math.round(W*dpr));cv.height=Math.max(1,Math.round(H*dpr));
+  allocTargets()}
+/* what the drawing depends on: if none of it moved, a resize (a phone's address bar sliding away) costs nothing */
+const geomOf=()=>{const t=document.getElementById('top');return [innerWidth,t?t.offsetHeight:0,t?docTop(t):0,devicePixelRatio].join(',')};
 
 /* ── matrices (column-major) ── */
 function persp(fovDeg,asp,n,f){const t=1/Math.tan(fovDeg*Math.PI/360);return new Float32Array([t/asp,0,0,0,0,t,0,0,0,0,(f+n)/(n-f),-1,0,0,2*f*n/(n-f),0])}
@@ -2396,12 +2696,9 @@ function lookAtOrigin(ex,ey,ez){
 function setShared(p,t){
   gl.useProgram(p);
   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,curveTex);gl.uniform1i(p.u('uCurve'),0);
-  f1(p,'uHalfH',HALF_H);f1(p,'uCamZ',CAM_Z);f1(p,'uPx',unit/(H/2));f1(p,'uLen',length);
-  gl.uniform3f(p.u('uView'),W/2,H/2,scrollY);
-  if(pinOn){const pp=pinProgress(),sm=(a,b,x)=>{const k=Math.min(1,Math.max(0,(x-a)/(b-a)));return k*k*(3-2*k)};
-    gl.uniform4f(p.u('uPin'),pinR0,pinR1,scrollY+stageTop(),pinL);f1(p,'uPinCX',pinCX);gl.uniform3f(p.u('uPinF'),pinE,pinC,sm(0,.14,pp)*(1-sm(.86,1,pp)));
-    f1(p,'uSpinA',pp*Math.PI*2*1.1)}
-  else{gl.uniform4f(p.u('uPin'),0,0,0,0);gl.uniform3f(p.u('uPinF'),1,1,0);f1(p,'uSpinA',0)}
+  f1(p,'uHalfH',HALF_H);f1(p,'uCamZ',CAM_Z);f1(p,'uPx',unit/(H/2));f1(p,'uPxZ',unit/(VH/2));f1(p,'uLen',length);
+  gl.uniform3f(p.u('uView'),W/2,H/2,0);
+  gl.uniform4f(p.u('uPin'),0,0,0,0);gl.uniform3f(p.u('uPinF'),1,1,0);f1(p,'uSpinA',0);f1(p,'uPinCX',0);
   f1(p,'uWideFrom',arcAtY(footY));f1(p,'uWideRamp',600*unit);f1(p,'uWideK',.75);f1(p,'uHelixR',235*unit);f1(p,'uHelixWave',1000*unit);f1(p,'uTime',t/1000);f1(p,'uTimeS',(t/1000)%1000);f1(p,'uTurnHold',CONFIG.turnHold);f1(p,'uBreath',CONFIG.breath);
   f1(p,'uBreathWave',CONFIG.breathWavelength*unit);f1(p,'uBreathSpeed',CONFIG.breathSpeed);
   f1(p,'uRevealPx',head);f1(p,'uHeadGlow',CONFIG.headGlow);f1(p,'uHeadWidth',CONFIG.headWidth*unit);
@@ -2411,30 +2708,30 @@ function setShared(p,t){
   gl.uniformMatrix4fv(p.u('uMV'),false,MV);gl.uniformMatrix4fv(p.u('uP'),false,P)}
 const C={};for(const k in COLORS)C[k]=hex(COLORS[k]);
 let MV,P;
-const quad=(prog)=>{gl.useProgram(prog);gl.bindVertexArray(quadVAO);gl.drawArrays(gl.TRIANGLES,0,3)};
 const bindTex=(i,t)=>{gl.activeTexture(gl.TEXTURE0+i);gl.bindTexture(gl.TEXTURE_2D,t)};
 
 function render(t){
   const dt=lastT<0?0:Math.min(.1,Math.max(0,(t-lastT)/1000));lastT=t;
   const k=1-Math.exp(-3.2*dt);look.x+=(pointer.x-look.x)*k;look.y+=(pointer.y-look.y)*k;
-  P=persp(FOV,W/H,.1,60);MV=lookAtOrigin(-look.x*CONFIG.parallax,look.y*CONFIG.parallax,CAM_Z);
+  const par=CONFIG.parallax*Math.min(1,VH/H);
+  P=persp(FOV,W/H,.1,60);MV=lookAtOrigin(-look.x*par,look.y*par,CAM_Z);
 
   /* the head: ahead of the scroll, lagging it a little, so the tips keep creeping after you stop */
   if(REDUCE.matches)head=REVEALED;
   else{
     let target=0;
-    if(t>headStart){const want=pageAtScreen(H*CONFIG.headLead);let i=SAMPLES-1;
+    if(t>headStart){const want=pageAtScreen(VH*CONFIG.headLead);let i=SAMPLES-1;
       if(want<sampleY[SAMPLES-1]){let lo=0,hi=SAMPLES-1;while(lo<hi){const m=lo+hi>>1;if(sampleY[m]>=want)hi=m;else lo=m+1}i=lo}
       else i=SAMPLES+40;
       target=Math.min(length+900*unit,(i/(SAMPLES-1))*length)}
     const INTRO=3400,ip=(t-headStart)/INTRO;
     if(ip<1){const e=Math.sin(Math.PI/2*Math.max(0,ip)),from=Math.min(target,arcAtY(pageAtScreen(0)));head=from+(target-from)*e}   /* the first reveal: one slow, eased pour down the page */
-    else{const catchUp=head<target-H*.5?3.2:1.7;head+=(target-head)*(1-Math.exp(-dt*catchUp))}
-    if(t-headStart>INTRO){const floor=arcAtY(pageAtScreen(H*.5));if(head<floor)head=floor}   /* the tip is never on screen: a jump or a fast scroll cannot leave the page bare */
+    else{const catchUp=head<target-VH*.5?3.2:1.7;head+=(target-head)*(1-Math.exp(-dt*catchUp))}
+    if(t-headStart>INTRO){const floor=arcAtY(pageAtScreen(VH*.5));if(head<floor)head=floor}   /* the tip is never on screen: a jump or a fast scroll cannot leave the page bare */
     if(head>length+500*unit)head=REVEALED}
 
-  winLen=Math.min(length,7*H);
-  win0=Math.max(0,Math.min(length-winLen,arcAtY(pageAtScreen(-.9*H))));
+  winLen=Math.min(length,7*VH);
+  win0=Math.max(0,Math.min(length-winLen,arcAtY(pageAtScreen(-.9*VH))));
   gl.bindFramebuffer(gl.FRAMEBUFFER,sceneRT.f);gl.viewport(0,0,sceneRT.w,sceneRT.h);
   gl.clearColor(0,0,0,1);gl.clear(gl.COLOR_BUFFER_BIT);
   gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
@@ -2473,49 +2770,55 @@ function render(t){
   gl.useProgram(comp);
   bindTex(0,sceneRT.t);gl.uniform1i(comp.u('uScene'),0);
   levels.forEach((L,i)=>{bindTex(1+i,L.a.t);gl.uniform1i(comp.u('uB'+i),1+i)});
-  gl.uniform2f(comp.u('uSize'),cv.width,cv.height);f1(comp,'uStr',CONFIG.bloomStr);
+  gl.uniform2f(comp.u('uSize'),cv.width,cv.height);f1(comp,'uStr',CONFIG.bloomStr);f1(comp,'uFade',Math.max(1,fadePx*dpr));
   gl.drawArrays(gl.TRIANGLES,0,3);
   if(!live){live=true;document.documentElement.classList.add('gl-stream-on')}}
 
 /* ── drive ── */
 function onScroll(){
-  const y=scrollY=window.scrollY;
-  if(!Number.isNaN(lastScroll))scrollPx+=Math.abs(y-lastScroll)*CONFIG.scrollFlow;lastScroll=y;
-  if(REDUCE.matches&&!raf)requestAnimationFrame(t=>render(t))}
-let raf=0,running=false;
+  const y=sy=window.scrollY;
+  if(!Number.isNaN(lastScroll))scrollPx+=Math.abs(y-lastScroll)*CONFIG.scrollFlow;lastScroll=y}
+let raf=0,running=false,onScreen=true,lastDraw=-1;
 function loop(t){
   raf=requestAnimationFrame(loop);
-  /* the stream lives behind the hero only: once the hero has scrolled away it stops drawing */
-  const off=window.scrollY>heroEnd;
-  if(off!==streamOff){streamOff=off;document.documentElement.classList.toggle('gl-stream-off',off);lastT=-1;warm=0}
-  if(off)return;
-  const gap=lastT<0?0:t-lastT;
+  if(FRAME_MS&&lastDraw>=0&&t-lastDraw<FRAME_MS-4)return;   /* phones: draw every other frame */
+  const gap=lastDraw<0?0:t-lastDraw;lastDraw=t;
   render(t);
-  if(warm++<(LOW?40:90)||gap>250||gap===0)return;      /* ignore the compile frames and tab wake-ups */
-  slow=gap>(LOW?24:21)?slow+1:Math.max(0,slow-1);
-  if(slow>(LOW?25:60)&&q<QUAL.length-1){q++;slow=0;warm=0;resize()}
-  else if(slow>90&&q===QUAL.length-1&&!document.documentElement.classList.contains('lowfx')){document.documentElement.classList.add('lowfx');slow=0;warm=0}}
+  if(warm++<(LOW?24:90)||gap>250||gap===0)return;      /* ignore the compile frames and tab wake-ups */
+  slow=gap>(LOW?48:21)?slow+1:Math.max(0,slow-1);
+  if(slow>(LOW?18:60)&&q<QUAL.length-1){q++;slow=0;warm=0;sizeBuffers()}}
+function still(){requestAnimationFrame(t=>{if(onScreen)render(t)})}
 function sync(){
-  const run=!document.hidden&&!REDUCE.matches;
-  if(run&&!running){running=true;lastT=-1;raf=requestAnimationFrame(loop)}
+  const run=onScreen&&!document.hidden&&!REDUCE.matches;
+  if(run&&!running){running=true;lastT=-1;lastDraw=-1;raf=requestAnimationFrame(loop)}
   else if(!run&&running){running=false;cancelAnimationFrame(raf);raf=0}
-  if(REDUCE.matches)requestAnimationFrame(t=>render(t))}
+  if(REDUCE.matches)still()}
 function start(){
-  resize();scrollY=window.scrollY;lastScroll=NaN;onScroll();
+  resize();sy=window.scrollY;lastScroll=NaN;onScroll();
   headStart=performance.now();
   addEventListener('scroll',onScroll,{passive:true});
-  let rt=0;const relayout=()=>{clearTimeout(rt);rt=setTimeout(()=>{const w=cv.clientWidth,h=cv.clientHeight;
-    if(w!==W||h!==H||Math.abs(innerWidth/1440-unit)>.001)resize();else{pathPts=resolvePath();bake()}if(REDUCE.matches)requestAnimationFrame(t=>render(t))},120)};
+  let rt=0;const relayout=()=>{clearTimeout(rt);rt=setTimeout(()=>{
+    VH=innerHeight;
+    if(geomOf()!==geomKey||Math.abs(cv.clientWidth-W)>1)resize();
+    if(REDUCE.matches)still()},150)};
   addEventListener('resize',relayout);
-  new ResizeObserver(relayout).observe(document.querySelector('main'));
+  new ResizeObserver(relayout).observe(document.getElementById('top'));
   if(matchMedia('(hover:hover) and (pointer:fine)').matches)addEventListener('pointermove',e=>{pointer.x=e.clientX/innerWidth*2-1;pointer.y=e.clientY/innerHeight*2-1},{passive:true});
   document.addEventListener('visibilitychange',sync);REDUCE.addEventListener('change',sync);
-  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);cv.remove()});
+  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);running=false;cv.remove()});
+  new IntersectionObserver(([e])=>{onScreen=e.isIntersecting;sync()},{rootMargin:'80px 0px'}).observe(cv);
   sync()}
-/* build once the page has painted, so the stream never competes with the first screen */
-const go=()=>{try{start()}catch(e){console.warn('[stream]',e&&e.message||e);cv.remove()}};
+/* compile without blocking, then build and run; anything that fails leaves the hero as it is without the stream */
+const fail=e=>{console.warn('[stream]',e&&e.message||e);cancelAnimationFrame(raf);cv.remove()};
+function boot(){
+  try{pProg=program(POINTS_VERT,POINTS_FRAG);lProg=program(LINES_VERT,LINES_FRAG);bright=program(QUAD_VERT,BRIGHT_FRAG);down=program(QUAD_VERT,DOWN_FRAG);blur=program(QUAD_VERT,BLUR_FRAG);comp=program(QUAD_VERT,COMP_FRAG)}
+  catch(e){fail(e);return}
+  const wait=()=>{
+    try{if(![pProg,lProg,bright,down,blur,comp].every(compiled)){requestAnimationFrame(wait);return}setup();start()}
+    catch(e){fail(e)}};
+  wait()}
 /* start as soon as the markup is parsed — it grows in under the loader, so it is already running when the page opens */
-if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTimeout(go,0),{once:true});else setTimeout(go,0);
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
 })();
 
 
@@ -2530,6 +2833,8 @@ if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTi
     dropsG=svg.querySelector('.dm-drops'),erode=svg.querySelector('feMorphology'),band=svg.querySelector('#dmBand rect'),
     above=svg.querySelector('#dmAbove rect'),clipG=svg.querySelector('.dm-clip'),riseG=svg.querySelector('.dm-rise'),menu=document.getElementById('menu');
   const NS='http://www.w3.org/2000/svg',FS=100,BASE=100,PAD=2,GAP=9;
+  /* the falling drops live in an HTML layer over the drawing (see .dm-dropbox) */
+  const dropBox=document.createElement('div');dropBox.className='dm-dropbox';dropBox.setAttribute('aria-hidden','true');box.appendChild(dropBox);
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches||!riseG.animate;
   let vbW=420,vbTop=0,rise=80,risen=false;
   if(still)clipG.removeAttribute('clip-path');else box.classList.add('arm');
@@ -2580,9 +2885,13 @@ if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTi
         if(L>20&&drops.length<6)drops.push([x,BASE+L+rr*1.25,rr*.72]);
       }
     });
-    drops.forEach(([x,y,r],i)=>{const d=document.createElementNS(NS,'circle');d.setAttribute('class','dm-drop');d.setAttribute('cx',x.toFixed(1));d.setAttribute('cy',y.toFixed(1));d.setAttribute('r',r.toFixed(1));
-      d.style.setProperty('--fd',(4.6+i*.9).toFixed(1)+'s');d.style.setProperty('--fl',(1.4+i*1.1).toFixed(1)+'s');d.style.setProperty('--fall',(8+i*2)+'px');dropsG.appendChild(d)});
-    const top=BASE-asc-3,bot=maxEnd+24;
+    const top=BASE-asc-3,bot=maxEnd+24,vh=bot-top;
+    /* drops: placed in the drawing's units as percentages of the layer, so they scale with it; each falls a few of its
+       own sizes (a translate in % of the drop itself) */
+    dropBox.textContent='';dropBox.style.aspectRatio=`${w} / ${vh.toFixed(2)}`;
+    drops.forEach(([x,y,r],i)=>{const d=document.createElement('i');
+      d.style.cssText=`left:${(x/w*100).toFixed(3)}%;top:${((y-top)/vh*100).toFixed(3)}%;width:${(2*r/w*100).toFixed(3)}%`;
+      d.style.setProperty('--fd',(4.6+i*.9).toFixed(1)+'s');d.style.setProperty('--fl',(1.4+i*1.1).toFixed(1)+'s');d.style.setProperty('--fall',((8+i*2)/(2*r)*100).toFixed(0)+'%');dropBox.appendChild(d)});
     vbTop=top;vbW=w;
     svg.setAttribute('viewBox',`0 ${top.toFixed(1)} ${w} ${(bot-top).toFixed(1)}`);
     box.style.setProperty('--dmr',((BASE+1-top)/w).toFixed(4));box.style.setProperty('--dmg',(GAP/w).toFixed(4));
@@ -2605,23 +2914,21 @@ if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTi
     if(e.isIntersecting&&!box.classList.contains('in')){box.classList.add('in');arrive()}}),{rootMargin:'0px 0px -4% 0px'}).observe(box);
 })();
 
-/* ═══ header over the page's dark and light surfaces (after brewns' data-header-theme probe) ═══
-   Sections name the surface they paint; the header reads whichever one sits under its
-   centre line and wears it. On a phone it steps aside over the footer band, as brewns does. */
+/* ═══ header over the footer band ═══ every surface is dark now, so the header wears one theme; on a phone it
+   steps aside over the footer band, as brewns does (one observer instead of a 10-times-a-second probe) */
 (()=>{
-  const PROBE=39,phone=matchMedia('(max-width:760px)');
-  const secs=[...document.querySelectorAll('[data-header-theme]')],foot=document.querySelector('footer');
-  setInterval(()=>{
-    let th="dark";
-    for(const s of secs){const r=s.getBoundingClientRect();if(r.top<=PROBE&&r.bottom>PROBE){th=s.dataset.headerTheme;break}}
-    if(hd.dataset.theme!==th)hd.dataset.theme=th;
-    hd.classList.toggle('foot',phone.matches&&foot.getBoundingClientRect().top<=PROBE);
-  },100);
+  hd.dataset.theme="dark";
+  const phone=matchMedia('(max-width:760px)'),foot=document.querySelector('footer');
+  let past=false;
+  /* a 1px marker at the footer's top edge: once it has gone above the header's middle, we are over the footer */
+  const mark=document.createElement('div');mark.style.cssText='position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none';foot.prepend(mark);
+  new IntersectionObserver(([e])=>{past=!e.isIntersecting&&e.boundingClientRect.top<40;hd.classList.toggle('foot',phone.matches&&past)},{rootMargin:"-40px 0px 0px 0px"}).observe(mark);
+  phone.addEventListener('change',()=>hd.classList.toggle('foot',phone.matches&&past));
 })();
 
 /* ═══ the order ticket (after brewns' printed receipt) ═══
    A paper slip that prints what "Send on WhatsApp" will send. Built from the same
-   state and the same words as the message; it adds nothing to the order itself. */
+   state and the same words as the message, with the menu price; it adds nothing to the order itself. */
 (()=>{
   const box=$('ticket');if(!box)return;
   const lines=$('ticketLines'),stamp=$('ticketStamp');
@@ -2634,15 +2941,17 @@ if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTi
       ["p",tr("msgPatty","Patty"),patty],
       ["t",tr("msgToppings","Toppings"),picked("toppings").join(", ")],
       ["s",tr("msgSauces","Sauces"),picked("sauces").join(", ")],
-      ["n",tr("msgSpecialRequest","Special request"),bNote.value.trim()]
+      ["n",tr("msgSpecialRequest","Special request"),bNote.value.trim()],
+      ["€",tr("msgPrice","Menu price"),pickedPrice()]
     ].filter(r=>r[2]);
     const next={};
     lines.innerHTML=rows.length?rows.map(([k,l,v])=>{
       next[k]=v;
-      return `<div class="tl${prev[k]!==v?" pr":""}"><span>${esc(l)}</span><b>${esc(v)}</b></div>`;
+      return `<div class="tl${k==="€"?" price":""}${prev[k]!==v?" pr":""}"><span>${esc(l)}</span><b>${esc(v)}</b></div>`;
     }).join(""):`<p class="t-empty">${esc(tr("msgPickSomething","Pick something or write a request first."))}</p>`;
     prev=next;
     stamp.textContent=fmt.format(new Date()).replace(",","  ·");
+    capsGr(box);
   }
   const later=()=>requestAnimationFrame(draw);
   $('build').addEventListener('click',later);
@@ -2650,6 +2959,22 @@ if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>setTi
   $('build').addEventListener('input',later);
   $('lang').addEventListener('click',later);
   draw();
+})();
+
+/* the footer's background photo, only once the footer is close */
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('near');o.disconnect()}}),{rootMargin:"900px 0px"}).observe(document.querySelector('footer'));
+
+/* ═══ the map, on request ═══ a still card until "Show the map": Google Maps is heavy on a phone (it would load
+   while you scroll past) and sets its own cookies, so it only loads when someone asks for it */
+(()=>{
+  const btn=$('mapBtn'),ph=$('mapPh');if(!btn||!ph)return;
+  btn.addEventListener('click',()=>{
+    const f=document.createElement('iframe');
+    f.title=tr("mapTitle","Map showing Buns and Guns in Pyla");f.referrerPolicy="no-referrer-when-downgrade";f.src=mapSrc();
+    f.allowFullscreen=true;
+    ph.replaceWith(f);
+    f.focus({preventScroll:true});
+  });
 })();
 </script>
 </body>
